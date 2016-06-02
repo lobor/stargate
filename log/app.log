@@ -1,0 +1,18 @@
+Vorpal Prompt error: [TypeError: Cannot read property 'substring' of undefined]
+[?25h
+
+/srv/www/node_modules/readline2/index.js:55
+    var strBeforeCursor = this._prompt + this.line.substring(0, this.cursor);
+                                                  ^
+
+TypeError: Cannot read property 'substring' of undefined
+    at Interface.rl._getCursorPos (/srv/www/node_modules/readline2/index.js:55:51)
+    at Object.ui.pause (/srv/www/node_modules/vorpal/lib/ui.js:237:38)
+    at Object.ui.log (/srv/www/node_modules/vorpal/lib/ui.js:336:23)
+    at Vorpal.vorpal.log (/srv/www/node_modules/vorpal/lib/vorpal.js:290:15)
+    at /srv/www/application/app.js:27:16
+    at Namespace.<anonymous> (/srv/www/node_modules/vantage/lib/server.js:338:5)
+    at emitOne (events.js:90:13)
+    at Namespace.emit (events.js:182:7)
+    at Namespace.emit (/srv/www/node_modules/socket.io/lib/namespace.js:206:10)
+    at /srv/www/node_modules/socket.io/lib/namespace.js:174:14
