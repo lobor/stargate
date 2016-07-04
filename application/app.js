@@ -9,11 +9,21 @@ for(var key in commands){
   vm.vantage
     .command(command.command)
     .description(command.description)
-    .action(command.action.bind(vm));
+    .action(command.action);
+    
+  if(command.onLoad){
+    command.onLoad();
+  }
 }
-// Add the command "foo", which logs "bar".
-
+// vm.vantage
+//   .command('test')
+//   .description('return toto')
+//   .action(function(){
+//     this.log('toto')
+//   });
 vm.vantage
   .delimiter("Application~$")
-  .listen(8080)
+  .listen(8080, function(){
+    console.log('WELCOME your are connected');
+  })
   .show();
