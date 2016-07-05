@@ -70,7 +70,8 @@ server.get('*', function(req, res) {
     } else if (renderProps) {
 			// console.log(renderProps);
 			res.render('template', {
-      	output: srv.renderToString(Router2(renderProps))
+      	output: ''
+      	// output: srv.renderToString(Router2(renderProps))
     	});
 			
     } else {

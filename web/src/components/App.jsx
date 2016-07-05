@@ -1,50 +1,39 @@
 import React, { Component } from 'react';
+import Navigation from './Navigation.jsx';
 
 import { Route, Router, browserHistory } from 'react-router';
 
 
 class App extends Component {
-	// constructor(props){
-	// 	super(props);
-	// 	console.log(this.context = {router: React.PropTypes.object.isRequired});
-	// }
 	componentWillMount() {
-		var routes = this.props.route, route, auth;
+		var route = this.props.route, auth;
+		
+		var logging = localStorage.getItem('login');
+		
 		this.state = {log: undefined};
 		
-		// console.log(this);
 		
-		
-		if(undefined === this.state.log){
-			this.state.log = "free";
+		if(undefined === logging){
+			logging = "free";
 		}
 		
+		auth = route.auth;
 		
-		// for (var i = 0, r = routes.length; i < r; i++) {
-			route = routes;
-			auth = route.auth;
-			
-			if(route.indexRoute){
-				auth = route.indexRoute.auth;
-			}
-			
-			
-					
-			// console.log(auth, this.state.log);
-			
-			if(-1 === auth.indexOf(this.state.log)){
-				// console.log(6);
-				this.context.router.push('/user/login');
-				return false;
-			}
-		// }
+		if(route.indexRoute){
+			auth = route.indexRoute.auth;
+		}
+		
+		if(-1 === auth.indexOf(logging)){
+			this.context.router.push('/user/login');
+			localStorage.setItem('login', 'user');
+			return false;
+		}
   }
 	
   render() {
     return (
       <div>
-        <h1>App</h1>
-
+				<Navigation />
 				{this.props.children}
       </div>
     )

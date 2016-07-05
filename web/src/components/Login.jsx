@@ -4,27 +4,24 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-export default class Login extends Component {
+class Login extends Component {
 	submit(){
-		// console.log(this);
-		// console.log(this.refs.name.value);
-		
-		// this.refs.name.value;
-		// this.refs.password.value;
-		
-		axios.post('/user/login', {
+		axios
+			.post('/user/login', {
 				name: this.refs.name.value,
 				password: this.refs.password.value
 			})
 			.then(function (response) {
-				console.log(response);
-			})
+				this.context.router.push('/');
+				this.state.log = "user";
+			}.bind(this))
 			.catch(function (error) {
 				console.log(error);
 			});
 	}
 	
   render() {
+		console.log(this);
     return (
       <div>
 				Login
@@ -37,3 +34,10 @@ export default class Login extends Component {
     )
   }
 }
+
+Login.contextTypes = {
+	router: React.PropTypes.object.isRequired
+// 	routes: React.PropTypes.array.isRequired
+};
+
+export default Login;

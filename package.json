@@ -6,9 +6,10 @@
   "scripts": {
     "start": "npm run build:js && node web/src/server.js",
     "startDev": "npm run build:js && node web/src/server.js",
-    "live": "npm run watch:js & nodemon web/src/server.js",
+    "live": "npm run watch:js & npm run watch:css & nodemon web/src/server.js",
     "build:js": "browserify web/src/app.jsx -t babelify --outfile web/assets/app.js && uglifyjs web/assets/app.js -o web/assets/app.min.js",
-    "watch:js": "watchify ./web/src/app.jsx -t babelify --outfile ./web/assets/app.js"
+    "watch:js": "watchify ./web/src/app.jsx -t babelify --outfile ./web/assets/app.js",
+    "watch:css": "stylus -w ./web/src/style/app.styl -o ./web/assets/"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +26,8 @@
     "isomorphic-fetch": "^2.0.0",
     "react": "^15.2.0",
     "react-dom": "^15.2.0",
-    "react-router": "^2.5.2"
+    "react-router": "^2.5.2",
+    "stylus": "^0.54.5"
   },
   "devDependencies": {
     "nodemon": "^1.9.2",

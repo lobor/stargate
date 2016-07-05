@@ -29812,7 +29812,7 @@ if (typeof document !== "undefined") {
 	render(routes, document.getElementById("container"));
 }
 
-},{"./config/routes.jsx":262,"babel/polyfill":21,"isomorphic-fetch":70,"react":251,"react-dom":73,"react-router":103}],258:[function(require,module,exports){
+},{"./config/routes.jsx":264,"babel/polyfill":21,"isomorphic-fetch":70,"react":251,"react-dom":73,"react-router":103}],258:[function(require,module,exports){
 "use strict";
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
@@ -29828,6 +29828,8 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+
+var Navigation = _interopRequire(require("./Navigation.jsx"));
 
 var _reactRouter = require("react-router");
 
@@ -29848,39 +29850,29 @@ var App = (function (_Component) {
 
 	_createClass(App, {
 		componentWillMount: {
-			// constructor(props){
-			// 	super(props);
-			// 	console.log(this.context = {router: React.PropTypes.object.isRequired});
-			// }
-
 			value: function componentWillMount() {
-				var routes = this.props.route,
-				    route,
+				var route = this.props.route,
 				    auth;
+
+				var logging = localStorage.getItem("login");
+
 				this.state = { log: undefined };
 
-				// console.log(this);
-
-				if (undefined === this.state.log) {
-					this.state.log = "free";
+				if (undefined === logging) {
+					logging = "free";
 				}
 
-				// for (var i = 0, r = routes.length; i < r; i++) {
-				route = routes;
 				auth = route.auth;
 
 				if (route.indexRoute) {
 					auth = route.indexRoute.auth;
 				}
 
-				// console.log(auth, this.state.log);
-
-				if (-1 === auth.indexOf(this.state.log)) {
-					// console.log(6);
+				if (-1 === auth.indexOf(logging)) {
 					this.context.router.push("/user/login");
+					localStorage.setItem("login", "user");
 					return false;
 				}
-				// }
 			}
 		},
 		render: {
@@ -29888,11 +29880,7 @@ var App = (function (_Component) {
 				return React.createElement(
 					"div",
 					null,
-					React.createElement(
-						"h1",
-						null,
-						"App"
-					),
+					React.createElement(Navigation, null),
 					this.props.children
 				);
 			}
@@ -29909,7 +29897,7 @@ App.contextTypes = {
 
 module.exports = App;
 
-},{"react":251,"react-router":103}],259:[function(require,module,exports){
+},{"./Navigation.jsx":262,"react":251,"react-router":103}],259:[function(require,module,exports){
 "use strict";
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
@@ -29926,7 +29914,7 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 
-var Link = require("react-router").Link;
+var ItemCard = _interopRequire(require("./ItemCard.jsx"));
 
 var Home = (function (_Component) {
 	function Home() {
@@ -29945,12 +29933,7 @@ var Home = (function (_Component) {
 				return React.createElement(
 					"div",
 					null,
-					"Home",
-					React.createElement(
-						Link,
-						{ to: "/testComponent" },
-						"Go to component"
-					)
+					React.createElement(ItemCard, { data: ["webcam"] })
 				);
 			}
 		}
@@ -29961,7 +29944,68 @@ var Home = (function (_Component) {
 
 module.exports = Home;
 
-},{"react":251,"react-router":103}],260:[function(require,module,exports){
+},{"./ItemCard.jsx":260,"react":251}],260:[function(require,module,exports){
+"use strict";
+
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _react = require("react");
+
+var React = _interopRequire(_react);
+
+var Component = _react.Component;
+
+var ItemCard = (function (_Component) {
+	function ItemCard() {
+		_classCallCheck(this, ItemCard);
+
+		if (_Component != null) {
+			_Component.apply(this, arguments);
+		}
+	}
+
+	_inherits(ItemCard, _Component);
+
+	_createClass(ItemCard, {
+		render: {
+			value: function render() {
+				console.log(this.props.data);
+				return React.createElement(
+					"div",
+					{ className: "card__list" },
+					this.props.data.map(function (result, i) {
+						return React.createElement(
+							"div",
+							{ className: "card__container", key: i },
+							React.createElement(
+								"div",
+								{ className: "card__header" },
+								"icon"
+							),
+							React.createElement(
+								"div",
+								{ className: "card__body" },
+								result
+							)
+						);
+					})
+				);
+			}
+		}
+	});
+
+	return ItemCard;
+})(Component);
+
+module.exports = ItemCard;
+
+},{"react":251}],261:[function(require,module,exports){
 /*jshint esnext:true, browserify:true, unused:vars */
 "use strict";
 
@@ -29995,24 +30039,20 @@ var Login = (function (_Component) {
 	_createClass(Login, {
 		submit: {
 			value: function submit() {
-				// console.log(this);
-				// console.log(this.refs.name.value);
-
-				// this.refs.name.value;
-				// this.refs.password.value;
-
 				axios.post("/user/login", {
 					name: this.refs.name.value,
 					password: this.refs.password.value
-				}).then(function (response) {
-					console.log(response);
-				})["catch"](function (error) {
+				}).then((function (response) {
+					this.context.router.push("/");
+					this.state.log = "user";
+				}).bind(this))["catch"](function (error) {
 					console.log(error);
 				});
 			}
 		},
 		render: {
 			value: function render() {
+				console.log(this);
 				return React.createElement(
 					"div",
 					null,
@@ -30038,9 +30078,83 @@ var Login = (function (_Component) {
 	return Login;
 })(Component);
 
+Login.contextTypes = {
+	router: React.PropTypes.object.isRequired
+	// 	routes: React.PropTypes.array.isRequired
+};
+
 module.exports = Login;
 
-},{"axios":1,"react":251}],261:[function(require,module,exports){
+},{"axios":1,"react":251}],262:[function(require,module,exports){
+"use strict";
+
+var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+
+var _react = require("react");
+
+var React = _interopRequire(_react);
+
+var Component = _react.Component;
+
+var Link = require("react-router").Link;
+
+var Navigation = (function (_Component) {
+	function Navigation() {
+		_classCallCheck(this, Navigation);
+
+		if (_Component != null) {
+			_Component.apply(this, arguments);
+		}
+	}
+
+	_inherits(Navigation, _Component);
+
+	_createClass(Navigation, {
+		render: {
+			value: function render() {
+				return React.createElement(
+					"nav",
+					null,
+					"Menu",
+					React.createElement(
+						"ul",
+						null,
+						React.createElement(
+							"li",
+							null,
+							React.createElement(
+								Link,
+								{ to: "/" },
+								"Home"
+							)
+						),
+						React.createElement(
+							"li",
+							null,
+							React.createElement(
+								Link,
+								{ to: "/Config" },
+								"Config"
+							)
+						)
+					)
+				);
+			}
+		}
+	});
+
+	return Navigation;
+})(Component);
+
+module.exports = Navigation;
+
+},{"react":251,"react-router":103}],263:[function(require,module,exports){
 "use strict";
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
@@ -30085,7 +30199,7 @@ var testcomponent = (function (_Component) {
 
 module.exports = testcomponent;
 
-},{"react":251}],262:[function(require,module,exports){
+},{"react":251}],264:[function(require,module,exports){
 "use strict";
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
@@ -30123,4 +30237,4 @@ module.exports = React.createElement(
 	)
 );
 
-},{"./../components/App.jsx":258,"./../components/Home.jsx":259,"./../components/Login.jsx":260,"./../components/testcomponent.jsx":261,"react":251,"react-router":103}]},{},[257]);
+},{"./../components/App.jsx":258,"./../components/Home.jsx":259,"./../components/Login.jsx":261,"./../components/testcomponent.jsx":263,"react":251,"react-router":103}]},{},[257]);

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import ItemCard from './ItemCard.jsx';
 
 class Home extends Component {
 	render() {
     return (
       <div>
-				Home
-				<Link to="/testComponent">Go to component</Link>
+				<ItemCard data={['webcam']} />
 			</div>
     )
 	}
