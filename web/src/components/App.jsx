@@ -1,53 +1,59 @@
-import React from 'react/addons';
-import StylingMixin from './../utils/styling-mixin.jsx';
-import Router from 'react-router';
+import React, { Component } from 'react';
 
-let Link = Router.Link;
+import { Route, Router, browserHistory } from 'react-router';
 
-let styles = {
-  wrap: {
-    padding: "20px"
-  },
-  header: {
-    fontFamily: "serif",
-    fontSize: "48px"
-  },
-  green: {
-    color: "green"
+
+class App extends Component {
+	// constructor(props){
+	// 	super(props);
+	// 	console.log(this.context = {router: React.PropTypes.object.isRequired});
+	// }
+	componentWillMount() {
+		var routes = this.props.route, route, auth;
+		this.state = {log: undefined};
+		
+		// console.log(this);
+		
+		
+		if(undefined === this.state.log){
+			this.state.log = "free";
+		}
+		
+		
+		// for (var i = 0, r = routes.length; i < r; i++) {
+			route = routes;
+			auth = route.auth;
+			
+			if(route.indexRoute){
+				auth = route.indexRoute.auth;
+			}
+			
+			
+					
+			// console.log(auth, this.state.log);
+			
+			if(-1 === auth.indexOf(this.state.log)){
+				// console.log(6);
+				this.context.router.push('/user/login');
+				return false;
+			}
+		// }
   }
-};
-
-var App = React.createClass({
-  mixins: [StylingMixin],
-  contextTypes: {
-    router: React.PropTypes.func
-  },
-  getInitialState() {
-    return {
-      isActive: false
-    };
-  },
-
-  render() {
-//<button onClick={this.go}>Go to component</button>
-    return (
-      <div style={styles.wrap}>
-				<h1 style={this.mergeStyles(styles.header, this.state.isActive && styles.green)}>
-					It works!
-				</h1>
-				<button onClick={this.toggleActive}>
-					{this.state.isActive ? "Desactivate" : "Activate"}
-				</button>
-				<Link to="/testComponent">Go to component</Link>
-			</div>
-    );
-  },
 	
-  toggleActive() {
-    this.setState({
-      isActive: !this.state.isActive
-    });
+  render() {
+    return (
+      <div>
+        <h1>App</h1>
+
+				{this.props.children}
+      </div>
+    )
   }
-});
+}
+
+App.contextTypes = {
+	router: React.PropTypes.object.isRequired
+// 	routes: React.PropTypes.array.isRequired
+};
 
 export default App;

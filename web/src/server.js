@@ -5,57 +5,77 @@
 // This will be the only file where JSX and ES6 features are not supported
 require('babel/register');
 
-var fs = require('fs');
 var React = require('react');
 var Router = require('react-router');
 var express = require('express');
 var cachify = require('connect-cachify');
 var ejs = require('ejs');
 var server = express();
+var srv = require('react-dom/server');
+var routes = require("./config/routes.jsx");
+var bodyParser = require('body-parser');
+
+var ConfigEnv = require('./config/environnement');
+var ConfigAdmin = require('./config/admin');
+Object.assign(process.env, ConfigEnv);
 
 // List of assets where the keys are your production urls, and the value
 // is a  list of development urls that produce the same asset
 var assets = {
-  "/app.min.js": [ "/app.js" ]
+  "/assets/app.min.js": [ "/assets/app.js" ]
 };
 
 // Enable browser cache and HTTP caching (cache busting, etc.)
 server.use(cachify.setup(assets, {
-  root: "assets",
-  production: (process.env.NODE_ENV != "development")
+  root: "./web/",
+  production: (process.env.NODE_ENV != "development"),
 }));
 
-// Serve static files
-// TODO: remember to put the favicon and other relevant stuff there.
-server.use('/', express.static('assets'));
 
-// Use Embedded JavaScript to embed the output from React into our layout
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(bodyParser.json());
+
+server.use('/assets', express.static('web/assets'));
+
 server.set('view engine', 'ejs');
 server.set('views', 'web/src/views');
 
-// Require and wrap the React main component in a factory before calling it
-// This is necessary because we'll do `App()` instead of <App />
-var routes = require("./app.jsx").routes;
+
+
+
+server.post('/user/login', function(req, res){
+	if(req.body.name == ConfigAdmin.user && req.body.password == ConfigAdmin.password){
+		res.status(200).send('good');
+	}
+	else{
+		res.status(402).send('Not good');
+	}
+});
+
+
+
 // Redirect the user to the list of native components for iOS
 server.get('*', function(req, res) {
-  Router.run(routes, req.url, function (handler, state) {
-    // Render the app and send the markup for faster page loads and SEO
-    // On the client, React will preserve the markup and only attach event handlers
-    var Handler = React.createFactory(handler);
-    var content = new Handler({
-      params: state.params,
-      query: state.query
-
-      // TODO: pass any additional initial state data here
-
-    });
-    var output = React.renderToString(content);
-
-    res.render('template', {
-      output: output
-
-      // TODO: pass any additional initial state data here
-    });
+	
+	var Router2 = React.createFactory(Router.RouterContext);
+	
+	Router.match({ routes: routes, location: req.url }, (error, redirectLocation, renderProps) => {
+		// console.log(redirectLocation);
+    if (error) {
+      res.status(500).send(error.message);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+			// console.log(renderProps);
+			res.render('template', {
+      	output: srv.renderToString(Router2(renderProps))
+    	});
+			
+    } else {
+      res.status(404).send('Not found');
+    }
   });
 });
 

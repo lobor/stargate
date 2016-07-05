@@ -1,0 +1,4 @@
+exports.user = {
+	'user': 'user',
+	'password': 'password'
+};
