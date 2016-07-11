@@ -29933,7 +29933,7 @@ var Home = (function (_Component) {
 				return React.createElement(
 					"div",
 					null,
-					React.createElement(ItemCard, { data: ["webcam"] })
+					React.createElement(ItemCard, { data: [{ name: "webcam", icon: "icono-camera" }] })
 				);
 			}
 		}
@@ -29986,12 +29986,12 @@ var ItemCard = (function (_Component) {
 							React.createElement(
 								"div",
 								{ className: "card__header" },
-								"icon"
+								React.createElement("div", { className: result.icon })
 							),
 							React.createElement(
 								"div",
 								{ className: "card__body" },
-								result
+								result.name
 							)
 						);
 					})

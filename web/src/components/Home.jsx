@@ -5,7 +5,7 @@ class Home extends Component {
 	render() {
     return (
       <div>
-				<ItemCard data={['webcam']} />
+				<ItemCard data={[{name: 'webcam', icon: 'icono-camera'}]} />
 			</div>
     )
 	}

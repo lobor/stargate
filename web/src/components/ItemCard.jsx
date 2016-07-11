@@ -9,10 +9,10 @@ class ItemCard extends Component {
 					return (
 						<div className="card__container" key={i}>
 							<div className="card__header">
-								icon
+								<div className={result.icon}></div>
 							</div>
 							<div className="card__body">
-								{result}
+								{result.name}
 							</div>
 						</div>
 					)
