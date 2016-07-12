@@ -14,6 +14,7 @@ var server = express();
 var srv = require('react-dom/server');
 var routes = require("./config/routes.jsx");
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var ConfigEnv = require('./config/environnement');
 var ConfigAdmin = require('./config/admin');
@@ -24,6 +25,11 @@ Object.assign(process.env, ConfigEnv);
 var assets = {
   "/assets/app.min.js": [ "/assets/app.js" ]
 };
+
+server.use(session({
+  secret: 'keyboard cat',
+  cookie: { maxAge: 60000 }
+}));
 
 // Enable browser cache and HTTP caching (cache busting, etc.)
 server.use(cachify.setup(assets, {
@@ -47,10 +53,39 @@ server.set('views', 'web/src/views');
 
 server.post('/user/login', function(req, res){
 	if(req.body.name == ConfigAdmin.user && req.body.password == ConfigAdmin.password){
-		res.status(200).send('good');
+		var sess = req.session;
+		sess.views = true;
+		res.status(200).json({
+			"response":true
+		});
 	}
 	else{
-		res.status(402).send('Not good');
+		res.status(402).json({
+			"response":false,
+			"errors": {
+				"message": "Is not good user name or password"
+			}
+		});
+	}
+});
+
+server.get('/user/logout', function(req, res){
+	var sess = req.session;
+	if(sess.views){
+		sess.destroy(function(){
+			res.status(200).json({
+				"response":true
+			});
+		});
+	}
+	else{
+		res.status(401).json({
+			"response":false,
+			"errors": {
+				"message": "You should be connected for to have access",
+				"redirect":"/user/login"
+			}
+		});
 	}
 });
 
@@ -59,25 +94,55 @@ server.post('/user/login', function(req, res){
 // Redirect the user to the list of native components for iOS
 server.get('*', function(req, res) {
 	
-	var Router2 = React.createFactory(Router.RouterContext);
-	
-	Router.match({ routes: routes, location: req.url }, (error, redirectLocation, renderProps) => {
-		// console.log(redirectLocation);
-    if (error) {
-      res.status(500).send(error.message);
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else if (renderProps) {
-			// console.log(renderProps);
-			res.render('template', {
-      	output: ''
-      	// output: srv.renderToString(Router2(renderProps))
-    	});
+	var sess = req.session;
+  if ((sess.views && '/user/login' !== req.originalUrl) || (!sess.views && '/user/login' === req.originalUrl)) {
+    var Router2 = React.createFactory(Router.RouterContext);
+		Router.match({ routes: routes, location: req.url }, (error, redirectLocation, renderProps) => {
+			// console.log(redirectLocation);
+			if (error) {
+				res.status(500).send(error.message);
+			} else if (redirectLocation) {
+				res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+			} else if (renderProps) {
+				// console.log(renderProps);
+				res.render('template', {
+					output: ''
+					// output: srv.renderToString(Router2(renderProps))
+				});
+				
+			} else {
+				res.status(404).send('Not found');
+			}
+		});
+  } 
+	else if(sess.views && '/user/login' === req.originalUrl){
+		res.redirect('/');
+	}
+	else {
+    sess.views = false;
+		res.redirect('/user/login');
+    // res.end('welcome to the session demo. refresh!');
+  }
+
+
+	// var Router2 = React.createFactory(Router.RouterContext);
+	// Router.match({ routes: routes, location: req.url }, (error, redirectLocation, renderProps) => {
+	// 	// console.log(redirectLocation);
+  //   if (error) {
+  //     res.status(500).send(error.message);
+  //   } else if (redirectLocation) {
+  //     res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+  //   } else if (renderProps) {
+	// 		// console.log(renderProps);
+	// 		res.render('template', {
+  //     	output: ''
+  //     	// output: srv.renderToString(Router2(renderProps))
+  //   	});
 			
-    } else {
-      res.status(404).send('Not found');
-    }
-  });
+  //   } else {
+  //     res.status(404).send('Not found');
+  //   }
+  // });
 });
 
 // Listen for connections

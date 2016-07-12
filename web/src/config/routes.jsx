@@ -5,6 +5,7 @@ import testcomponent from './../components/testcomponent.jsx';
 import App from './../components/App.jsx';
 import Login from './../components/Login.jsx';
 import Home from './../components/Home.jsx';
+import Video from './../components/Video.jsx';
 
 
 
@@ -13,6 +14,7 @@ export default (
 		<Route path="/" component={App}>
 			<IndexRoute component={Home} auth={['user']} />
 			<Route path="testComponent" auth={['user']} component={testcomponent} />
+			<Route path="video" auth={['user']} component={Video} />
 			<Route path="user/" >
 				<Route path="login" auth={['free']} component={Login} />
 			</Route>

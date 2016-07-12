@@ -5,44 +5,38 @@ import { Route, Router, browserHistory } from 'react-router';
 
 
 class App extends Component {
-	componentWillMount() {
-		var route = this.props.route, auth;
-		
-		var logging = localStorage.getItem('login');
-		
-		this.state = {log: undefined};
-		
-		
-		if(undefined === logging){
-			logging = "free";
+	getChildContext() {
+		var auth = false;
+		if('/user/login' !== window.location.pathname){
+			auth = true;
 		}
-		
-		auth = route.auth;
-		
-		if(route.indexRoute){
-			auth = route.indexRoute.auth;
+		else if('/user/login' === window.location.pathname){
+			auth = false;
 		}
-		
-		if(-1 === auth.indexOf(logging)){
-			this.context.router.push('/user/login');
-			localStorage.setItem('login', 'user');
-			return false;
-		}
+
+    return {
+      auth: () => {return auth;}
+    };
   }
-	
+
   render() {
     return (
-      <div>
+			<div>
 				<Navigation />
-				{this.props.children}
-      </div>
-    )
+				<div className="wrapper">
+					{this.props.children}
+				</div>
+			</div>
+		)
   }
 }
 
 App.contextTypes = {
-	router: React.PropTypes.object.isRequired
-// 	routes: React.PropTypes.array.isRequired
+	router: React.PropTypes.object.isRequired,
+};
+
+App.childContextTypes = {
+	auth: React.PropTypes.func
 };
 
 export default App;
