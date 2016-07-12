@@ -29974,7 +29974,10 @@ var App = (function (_Component) {
 				}
 
 				return {
-					auth: function () {
+					auth: function (val) {
+						if (val) {
+							auth = val;
+						}
 						return auth;
 					}
 				};
@@ -30150,7 +30153,7 @@ var Login = (function (_Component) {
 		_classCallCheck(this, Login);
 
 		_get(Object.getPrototypeOf(Login.prototype), "constructor", this).apply(this, args);
-		this.state = Object.assign({}, this.props.state, { msg: false });
+		this.state = { msg: false };
 	}
 
 	_inherits(Login, _Component);
@@ -30163,7 +30166,7 @@ var Login = (function (_Component) {
 					name: this.refs.name.value,
 					password: this.refs.password.value
 				}).then((function (response) {
-					this.context.auth = true;
+					this.context.auth(true);
 					this.context.router.push("/");
 				}).bind(this))["catch"]((function (error) {
 					this.setState({ msg: error.data.errors.message });
@@ -30255,13 +30258,15 @@ var Navigation = (function (_Component) {
 	_createClass(Navigation, {
 		logout: {
 			value: function logout() {
-				var toto = console;
 				axios.get("/user/logout").then((function (response) {
+					this.context.auth(false);
 					this.context.router.push("/user/login");
-					// this.state.log = false;
-				}).bind(this))["catch"](function (error) {
-					toto.log(error);
-				});
+				}).bind(this))["catch"]((function (error) {
+					console.log(error);
+					if (error.data.errors.redirect) {
+						this.context.router.push("/user/login");
+					}
+				}).bind(this));
 			}
 		},
 		render: {

@@ -7,7 +7,7 @@ import axios from 'axios';
 class Login extends Component {
 	constructor(...args){
 		super(...args);
-		this.state = Object.assign({}, this.props.state, {msg: false});
+		this.state = {msg: false};
 	}
 
 	submit(){
@@ -18,7 +18,7 @@ class Login extends Component {
 				password: this.refs.password.value
 			})
 			.then(function (response) {
-				this.context.auth = true;
+				this.context.auth(true);
 				this.context.router.push('/');
 			}.bind(this))
 			.catch(function (error) {

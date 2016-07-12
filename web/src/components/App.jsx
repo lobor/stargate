@@ -15,7 +15,12 @@ class App extends Component {
 		}
 
     return {
-      auth: () => {return auth;}
+      auth: (val) => {
+				if(val){
+					auth = val;
+				}
+				return auth;
+			}
     };
   }
 

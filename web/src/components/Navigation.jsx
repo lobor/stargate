@@ -4,16 +4,18 @@ import { Link, IndexLink } from 'react-router';
 
 class Navigation extends Component {
 	logout(){
-		var toto = console;
 		axios
 			.get('/user/logout')
 			.then(function (response) {
+				this.context.auth(false);
 				this.context.router.push('/user/login');
-				// this.state.log = false;
 			}.bind(this))
 			.catch(function (error) {
-				toto.log(error);
-			});
+				console.log(error);
+				if(error.data.errors.redirect){
+					this.context.router.push('/user/login');
+				}
+			}.bind(this));
 	}
 
 	render() {
