@@ -7,11 +7,10 @@ nav
 		margin 0
 		li
 			a
+				@extend .color-dark;
 				display inline-block
 				padding 10px
-				color color-dark
 				text-decoration none
 				cursor pointer
 				&:hover, &.active
-					background-color color-grey
-					color color-white
+					@extend .color-white, .bg-grey;

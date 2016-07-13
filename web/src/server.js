@@ -12,7 +12,7 @@ var cachify = require('connect-cachify');
 var ejs = require('ejs');
 var server = express();
 var srv = require('react-dom/server');
-var routes = require("./config/routes.jsx");
+// var routes = require("./config/routes.jsx");
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
@@ -96,24 +96,21 @@ server.get('*', function(req, res) {
 	
 	var sess = req.session;
   if ((sess.views && '/user/login' !== req.originalUrl) || (!sess.views && '/user/login' === req.originalUrl)) {
-    var Router2 = React.createFactory(Router.RouterContext);
-		Router.match({ routes: routes, location: req.url }, (error, redirectLocation, renderProps) => {
-			// console.log(redirectLocation);
-			if (error) {
-				res.status(500).send(error.message);
-			} else if (redirectLocation) {
-				res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-			} else if (renderProps) {
-				// console.log(renderProps);
+
+		// Router.match({ routes: routes, location: req.url }, (error, redirectLocation, renderProps) => {
+		// 	if (error) {
+		// 		res.status(500).send(error.message);
+		// 	} else if (redirectLocation) {
+		// 		res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+		// 	} else if (renderProps) {
 				res.render('template', {
 					output: ''
-					// output: srv.renderToString(Router2(renderProps))
 				});
 				
-			} else {
-				res.status(404).send('Not found');
-			}
-		});
+		// 	} else {
+		// 		res.status(404).send('Not found');
+		// 	}
+		// });
   } 
 	else if(sess.views && '/user/login' === req.originalUrl){
 		res.redirect('/');

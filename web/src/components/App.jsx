@@ -14,6 +14,7 @@ class App extends Component {
 			auth = false;
 		}
 
+
     return {
       auth: (val) => {
 				if(val){

@@ -3,6 +3,9 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Card, CardText, CardActions, CardTitle } from 'react-toolbox/lib/card';
+import { Button } from 'react-toolbox/lib/button';
+import Input from 'react-toolbox/lib/input';
 
 class Login extends Component {
 	constructor(...args){
@@ -10,7 +13,8 @@ class Login extends Component {
 		this.state = {msg: false};
 	}
 
-	submit(){
+	submit(e){
+		e.preventDefault();
 		this.setState({msg: false})
 		axios
 			.post('/user/login', {
@@ -28,19 +32,22 @@ class Login extends Component {
 	
   render() {
     return (
-      <div className="card__list center">
-				<form method="POST" className="card__container">
-					<div  className="card__header">
-						Login
-					</div>
-					<div  className="card__body">
-						<div className="error" style={(this.state.msg) ? {} : {'display': 'none'}} >{this.state.msg}</div>
-						<input name="name" id="name" ref="name" type="text" placeholder="Name" /><br/>
-						<input name="password" id="password" ref="password" type="password" placeholder="Password" /><br/>
-						<button type="button" onClick={this.submit.bind(this)}>Login</button>
-					</div>
-				</form>
-      </div>
+			<Card style={{width: '350px', margin: 'auto'}}>
+				<CardTitle
+					title="Login"
+					style={{"textAlign":"center"}}
+				/>
+				<CardText>
+					<form method="POST" className="card__container bg-blue-light" onSubmit={this.submit.bind(this)}>
+						<div  className="card__body">
+							<div className="error" style={(this.state.msg) ? {} : {'display': 'none'}} >{this.state.msg}</div>
+							<Input name="name" id="name" ref="name" type="text" label="Name" /><br/>
+							<Input name="password" id="password" ref="password" type="password" label="Password" /><br/>
+							<Button type="submit" label="Login" primary />
+						</div>
+					</form>
+				</CardText>
+			</Card>
     )
   }
 }
