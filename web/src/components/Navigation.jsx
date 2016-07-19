@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link, IndexLink } from 'react-router';
+import Nav from 'react-toolbox/lib/navigation';
+import AppBar from 'react-toolbox/lib/app_bar';
+// import Link from 'react-toolbox/lib/link';
+import Button from 'react-toolbox/lib/button';
 
 class Navigation extends Component {
+	constructor(...args){
+		super(...args);
+
+		this.click = this.click.bind(this);
+	}
+
+	click(e){
+		e.preventDefault();
+		this.context.router.push(e.target.href);
+	}
+
 	logout(){
 		axios
 			.get('/user/logout')
@@ -23,22 +38,14 @@ class Navigation extends Component {
 
 		if(this.context.auth()){
 			rendu = (
-				<nav>
-					<ul>
-						<li>
-							<IndexLink to="/" activeClassName="active">Home</IndexLink>
-						</li>
-						<li>
-							<Link to="/video" activeClassName="active">Video</Link>
-						</li>
-						<li>
-							<Link to="/config" activeClassName="active">Config</Link>
-						</li>
-						<li>
-							<a onClick={this.logout.bind(this)}>Log out</a>
-						</li>
-					</ul>
-				</nav>
+				<AppBar fixed flat>
+					<Nav className="navigation" type='horizontal'>
+						<IndexLink to="/" activeClassName="active">Home</IndexLink>
+						<Link to="/video" activeClassName="active">Video</Link>
+						<Link to="/config" activeClassName="active">Config</Link>
+						<a onClick={this.logout.bind(this)}>Log out</a>
+					</Nav>
+				</AppBar>
 			);
 		}
 

@@ -28,7 +28,9 @@ var assets = {
 
 server.use(session({
   secret: 'keyboard cat',
-  cookie: { maxAge: 60000 }
+	resave: false,
+	saveUninitialized: true,
+  cookie: { maxAge: 600000 }
 }));
 
 // Enable browser cache and HTTP caching (cache busting, etc.)
@@ -60,7 +62,7 @@ server.post('/user/login', function(req, res){
 		});
 	}
 	else{
-		res.status(402).json({
+		res.status(403).json({
 			"response":false,
 			"errors": {
 				"message": "Is not good user name or password"
@@ -96,21 +98,9 @@ server.get('*', function(req, res) {
 	
 	var sess = req.session;
   if ((sess.views && '/user/login' !== req.originalUrl) || (!sess.views && '/user/login' === req.originalUrl)) {
-
-		// Router.match({ routes: routes, location: req.url }, (error, redirectLocation, renderProps) => {
-		// 	if (error) {
-		// 		res.status(500).send(error.message);
-		// 	} else if (redirectLocation) {
-		// 		res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-		// 	} else if (renderProps) {
-				res.render('template', {
-					output: ''
-				});
-				
-		// 	} else {
-		// 		res.status(404).send('Not found');
-		// 	}
-		// });
+		res.render('template', {
+			output: ''
+		});
   } 
 	else if(sess.views && '/user/login' === req.originalUrl){
 		res.redirect('/');
@@ -118,7 +108,6 @@ server.get('*', function(req, res) {
 	else {
     sess.views = false;
 		res.redirect('/user/login');
-    // res.end('welcome to the session demo. refresh!');
   }
 
 

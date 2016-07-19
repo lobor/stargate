@@ -6,6 +6,7 @@ import App from './../components/App.jsx';
 import Login from './../components/Login.jsx';
 import Home from './../components/Home.jsx';
 import Video from './../components/Video.jsx';
+import PageNotFound from './../components/PageNotFound.jsx';
 
 
 
@@ -18,6 +19,7 @@ export default (
 			<Route path="user/" >
 				<Route path="login" auth={['free']} component={Login} />
 			</Route>
+			<Route path="*" component={PageNotFound} />
 		</Route>
 	</Router>
 )

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Navigation from './Navigation.jsx';
 
 import { Route, Router, browserHistory } from 'react-router';
-
+import { appCss } from './../style/app.scss';
 
 class App extends Component {
 	getChildContext() {
