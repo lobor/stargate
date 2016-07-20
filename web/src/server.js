@@ -92,6 +92,29 @@ server.get('/user/logout', function(req, res){
 });
 
 
+server.get('/webcam.mp4', function(req, res) {
+	var sess = req.session;
+	if(sess.views){
+		
+		res.status(404).json({
+			"response":false,
+			"errors": {
+				"message": "Stream not activate"
+			}
+		});
+
+	}
+	else{
+		res.status(401).json({
+			"response":false,
+			"errors": {
+				"message": "You should be connected for to have access",
+				"redirect":"/user/login"
+			}
+		});
+	}
+});
+
 
 // Redirect the user to the list of native components for iOS
 server.get('*', function(req, res) {

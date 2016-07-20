@@ -30790,6 +30790,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactDom = __webpack_require__(33);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30802,18 +30806,51 @@
 	  _inherits(Video, _Component);
 
 	  function Video() {
+	    var _Object$getPrototypeO;
+
 	    _classCallCheck(this, Video);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Video).apply(this, arguments));
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Video)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+
+	    _this.state = { msg: false };
+	    return _this;
 	  }
 
 	  _createClass(Video, [{
+	    key: 'error',
+	    value: function error(e, f, r) {
+	      this.setState({ msg: 'An error has been occured' });
+	      console.log(this.refs.player.error);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var style = {
+	        background: 'black',
+	        display: 'block',
+	        margin: 'auto',
+	        marginTop: '25px'
+	      };
+
+	      var styleMsg = {
+	        color: 'red',
+	        textAlign: 'center',
+	        marginTop: '25px'
+	      };
+
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement('video', null)
+	        _react2.default.createElement('video', { ref: 'player', width: '400', onError: this.error.bind(this), height: '222', style: style, src: '/webcam.mp4' }),
+	        _react2.default.createElement(
+	          'div',
+	          { style: styleMsg },
+	          this.state.msg
+	        )
 	      );
 	    }
 	  }]);
