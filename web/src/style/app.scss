@@ -75,4 +75,29 @@
 		padding-top: 6.4rem;
 		font-size: 1.3em;
 	}
+
+
+
+
+	.flex{
+		display: flex;
+	}
+
+	.flex-col{
+		@extend .flex;
+		flex-direction: column
+	}
+
+	.flex-row{
+		@extend .flex;
+		flex-direction: row
+	}
+
+	[class*="flex"].between{
+		justify-content: space-between;
+	}
+
+	
+
+	
 }
