@@ -7,6 +7,7 @@ require('babel/register');
 
 var React = require('react');
 var Router = require('react-router');
+var https = require('https');
 var express = require('express');
 var cachify = require('connect-cachify');
 var ejs = require('ejs');
@@ -91,6 +92,45 @@ server.get('/user/logout', function(req, res){
 	}
 });
 
+server.get('/api/config', function(req, res) {
+	var sess = req.session;
+	if(sess.views){
+		var exec = require('child_process').exec;
+
+		exec('lsusb', function(error, stdout, stderr){
+			if(!/(cam|webcam)/g.test(stdout)){
+				res.status(200).json({
+					"response": {
+						'webcam': {
+							'stream': false,
+							'connect': false
+						}
+					},
+				});
+			}
+			else{
+				res.status(200).json({
+					"response": {
+						'webcam': {
+							'stream': false,
+							'connect': true
+						}
+					},
+				});
+			}
+		});
+	}
+	else{
+		res.status(401).json({
+			"response":false,
+			"errors": {
+				"message": "You should be connected for to have access",
+				"redirect":"/user/login"
+			}
+		});
+	}
+});
+
 
 server.get('/webcam.mp4', function(req, res) {
 	var sess = req.session;
@@ -154,7 +194,21 @@ server.get('*', function(req, res) {
   // });
 });
 
-// Listen for connections
-server.listen(process.env.PORT || 8080, function() {
-  console.log('Server is listening...');
+
+var http;
+if (process.env.NODE_ENV != "development"){
+	var fs = require('fs');
+
+	var options = {
+		key  : fs.readFileSync('server.key'),
+		cert : fs.readFileSync('server.crt')
+	};
+	http = require('https').createServer(options, server);
+}
+else{
+	http = require('http').createServer(server);
+}
+
+http.listen(process.env.PORT || 8080, function () {
+   console.log('Server is listening...');
 });

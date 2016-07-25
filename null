@@ -1,0 +1,7 @@
+
+> stargate@1.0.0 test /home/lbertrand/Documents/PERSO/stargate
+> jest
+
+Using Jest CLI v13.2.3, jasmine2
+ PASS  web/__tests__/launcher.js (0.649s)
+1 test passed (1 total in 1 test suite, run time 1.339s)

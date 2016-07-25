@@ -29695,7 +29695,6 @@
 /* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*jshint esnext:true, browserify:true, unused:vars */
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -30975,6 +30974,10 @@
 
 	var _switch2 = _interopRequireDefault(_switch);
 
+	var _axios = __webpack_require__(238);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -31000,12 +31003,30 @@
 	    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Config)).call.apply(_Object$getPrototypeO, [this].concat(args)));
 
 	    _this.state = {
-	      switch_1: true
+	      webcam: {
+	        stream: false,
+	        connect: false
+	      }
 	    };
 	    return _this;
 	  }
 
 	  _createClass(Config, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+
+	      return _axios2.default.get('/api/config').then(function (response) {
+	        _this2.setState(response.data.response);
+	      }).catch(function (error) {
+	        console.log(error);
+	        console.log(_this2);
+	        if (401 === error.status) {
+	          _this2.context.router.push('/user/login');
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'handleChange',
 	    value: function handleChange(field, value) {
 	      this.setState(_defineProperty({}, field, value));
@@ -31019,10 +31040,11 @@
 	        _react2.default.createElement(_list.ListSubHeader, { caption: 'Fonctionnalités' }),
 	        _react2.default.createElement(_list.ListDivider, null),
 	        _react2.default.createElement(_list.ListItem, {
+	          disabled: !this.state.webcam.connect ? true : false,
 	          caption: 'Video',
-	          legend: 'Webcam',
+	          legend: this.state.webcam.connect ? 'Webcam' : 'Webcam not connected',
 	          leftIcon: 'videocam',
-	          rightActions: [_react2.default.createElement(_switch2.default, { key: 'switch_1', checked: this.state.switch_1, onChange: this.handleChange.bind(this, 'switch_1') })]
+	          rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.webcam.connect ? true : false, key: 'webcam', checked: this.state.webcam.stream, onChange: this.handleChange.bind(this, 'webcam') })]
 	        }),
 	        _react2.default.createElement(_list.ListDivider, null)
 	      );
