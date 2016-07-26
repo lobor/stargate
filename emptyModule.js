@@ -1,4 +1,0 @@
-/**
- * @providesModule EmptyModule
- */
-module.exports = '';

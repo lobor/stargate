@@ -30832,7 +30832,6 @@
 	    key: 'error',
 	    value: function error(e, f, r) {
 	      this.setState({ msg: 'An error has been occured' });
-	      console.log(this.refs.player.error);
 	    }
 	  }, {
 	    key: 'startClick',
@@ -30893,13 +30892,10 @@
 	        background: 'black',
 	        display: 'block',
 	        margin: 'auto',
-	        marginTop: '25px'
-	      };
-
-	      var styleMsg = {
+	        marginTop: '25px',
 	        color: 'red',
-	        textAlign: 'center',
-	        marginTop: '25px'
+	        height: '300px',
+	        textAlign: 'center'
 	      };
 
 	      var styleCenter = {
@@ -30925,12 +30921,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement('video', { ref: 'player', onError: this.error.bind(this), height: '222', style: style, src: '/webcam.mp4' }),
-	        _react2.default.createElement(
-	          'div',
-	          { style: styleMsg },
-	          this.state.msg
-	        ),
+	        _react2.default.createElement('img', { style: style, alt: this.state.msg, src: 'http://localhost:8081', onError: this.error.bind(this) }),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'flex between', style: styleContainerArrow },
@@ -30980,8 +30971,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -31029,7 +31018,24 @@
 	  }, {
 	    key: 'handleChange',
 	    value: function handleChange(field, value) {
-	      this.setState(_defineProperty({}, field, value));
+	      var _this3 = this;
+
+	      // switch(field){
+	      //   case 'webcam':
+	      _axios2.default.post('/api/config', {
+	        value: value,
+	        name: field
+	      }).then(function (response) {
+	        _this3.setState(response.data.response);
+	      }).catch(function (error) {
+	        console.log(error);
+	        console.log(_this3);
+	        if (401 === error.status) {
+	          _this3.context.router.push('/user/login');
+	        }
+	      });
+	      // break;
+	      // }
 	    }
 	  }, {
 	    key: 'render',

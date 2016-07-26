@@ -7,9 +7,9 @@ class Video extends Component {
     super(...args)
     this.state = {msg:false};
   }
+
   error(e, f, r){
     this.setState({msg: 'An error has been occured'});
-    console.log(this.refs.player.error);
   }
 
   startClick(type) {
@@ -67,13 +67,10 @@ class Video extends Component {
       background: 'black',
       display: 'block',
       margin: 'auto',
-      marginTop: '25px'
-    };
-
-    let styleMsg = {
+      marginTop: '25px',
       color: 'red',
-      textAlign: 'center',
-      marginTop: '25px'
+      height: '300px',
+      textAlign: 'center'
     };
 
     let styleCenter = {
@@ -98,11 +95,7 @@ class Video extends Component {
 
     return (
       <div>
-        <video ref="player" onError={this.error.bind(this)} height="222" style={style} src="/webcam.mp4"></video>
-
-        <div style={styleMsg}>
-          {this.state.msg}
-        </div>
+        <img style={style} alt={this.state.msg} src="http://localhost:8081" onError={this.error.bind(this)} />
 
         <div className="flex between" style={styleContainerArrow}>
           <FontIcon style={styleCenter} onMouseDown={this.startClick.bind(this, 'l')} onMouseUp={this.endClick.bind(this, 'l')} value='arrow_back' />

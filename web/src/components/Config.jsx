@@ -31,7 +31,26 @@ class Config extends Component {
   
 
   handleChange(field, value) {
-    this.setState({[field]: value});
+    // switch(field){
+    //   case 'webcam':
+    axios
+      .post('/api/config', {
+        value: value,
+        name: field
+      })
+      .then((response) => {
+        this.setState(response.data.response);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(this);
+        if(401 === error.status){
+          this.context.router.push('/user/login');
+        }
+      });
+        // break;
+    // }
+    
   }
 
 	render() {

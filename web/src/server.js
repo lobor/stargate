@@ -5,17 +5,20 @@
 // This will be the only file where JSX and ES6 features are not supported
 require('babel/register');
 
-var React = require('react');
-var Router = require('react-router');
 var https = require('https');
 var express = require('express');
 var cachify = require('connect-cachify');
 var ejs = require('ejs');
 var server = express();
-var srv = require('react-dom/server');
+
 // var routes = require("./config/routes.jsx");
 var bodyParser = require('body-parser');
 var session = require('express-session');
+
+var motion = require('./utils/motion');
+motion = new motion();
+motion.setConfig(process.cwd() + '/confcam.conf');
+
 
 var ConfigEnv = require('./config/environnement');
 var ConfigAdmin = require('./config/admin');
@@ -27,12 +30,26 @@ var assets = {
   "/assets/app.min.js": [ "/assets/app.js" ]
 };
 
+
+var exec = require('child_process').exec,
+		webcamConnect = false,
+		webcamRunning = false;
+
+exec('lsusb', function(error, stdout, stderr){
+	webcamConnect = /(cam|webcam)/g.test(stdout);
+	if(webcamConnect){
+		motion.start();
+		webcamRunning = true;
+	}
+});
+
 server.use(session({
   secret: 'keyboard cat',
 	resave: false,
 	saveUninitialized: true,
   cookie: { maxAge: 600000 }
 }));
+
 
 // Enable browser cache and HTTP caching (cache busting, etc.)
 server.use(cachify.setup(assets, {
@@ -51,7 +68,32 @@ server.use('/assets', express.static('web/assets'));
 server.set('view engine', 'ejs');
 server.set('views', 'web/src/views');
 
-
+server.use(function (req, res, next) {
+	var sess = req.session;
+  if ((sess.views && '/user/login' !== req.originalUrl) || (!sess.views && '/user/login' === req.originalUrl)) {
+		next();
+  } 
+	else if(sess.views && '/user/login' === req.originalUrl){
+		res.redirect('/');
+	}
+	else {
+    sess.views = false;
+		if(req.xhr || req.headers.accept.indexOf('json') > -1){
+			res
+				.status(401)
+				.json({
+					"response":false,
+					"errors": {
+						"message": "You should be connected for to have access",
+						"redirect":"/user/login"
+					}
+				});
+		}
+		else{
+			res.redirect('/user/login');
+		}
+  }
+});
 
 
 server.post('/user/login', function(req, res){
@@ -74,15 +116,39 @@ server.post('/user/login', function(req, res){
 
 server.get('/user/logout', function(req, res){
 	var sess = req.session;
-	if(sess.views){
-		sess.destroy(function(){
-			res.status(200).json({
-				"response":true
-			});
+	sess.destroy(function(){
+		res.status(200).json({
+			"response":true
+		});
+	});
+});
+
+
+server.post('/api/config', function(req, res) {
+	if(req.body.name && undefined !== req.body.value){
+		switch (req.body.name) {
+			case 'webcam':
+				if(req.body.value){
+					motion.start();
+					webcamRunning = true;
+				}
+				else if(webcamRunning){
+					motion.stop();
+					webcamRunning = false;
+				}
+				break;
+		}
+		res.status(200).json({
+			"response": {
+				'webcam': {
+					'stream': webcamRunning,
+					'connect': webcamConnect
+				}
+			},
 		});
 	}
 	else{
-		res.status(401).json({
+		res.status(500).json({
 			"response":false,
 			"errors": {
 				"message": "You should be connected for to have access",
@@ -92,50 +158,22 @@ server.get('/user/logout', function(req, res){
 	}
 });
 
-server.get('/api/config', function(req, res) {
-	var sess = req.session;
-	if(sess.views){
-		var exec = require('child_process').exec;
 
-		exec('lsusb', function(error, stdout, stderr){
-			if(!/(cam|webcam)/g.test(stdout)){
-				res.status(200).json({
-					"response": {
-						'webcam': {
-							'stream': false,
-							'connect': false
-						}
-					},
-				});
+server.get('/api/config', function(req, res) {
+	res.status(200).json({
+		"response": {
+			'webcam': {
+				'stream': webcamRunning,
+				'connect': webcamConnect
 			}
-			else{
-				res.status(200).json({
-					"response": {
-						'webcam': {
-							'stream': false,
-							'connect': true
-						}
-					},
-				});
-			}
-		});
-	}
-	else{
-		res.status(401).json({
-			"response":false,
-			"errors": {
-				"message": "You should be connected for to have access",
-				"redirect":"/user/login"
-			}
-		});
-	}
+		},
+	});
 });
 
 
 server.get('/webcam.mp4', function(req, res) {
 	var sess = req.session;
 	if(sess.views){
-		
 		res.status(404).json({
 			"response":false,
 			"errors": {
@@ -156,42 +194,10 @@ server.get('/webcam.mp4', function(req, res) {
 });
 
 
-// Redirect the user to the list of native components for iOS
 server.get('*', function(req, res) {
-	
-	var sess = req.session;
-  if ((sess.views && '/user/login' !== req.originalUrl) || (!sess.views && '/user/login' === req.originalUrl)) {
 		res.render('template', {
 			output: ''
 		});
-  } 
-	else if(sess.views && '/user/login' === req.originalUrl){
-		res.redirect('/');
-	}
-	else {
-    sess.views = false;
-		res.redirect('/user/login');
-  }
-
-
-	// var Router2 = React.createFactory(Router.RouterContext);
-	// Router.match({ routes: routes, location: req.url }, (error, redirectLocation, renderProps) => {
-	// 	// console.log(redirectLocation);
-  //   if (error) {
-  //     res.status(500).send(error.message);
-  //   } else if (redirectLocation) {
-  //     res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-  //   } else if (renderProps) {
-	// 		// console.log(renderProps);
-	// 		res.render('template', {
-  //     	output: ''
-  //     	// output: srv.renderToString(Router2(renderProps))
-  //   	});
-			
-  //   } else {
-  //     res.status(404).send('Not found');
-  //   }
-  // });
 });
 
 

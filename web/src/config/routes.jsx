@@ -1,13 +1,13 @@
 import React from 'react';
 import { Router, IndexRoute, Route, browserHistory } from 'react-router';
 
-import testcomponent from './../components/testcomponent.jsx';
-import App from './../components/App.jsx';
-import Login from './../components/Login.jsx';
-import Home from './../components/Home.jsx';
-import Video from './../components/Video.jsx';
-import Config from './../components/Config.jsx';
-import PageNotFound from './../components/PageNotFound.jsx';
+import testcomponent from './../components/testcomponent';
+import App from './../components/App';
+import Login from './../components/Login';
+import Home from './../components/Home';
+import Video from './../components/Video';
+import Config from './../components/Config';
+import PageNotFound from './../components/PageNotFound';
 
 
 
