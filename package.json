@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node web/src/server.js",
+    "start": "node web/start.js",
     "dev": "npm run build:js & npm start",
-    "live": "npm run watch:js & nodemon web/src/server.js",
+    "live": "npm run watch:js & nodemon web/start.js",
     "build:js": "webpack --config",
     "build:css": "stylus --include-css --compress ./web/src/style/app.styl -o ./web/assets/",
     "watch:js": "webpack --config -w",
