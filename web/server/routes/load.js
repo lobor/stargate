@@ -2,6 +2,7 @@ module.exports = [
 	// API
 	require('./API/config'),
 	require('./API/user'),
+	require('./API/detect'),
 
 	// Page
 

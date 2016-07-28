@@ -3,18 +3,16 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cachify = require('connect-cachify');
 var ejs = require('ejs');
-var exec = require('child_process').exec;
-var motion = require(process.cwd() + '/web/src/utils/motion');
+// var exec = require('child_process').exec;
+// var motion = require(process.cwd() + '/web/src/utils/motion');
 var loadRoutes = require('./routes/load');
 
 class Server{
 	constructor(){
-		this.config = {};
-		this.webcamConnect = false;
-		this.webcamRunning = false;
+		// this.config = {};
 
-		this.motion = new motion();
-		this.motion.setConfig(process.cwd() + '/config/motion/confcam.conf');
+		// this.motion = new motion();
+		// this.motion.setConfig(process.cwd() + '/config/motion/confcam.conf');
 
 		this.server = express();
 
@@ -22,21 +20,32 @@ class Server{
 		this.server.use(bodyParser.urlencoded({ extended: true }));
 		this.server.use(bodyParser.json());
 		this.server.use('/assets', express.static('web/assets'));
+		this.server.use('/video', express.static('visio/motion_detection'));
 
 		this.initSession();
 		this.initCache();
 		this.initTemplate();
 
-		exec('lsusb', (error, stdout, stderr) => {
-			this.webcamConnect = /(cam|webcam)/g.test(stdout);
-			if(this.webcamConnect){
-				this.motion.start();
-				this.webcamRunning = true;
+		// exec('lsusb', (error, stdout, stderr) => {
+		// 	this.webcamConnect = /(cam|webcam)/g.test(stdout);
+		// 	if(this.webcamConnect){
+		// 		this.motion.start();
+		// 		this.webcamRunning = true;
+		// 	}
+		// });
+	}
+	
+	set(name, value){
+		let key;
+		if('object' === typeof name && undefined === value){
+			for(key in name){
+				this[key] = name[key];
 			}
-		});
-
-
-		this.loadRoutes();
+		}
+		else{
+			this[name] = value;
+		}
+		return this;
 	}
 
 	loadRoutes(){
@@ -56,6 +65,7 @@ class Server{
 				this.server[route.type](route.url, route.call.bind(dep));
 			}
 		}
+		return this;
 	}
 
 	initTemplate(){

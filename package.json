@@ -10,7 +10,8 @@
     "build:js": "webpack --config",
     "build:css": "stylus --include-css --compress ./web/src/style/app.styl -o ./web/assets/",
     "watch:js": "webpack --config -w",
-    "watch:css": "stylus -w --include-css --compress ./web/src/style/app.styl -o ./web/assets/"
+    "watch:css": "stylus -w --include-css --compress ./web/src/style/app.styl -o ./web/assets/",
+    "motion": "electron-spawn ./visio/event.js"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,7 @@
     "browserify": "^9.0.3",
     "connect-cachify": "0.0.17",
     "ejs": "^2.3.1",
+    "electron-spawn": "^5.0.0",
     "express": "^4.12.3",
     "express-session": "^1.14.0",
     "file-loader": "^0.9.0",
@@ -40,6 +42,7 @@
     "sassify": "^1.0.0",
     "shelljs": "^0.7.2",
     "stylus": "^0.54.5",
+    "tracking": "^1.1.2",
     "util": "^0.10.3",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"

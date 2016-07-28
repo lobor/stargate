@@ -42,6 +42,7 @@ class Navigation extends Component {
 					<Nav className="navigation" type='horizontal'>
 						<IndexLink to="/" activeClassName="active">Home</IndexLink>
 						<Link to="/video" activeClassName="active">Video</Link>
+						<Link to="/video/detect" activeClassName="active">Detect</Link>
 						<Link to="/config" activeClassName="active">Config</Link>
 						<a onClick={this.logout.bind(this)}>Log out</a>
 					</Nav>

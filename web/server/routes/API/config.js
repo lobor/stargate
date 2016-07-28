@@ -2,7 +2,7 @@ export default [
 	{
 		'url': '/api/config',
 		'type': 'get',
-		'dep': ['webcamRunning', 'webcamConnect'],
+		'dep': ['webcamRunning', 'webcamConnect', 'motion'],
 		'call': function(req, res){
 			res.status(200).json({
 				"response": {
@@ -16,7 +16,7 @@ export default [
 	},
 	{
 		'url': '/api/config',
-		'type': 'get',
+		'type': 'post',
 		'dep': ['webcamRunning', 'webcamConnect', 'motion'],
 		'call': function(req, res){
 			if(req.body.name && undefined !== req.body.value){
