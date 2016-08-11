@@ -1,5 +1,4 @@
 var spawn = require('child_process').spawn;
-var _ = require('lodash');
 
 var shell = require('shelljs');
 
@@ -12,7 +11,6 @@ var supportedVersions = [
 ];
 
 var Motion = function(path) {
-
   if (path && !shell.test('-e', path)) {
     shell.echo('Sorry, this module cannot find motion on given path: ' + path);
     process.exit(1);
@@ -23,8 +21,8 @@ var Motion = function(path) {
 
   this.motionBin = path || 'motion';
   this.version = this.getVersion();
-
-  if (!_.includes(supportedVersions, this.version)) {
+  
+  if (-1 === supportedVersions.indexOf(this.version)) {
     shell.echo('Sorry, motion version ' + this.version + ' is not supported');
     process.exit(1);
   }
@@ -35,20 +33,34 @@ var Motion = function(path) {
   this.httpBackendStarted = false;
   this.streamStarted = false;
 
-  this.messageArray = [
-    {version: '3_2_12', regex: /^motion-httpd: waiting for data on port TCP (\d+)/, action: 'backend'},
-    {version: '3_2_12', regex: /^Started stream webcam server in port (\d+)/, action: 'stream'},
-    {version: '3_2_12_git20140228', regex: /httpd_run: motion-httpd: waiting for data on (localhost|\d\.\d\.\d\.\d) port TCP (\d+)/, match: 2, action: 'backend'},
-    {version: '3_2_12_git20140228', regex: /motion_init: Started motion-stream server in port (\d+).*$/, action: 'stream'}
-  ];
+  this.messageArray = [{
+    version: '3_2_12',
+    regex: /^motion-httpd: waiting for data on port TCP (\d+)/,
+    action: 'backend'
+  }, {
+    version: '3_2_12',
+    regex: /^Started stream webcam server in port (\d+)/,
+    action: 'stream'
+  }, {
+    version: '3_2_12_git20140228',
+    regex: /httpd_run: motion-httpd: waiting for data on (localhost|\d\.\d\.\d\.\d) port TCP (\d+)/,
+    match: 2,
+    action: 'backend'
+  }, {
+    version: '3_2_12_git20140228',
+    regex: /motion_init: Started motion-stream server in port (\d+).*$/,
+    action: 'stream'
+  }];
 };
 
 util.inherits(Motion, Emitter);
 
-Motion.prototype.getVersion = function(){
+Motion.prototype.getVersion = function() {
   var helpCmd = this.motionBin + ' -h | head -n 1';
   var versionRegEx = /^motion Version ([\d\.\+a-z]+), .*$/;
-  var version = shell.exec(helpCmd, {silent: true}).stdout.replace(/\n/, '');
+  var version = shell.exec(helpCmd, {
+    silent: true
+  }).stdout.replace(/\n/, '');
   if (version === '') {
     shell.echo('Sorry, cannot determine Motion version for given Motion binary on : ' + this.motionBin);
     process.exit(1);
@@ -76,7 +88,7 @@ Motion.prototype.setConfig = function(configFile) {
   }
 };
 
-Motion.prototype.start = function(){
+Motion.prototype.start = function() {
   var that = this;
   that.stop();
   if (!that.configFile) {
@@ -88,13 +100,13 @@ Motion.prototype.start = function(){
     '-c', that.configFile
   ];
   this.motion = spawn(this.motionBin, args);
-  this.motion.stdout.on('data', function (data) {
+  this.motion.stdout.on('data', function(data) {
     that.processData(data);
   });
-  this.motion.stderr.on('data', function (data) {
+  this.motion.stderr.on('data', function(data) {
     that.processData(data);
   });
-  this.motion.on('close', function (code) {
+  this.motion.on('close', function(code) {
     that.emit('exit', 'child process exited with code ' + code);
   });
 };
@@ -105,7 +117,7 @@ Motion.prototype.stop = function() {
   }
 };
 
-Motion.prototype.running = function(){
+Motion.prototype.running = function() {
   if (this.motion) {
     return true;
   }
@@ -116,7 +128,7 @@ Motion.prototype.checkMessages = function(msg) {
   var that = this;
   var matched = false;
   var payload = null;
-  _.forEach(that.messageArray, function (message) {
+  that.messageArray.forEach(function(message) {
     if (message.version !== that.version) {
       return;
     }
@@ -132,19 +144,25 @@ Motion.prototype.checkMessages = function(msg) {
       }
     }
   });
-  switch(matched) {
-  case false:
-    break;
-  case 'backend':
-    that.httpBackendStarted = payload;
-    that.emit('msg', { action: matched, value: payload });
-    break;
-  case 'stream':
-    that.streamStarted = payload;
-    that.emit('msg', { action: matched, value: payload });
-    break;
-  default:
-    break;
+  switch (matched) {
+    case false:
+      break;
+    case 'backend':
+      that.httpBackendStarted = payload;
+      that.emit('msg', {
+        action: matched,
+        value: payload
+      });
+      break;
+    case 'stream':
+      that.streamStarted = payload;
+      that.emit('msg', {
+        action: matched,
+        value: payload
+      });
+      break;
+    default:
+      break;
   }
 };
 
@@ -153,15 +171,15 @@ Motion.prototype.processData = function(data) {
   var regex = /^(\[[\dA-Z]+\]\ )+(.*)$/g;
   var strings = data.toString('ascii').split('\n');
 
-  var msgs = _.chain(strings)
-    .filter(function(msg) {
+  // var msgs = _.chain(strings)
+  var msgs = strings.filter(function(msg) {
       return msg !== '';
     })
-    .map(function (line) {
+    .map(function(line) {
       return line.replace('\t', '').replace(regex, '$2');
     })
     .forEach(that.checkMessages.bind(that))
-    .forEach(function (line) {
+    .forEach(function(line) {
       that.emit('debug', line);
     })
     .value();

@@ -34,7 +34,7 @@ class Server{
 		// 	}
 		// });
 	}
-	
+
 	set(name, value){
 		let key;
 		if('object' === typeof name && undefined === value){
@@ -96,7 +96,7 @@ class Server{
 			let sess = req.session;
 			if ((sess.views && '/user/login' !== req.originalUrl) || (!sess.views && '/user/login' === req.originalUrl)) {
 				next();
-			} 
+			}
 			else if(sess.views && '/user/login' === req.originalUrl){
 				res.redirect('/');
 			}
@@ -134,7 +134,7 @@ class Server{
 			http = require('http').createServer(this.server);
 		}
 
-		http.listen(process.env.PORT || 8080, function () {
+		http.listen(process.env.PORT || 7070, function () {
 			console.log('Server is listening...');
 		});
 	}
