@@ -19,13 +19,9 @@
   "dependencies": {
     "axios": "^0.12.0",
     "babel": "^4.7.16",
-    "babelify": "^5.0.4",
     "body-parser": "^1.15.2",
-    "bower": "^1.7.9",
-    "browserify": "^9.0.3",
     "connect-cachify": "0.0.17",
     "ejs": "^2.3.1",
-    "electron-spawn": "^5.0.0",
     "express": "^4.12.3",
     "express-session": "^1.14.0",
     "file-loader": "^0.9.0",
@@ -45,7 +41,6 @@
     "tracking": "^1.1.2",
     "util": "^0.10.3",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",
