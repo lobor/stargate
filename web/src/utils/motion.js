@@ -2,6 +2,9 @@ var spawn = require('child_process').spawn;
 
 var shell = require('shelljs');
 
+var fs = require('fs');
+var os = require("os");
+
 var Emitter = require('events').EventEmitter;
 var util = require('util');
 
@@ -21,7 +24,7 @@ var Motion = function(path) {
 
   this.motionBin = path || 'motion';
   this.version = this.getVersion();
-  
+
   if (-1 === supportedVersions.indexOf(this.version)) {
     shell.echo('Sorry, motion version ' + this.version + ' is not supported');
     process.exit(1);
@@ -76,17 +79,34 @@ Motion.prototype.getVersion = function() {
   return null;
 };
 
-Motion.prototype.setConfig = function(configFile) {
-  if (!configFile) {
+Motion.prototype.setConfig = function(config, pathFile, auth) {
+  if (!config || !pathFile) {
     return;
   }
-  if (!shell.test('-e', configFile)) {
-    shell.echo('Sorry, the provided configuration file cannot be found : ' + configFile);
-    //process.exit(1);
-  } else {
-    this.configFile = configFile;
-  }
+
+	config = JSON.stringify(config)
+		.replace(/({|}|'|")/g, '')
+		.replace(/:/g, ' ')
+		.replace(/,/g, os.EOL)
+    .replace(/username password/g, auth || 'username:password');
+
+	fs.writeFileSync(pathFile, config);
+
+	this.configFile = pathFile;
 };
+
+
+// Motion.prototype.setConfig = function(configFile) {
+//   if (!configFile) {
+//     return;
+//   }
+//   if (!shell.test('-e', configFile)) {
+//     shell.echo('Sorry, the provided configuration file cannot be found : ' + configFile);
+//     //process.exit(1);
+//   } else {
+//     this.configFile = configFile;
+//   }
+// };
 
 Motion.prototype.start = function() {
   var that = this;
@@ -177,12 +197,12 @@ Motion.prototype.processData = function(data) {
     })
     .map(function(line) {
       return line.replace('\t', '').replace(regex, '$2');
-    })
-    .forEach(that.checkMessages.bind(that))
-    .forEach(function(line) {
+    });
+  msgs.forEach(that.checkMessages.bind(that));
+
+  msgs.forEach(function(line) {
       that.emit('debug', line);
-    })
-    .value();
+    });
 
   return msgs;
 };

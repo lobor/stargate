@@ -1,3 +1,3 @@
 node_modules
-web/src/config/admin.js
-web/src/config/environnement.js
+config/web/admin.js
+config/web/environnement.js

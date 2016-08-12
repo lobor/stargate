@@ -5,7 +5,7 @@ module.exports = [
 	require('./API/detect'),
 
 	// Page
-
+	require('./front/video'), // video
 
 
 

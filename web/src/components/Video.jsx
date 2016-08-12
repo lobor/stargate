@@ -93,9 +93,11 @@ class Video extends Component {
     Object.assign(style, width);
     Object.assign(styleCenter, styleCursor);
 
+    let hostname = 'http://' + window.location.hostname + ':8081';
+
     return (
       <div>
-        <img style={style} alt={this.state.msg} src="http://localhost:8081" onError={this.error.bind(this)} />
+        <img style={style} alt={this.state.msg} src='/video/cam' onError={this.error.bind(this)} />
 
         <div className="flex between" style={styleContainerArrow}>
           <FontIcon style={styleCenter} onMouseDown={this.startClick.bind(this, 'l')} onMouseUp={this.endClick.bind(this, 'l')} value='arrow_back' />

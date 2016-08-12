@@ -3,13 +3,14 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cachify = require('connect-cachify');
 var ejs = require('ejs');
-// var exec = require('child_process').exec;
+var exec = require('child_process').exec;
 // var motion = require(process.cwd() + '/web/src/utils/motion');
 var loadRoutes = require('./routes/load');
+var proxy = require('express-http-proxy');
 
 class Server{
 	constructor(){
-		// this.config = {};
+		this.config = {};
 
 		// this.motion = new motion();
 		// this.motion.setConfig(process.cwd() + '/config/motion/confcam.conf');
@@ -22,13 +23,14 @@ class Server{
 		this.server.use('/assets', express.static('web/assets'));
 		this.server.use('/video', express.static('visio/motion_detection'));
 
+		// this.server.use('/video/cam', proxy('localhost:8081', {reqBodyEncoding: null}));
+
 		this.initSession();
 		this.initCache();
 		this.initTemplate();
 
-		// exec('lsusb', (error, stdout, stderr) => {
-		// 	this.webcamConnect = /(cam|webcam)/g.test(stdout);
-		// 	if(this.webcamConnect){
+		// exec('ls /dev/video0', (error, stdout, stderr) => {
+		// 	if(!error){
 		// 		this.motion.start();
 		// 		this.webcamRunning = true;
 		// 	}
@@ -134,7 +136,7 @@ class Server{
 			http = require('http').createServer(this.server);
 		}
 
-		http.listen(process.env.PORT || 7070, function () {
+		http.listen(process.env.PORT || 8080, function () {
 			console.log('Server is listening...');
 		});
 	}
