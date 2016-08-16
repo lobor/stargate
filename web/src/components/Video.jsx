@@ -60,7 +60,8 @@ class Video extends Component {
 
 	render() {
     let width = {
-      width: '400px',
+      width: '100%',
+      'maxWidth': '400px',
     };
 
     let style = {

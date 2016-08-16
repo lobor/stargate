@@ -136,7 +136,7 @@ class Server{
 			http = require('http').createServer(this.server);
 		}
 
-		http.listen(process.env.PORT || 8080, function () {
+		http.listen(process.env.PORT || 7070, function () {
 			console.log('Server is listening...');
 		});
 	}

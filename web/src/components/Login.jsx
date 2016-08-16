@@ -32,10 +32,10 @@ class Login extends Component {
 	change(name, value){
 		this.setState({[name]: value});
 	}
-	
+
   render() {
     return (
-			<Card style={{width: '350px', margin: 'auto'}}>
+			<Card style={{width: '100%', 'maxWidth': '350px', margin: 'auto'}}>
 				<CardTitle
 					title="Login"
 					style={{"textAlign":"center"}}

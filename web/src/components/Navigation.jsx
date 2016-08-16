@@ -3,20 +3,34 @@ import axios from 'axios';
 import { Link, IndexLink } from 'react-router';
 import Nav from 'react-toolbox/lib/navigation';
 import AppBar from 'react-toolbox/lib/app_bar';
-// import Link from 'react-toolbox/lib/link';
-import Button from 'react-toolbox/lib/button';
+
+import { Button, IconButton } from 'react-toolbox/lib/button';
+import Drawer from 'react-toolbox/lib/drawer';
+
+import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
 
 class Navigation extends Component {
 	constructor(...args){
 		super(...args);
 
 		this.click = this.click.bind(this);
+		this.handleToggle = this.handleToggle.bind(this);
+		this.state = {
+			active: false,
+			title: 'home'
+		}
+
 	}
 
-	click(e){
-		e.preventDefault();
-		this.context.router.push(e.target.href);
+	click(url, e){
+		this.setState({title: e.target.innerHTML});
+		this.context.router.push(url);
+		this.handleToggle();
 	}
+
+	handleToggle() {
+    this.setState({active: !this.state.active});
+  };
 
 	logout(){
 		axios
@@ -26,7 +40,6 @@ class Navigation extends Component {
 				this.context.router.push('/user/login');
 			}.bind(this))
 			.catch(function (error) {
-				console.log(error);
 				if(error.data.errors.redirect){
 					this.context.router.push('/user/login');
 				}
@@ -34,24 +47,33 @@ class Navigation extends Component {
 	}
 
 	render() {
-		var rendu = null;
+		var rendu = null;IconButton
 
 		if(this.context.auth()){
 			rendu = (
 				<AppBar fixed flat>
-					<Nav className="navigation" type='horizontal'>
-						<IndexLink to="/" activeClassName="active">Home</IndexLink>
-						<Link to="/video" activeClassName="active">Video</Link>
-						<Link to="/video/detect" activeClassName="active">Detect</Link>
-						<Link to="/config" activeClassName="active">Config</Link>
-						<a onClick={this.logout.bind(this)}>Log out</a>
-					</Nav>
+					<IconButton icon='menu' onClick={this.handleToggle} style={{color: 'white'}} />
+					<h1>{this.state.title}</h1>
+					<Drawer active={this.state.active} onOverlayClick={this.handleToggle}>
+						<List selectable ripple>
+							<ListItem onClick={this.click.bind(undefined, '/')} caption='Home' leftIcon='home' />
+							<ListDivider />
+							<ListItem onClick={this.click.bind(undefined, '/video')} caption='Video' leftIcon='videocam' />
+							<ListDivider />
+							<ListItem onClick={this.click.bind(undefined, '/video/detect')} caption='Detect' leftIcon='fingerprint' />
+							<ListDivider />
+							<ListItem onClick={this.click.bind(undefined, '/config')} caption='Config' leftIcon='settings' />
+							<ListDivider />
+							<ListItem onClick={this.logout.bind(this)} caption='Log out' leftIcon='power_settings_new' />
+						</List>
+		      </Drawer>
 				</AppBar>
+
 			);
 		}
 
     return rendu
-    
+
 	}
 }
 

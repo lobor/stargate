@@ -4,6 +4,15 @@ export default [
 	{
 		'url': '/video/cam',
 		'type': 'get',
-		'call': new MjpegProxy('http://localhost:8081').proxyRequest
+		'dep': ['webcamRunning'],
+		'call': function(req, res){
+			if(!this.webcamRunning){
+				res.status(404);
+				res.end();
+			}
+			else{
+				return new MjpegProxy('http://localhost:8081').proxyRequest;
+			}
+		}
 	}
 ];
