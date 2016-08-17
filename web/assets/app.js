@@ -27207,13 +27207,17 @@
 
 	var _app_bar2 = _interopRequireDefault(_app_bar);
 
+	var _menu = __webpack_require__(286);
+
+	var _menu2 = _interopRequireDefault(_menu);
+
 	var _button = __webpack_require__(275);
 
-	var _drawer = __webpack_require__(286);
+	var _drawer = __webpack_require__(287);
 
 	var _drawer2 = _interopRequireDefault(_drawer);
 
-	var _list = __webpack_require__(294);
+	var _list = __webpack_require__(295);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27241,7 +27245,8 @@
 			_this.handleToggle = _this.handleToggle.bind(_this);
 			_this.state = {
 				active: false,
-				title: 'home'
+				title: 'home',
+				menu: _menu2.default
 			};
 
 			return _this;
@@ -27249,8 +27254,8 @@
 
 		_createClass(Navigation, [{
 			key: 'click',
-			value: function click(url, e) {
-				this.setState({ title: e.target.innerHTML });
+			value: function click(url, label, e) {
+				this.setState({ title: label });
 				this.context.router.push(url);
 				this.handleToggle();
 			}
@@ -27274,9 +27279,12 @@
 		}, {
 			key: 'render',
 			value: function render() {
-				var rendu = null;_button.IconButton;
+				var _this2 = this;
+
+				var rendu = null;
 
 				if (this.context.auth()) {
+
 					rendu = _react2.default.createElement(
 						_app_bar2.default,
 						{ fixed: true, flat: true },
@@ -27292,14 +27300,9 @@
 							_react2.default.createElement(
 								_list.List,
 								{ selectable: true, ripple: true },
-								_react2.default.createElement(_list.ListItem, { onClick: this.click.bind(undefined, '/'), caption: 'Home', leftIcon: 'home' }),
-								_react2.default.createElement(_list.ListDivider, null),
-								_react2.default.createElement(_list.ListItem, { onClick: this.click.bind(undefined, '/video'), caption: 'Video', leftIcon: 'videocam' }),
-								_react2.default.createElement(_list.ListDivider, null),
-								_react2.default.createElement(_list.ListItem, { onClick: this.click.bind(undefined, '/video/detect'), caption: 'Detect', leftIcon: 'fingerprint' }),
-								_react2.default.createElement(_list.ListDivider, null),
-								_react2.default.createElement(_list.ListItem, { onClick: this.click.bind(undefined, '/config'), caption: 'Config', leftIcon: 'settings' }),
-								_react2.default.createElement(_list.ListDivider, null),
+								this.state.menu.map(function (item, key) {
+									return _react2.default.createElement(_list.ListItem, { key: key, onClick: _this2.click.bind(undefined, item.href, item.label), caption: item.label, leftIcon: item.icon });
+								}),
 								_react2.default.createElement(_list.ListItem, { onClick: this.logout.bind(this), caption: 'Log out', leftIcon: 'power_settings_new' })
 							)
 						)
@@ -30338,6 +30341,30 @@
 
 /***/ },
 /* 286 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = [{
+	  "label": "Home",
+	  "href": "/",
+	  "icon": "home"
+	}, {
+	  "label": "Video",
+	  "href": "/video",
+	  "icon": "videocam"
+	}, {
+	  "label": "Detect",
+	  "href": "/video/detect",
+	  "icon": "fingerprint"
+	}, {
+	  "label": "Config",
+	  "href": "/config",
+	  "icon": "settings"
+	}];
+
+/***/ },
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30351,11 +30378,11 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _overlay = __webpack_require__(287);
+	var _overlay = __webpack_require__(288);
 
-	var _Drawer = __webpack_require__(291);
+	var _Drawer = __webpack_require__(292);
 
-	var _theme = __webpack_require__(293);
+	var _theme = __webpack_require__(294);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -30368,7 +30395,7 @@
 	exports.Drawer = ThemedDrawer;
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30382,9 +30409,9 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _Overlay = __webpack_require__(288);
+	var _Overlay = __webpack_require__(289);
 
-	var _theme = __webpack_require__(290);
+	var _theme = __webpack_require__(291);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -30395,7 +30422,7 @@
 	exports.Overlay = ThemedOverlay;
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30419,7 +30446,7 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _Portal = __webpack_require__(289);
+	var _Portal = __webpack_require__(290);
 
 	var _Portal2 = _interopRequireDefault(_Portal);
 
@@ -30531,7 +30558,7 @@
 	exports.Overlay = Overlay;
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30681,14 +30708,14 @@
 	exports.default = Portal;
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"overlay":"PiEHXDwRHY8HJ07amHsgj","invisible":"_3SslDuCRTaAZqRF0-SqqRV","backdrop":"WbaQnRVOPpnF_uT9oZk0B","active":"_2oZU5S3xS9ajRIMAg1Bdc2"};
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30710,11 +30737,11 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _ActivableRenderer = __webpack_require__(292);
+	var _ActivableRenderer = __webpack_require__(293);
 
 	var _ActivableRenderer2 = _interopRequireDefault(_ActivableRenderer);
 
-	var _Overlay = __webpack_require__(288);
+	var _Overlay = __webpack_require__(289);
 
 	var _Overlay2 = _interopRequireDefault(_Overlay);
 
@@ -30778,7 +30805,7 @@
 	exports.Drawer = Drawer;
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30891,14 +30918,14 @@
 	exports.default = ActivableRendererFactory;
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"drawer":"_3cqqC9kEFpHDbPKSn_Cylm","active":"_2tbs1lFq2NB2q8y4bsAH-Z","right":"ZJiGpY3BcXUf7yDMrqQFL","left":"wQVqAODnmw4VqneD_uswo"};
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30912,35 +30939,35 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _avatar = __webpack_require__(295);
+	var _avatar = __webpack_require__(296);
 
-	var _checkbox = __webpack_require__(298);
+	var _checkbox = __webpack_require__(299);
 
-	var _ListItemText = __webpack_require__(302);
+	var _ListItemText = __webpack_require__(303);
 
-	var _ListItemAction = __webpack_require__(303);
+	var _ListItemAction = __webpack_require__(304);
 
-	var _ListSubHeader = __webpack_require__(304);
+	var _ListSubHeader = __webpack_require__(305);
 
-	var _ListDivider = __webpack_require__(305);
+	var _ListDivider = __webpack_require__(306);
 
-	var _List = __webpack_require__(306);
+	var _List = __webpack_require__(307);
 
-	var _ListItem = __webpack_require__(307);
+	var _ListItem = __webpack_require__(308);
 
-	var _ListCheckbox = __webpack_require__(311);
+	var _ListCheckbox = __webpack_require__(312);
 
-	var _ListItemActions = __webpack_require__(310);
+	var _ListItemActions = __webpack_require__(311);
 
-	var _ListItemContent = __webpack_require__(308);
+	var _ListItemContent = __webpack_require__(309);
 
-	var _ListItemLayout = __webpack_require__(309);
+	var _ListItemLayout = __webpack_require__(310);
 
 	var _ripple = __webpack_require__(277);
 
 	var _ripple2 = _interopRequireDefault(_ripple);
 
-	var _theme = __webpack_require__(312);
+	var _theme = __webpack_require__(313);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -30972,7 +30999,7 @@
 	exports.List = ThemedList;
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30986,13 +31013,13 @@
 
 	var _reactCssThemr = __webpack_require__(260);
 
-	var _Avatar = __webpack_require__(296);
+	var _Avatar = __webpack_require__(297);
 
 	var _FontIcon = __webpack_require__(268);
 
 	var _FontIcon2 = _interopRequireDefault(_FontIcon);
 
-	var _theme = __webpack_require__(297);
+	var _theme = __webpack_require__(298);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -31005,7 +31032,7 @@
 	exports.Avatar = ThemedAvatar;
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31091,14 +31118,14 @@
 	exports.Avatar = Avatar;
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"avatar":"_3GCePY7yJTYY6LYVneJwK2","image":"_1H3TPIYT-e4SUPYXJ1knMq","letter":"_34Q66wtMr1f3IeYKg19K0w"};
 
 /***/ },
-/* 298 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31116,13 +31143,13 @@
 
 	var _ripple2 = _interopRequireDefault(_ripple);
 
-	var _Checkbox = __webpack_require__(299);
+	var _Checkbox = __webpack_require__(300);
 
-	var _Check = __webpack_require__(300);
+	var _Check = __webpack_require__(301);
 
 	var _Check2 = _interopRequireDefault(_Check);
 
-	var _theme = __webpack_require__(301);
+	var _theme = __webpack_require__(302);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -31135,7 +31162,7 @@
 	exports.Checkbox = ThemedCheckbox;
 
 /***/ },
-/* 299 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31165,7 +31192,7 @@
 
 	var _Ripple2 = _interopRequireDefault(_Ripple);
 
-	var _Check = __webpack_require__(300);
+	var _Check = __webpack_require__(301);
 
 	var _Check2 = _interopRequireDefault(_Check);
 
@@ -31285,7 +31312,7 @@
 	exports.Checkbox = Checkbox;
 
 /***/ },
-/* 300 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31339,14 +31366,14 @@
 	exports.default = factory;
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"field":"_14tiUDQ_-07A_UjugfPpOr","ripple":"_1-TxnNIxkbqgt2DW_XxJ3L","text":"_1nV6fO7TzgPOT_djtpV79y","input":"_3zqc3tL0jLMXOi-RC0y8mt","check":"_2B20WFyCgWdIspbfjWPkZR","checked":"_2NQ9nGSR1-8_nR6I9m2D-","checkmark-expand":"_1k7UDA9BydsMIh2rkpP4rK","disabled":"_3tar93f0uwzSuHoSu68diw"};
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31410,7 +31437,7 @@
 	exports.ListItemText = ListItemText;
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31459,7 +31486,7 @@
 	exports.ListItemAction = ListItemAction;
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31508,7 +31535,7 @@
 	exports.ListSubHeader = ListSubHeader;
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31550,7 +31577,7 @@
 	exports.ListDivider = ListDivider;
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31574,7 +31601,7 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _ListItem = __webpack_require__(307);
+	var _ListItem = __webpack_require__(308);
 
 	var _ListItem2 = _interopRequireDefault(_ListItem);
 
@@ -31651,7 +31678,7 @@
 	exports.List = List;
 
 /***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31673,11 +31700,11 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _ListItemContent = __webpack_require__(308);
+	var _ListItemContent = __webpack_require__(309);
 
 	var _ListItemContent2 = _interopRequireDefault(_ListItemContent);
 
-	var _ListItemLayout = __webpack_require__(309);
+	var _ListItemLayout = __webpack_require__(310);
 
 	var _ListItemLayout2 = _interopRequireDefault(_ListItemLayout);
 
@@ -31813,7 +31840,7 @@
 	exports.ListItem = ListItem;
 
 /***/ },
-/* 308 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31837,7 +31864,7 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _ListItemText = __webpack_require__(302);
+	var _ListItemText = __webpack_require__(303);
 
 	var _ListItemText2 = _interopRequireDefault(_ListItemText);
 
@@ -31934,7 +31961,7 @@
 	exports.ListItemContent = ListItemContent;
 
 /***/ },
-/* 309 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31960,15 +31987,15 @@
 
 	var _FontIcon2 = _interopRequireDefault(_FontIcon);
 
-	var _Avatar = __webpack_require__(296);
+	var _Avatar = __webpack_require__(297);
 
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 
-	var _ListItemContent = __webpack_require__(308);
+	var _ListItemContent = __webpack_require__(309);
 
 	var _ListItemContent2 = _interopRequireDefault(_ListItemContent);
 
-	var _ListItemActions = __webpack_require__(310);
+	var _ListItemActions = __webpack_require__(311);
 
 	var _ListItemActions2 = _interopRequireDefault(_ListItemActions);
 
@@ -32043,7 +32070,7 @@
 	exports.ListItemLayout = ListItemLayout;
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32061,7 +32088,7 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _ListItemAction = __webpack_require__(303);
+	var _ListItemAction = __webpack_require__(304);
 
 	var _ListItemAction2 = _interopRequireDefault(_ListItemAction);
 
@@ -32104,7 +32131,7 @@
 	exports.ListItemActions = ListItemActions;
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32126,11 +32153,11 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _Checkbox = __webpack_require__(299);
+	var _Checkbox = __webpack_require__(300);
 
 	var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
-	var _ListItemContent = __webpack_require__(308);
+	var _ListItemContent = __webpack_require__(309);
 
 	var _ListItemContent2 = _interopRequireDefault(_ListItemContent);
 
@@ -32202,14 +32229,13 @@
 	exports.ListCheckbox = ListCheckbox;
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"list":"_3AhlgB6AtQm9Bgg26x7V50","subheader":"_2hnyodA_hRpl_MTQPeNk6-","divider":"_1WuUGSrqPZWiTD3m8fdJAB","inset":"_2XT51-F4VSVPCLFdzV-83Z","listItem":"_25deITc5VJnvs5tfqi0j_j","ripple":"_3BKMI4IEupuCJ0rUwqlMPq","item":"QgVrbw_wriLuUfnGgJ8G3","selectable":"pSlvMAR-ljU6vjQTrR2is","disabled":"_281PbSLCTW11L-4i70q4bg","checkboxItem":"_3FtoGcdRXTaOX5NHNeBMi_","checkbox":"_2pdgSgjt6UerEnrpC4Rjge","left":"_1KL1ET38mFUZEab_ME7VZC","right":"_3itF1qUwxcU5fZZJkQalsd","itemAction":"_1SOd4NkvXBIbqEDyMBsbk7","itemContentRoot":"_3ofPfZqSJh0y0msIwcy4q5","large":"_2vIAAdn114qAqPcg9ePW47","itemText":"D709kMe9tByQtxrNoIAyk","primary":"_22ZvQYOhaCzIdI-1KFKekM"};
 
 /***/ },
-/* 313 */,
 /* 314 */
 /***/ function(module, exports) {
 
@@ -32367,7 +32393,7 @@
 
 	var _CardTitle = __webpack_require__(321);
 
-	var _avatar = __webpack_require__(295);
+	var _avatar = __webpack_require__(296);
 
 	var _avatar2 = _interopRequireDefault(_avatar);
 
@@ -32670,7 +32696,7 @@
 
 	var _identifiers = __webpack_require__(264);
 
-	var _Avatar = __webpack_require__(296);
+	var _Avatar = __webpack_require__(297);
 
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 
@@ -33410,7 +33436,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _list = __webpack_require__(294);
+	var _list = __webpack_require__(295);
 
 	var _switch = __webpack_require__(331);
 
