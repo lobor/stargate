@@ -4,11 +4,14 @@ export default [
 		'type': 'get',
 		'dep': ['webcamRunning', 'webcamConnect', 'motion'],
 		'call': function(req, res){
+			let confMotion = this.motion.getConfig();
 			res.status(200).json({
 				"response": {
 					'webcam': {
 						'stream': this.webcamRunning,
-						'connect': this.webcamConnect
+						'connect': this.webcamConnect,
+						'record': confMotion.ffmpeg_output_movies,
+						'path': confMotion.target_dir
 					}
 				},
 			});
@@ -20,23 +23,29 @@ export default [
 		'dep': ['webcamRunning', 'webcamConnect', 'motion'],
 		'call': function(req, res){
 			if(req.body.name && undefined !== req.body.value){
+				let config = this.motion.getConf();
 				switch (req.body.name) {
 					case 'webcam':
 						if(req.body.value){
 							this.motion.start();
 							this.webcamRunning = true;
 						}
-						else if(webcamRunning){
+						else if(this.webcamRunning){
 							this.motion.stop();
 							this.webcamRunning = false;
 						}
 						break;
+					case 'path':
+						config.target_dir = req.body.value;
+						break;
 				}
+
 				res.status(200).json({
 					"response": {
 						'webcam': {
 							'stream': this.webcamRunning,
-							'connect': this.webcamConnect
+							'connect': this.webcamConnect,
+
 						}
 					},
 				});
@@ -53,4 +62,3 @@ export default [
 		}
 	},
 ];
-

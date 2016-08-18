@@ -79,11 +79,15 @@ Motion.prototype.getVersion = function() {
   return null;
 };
 
+Motion.prototype.getConfig = function() {
+  return this.config;
+};
+
 Motion.prototype.setConfig = function(config, pathFile, auth) {
   if (!config || !pathFile) {
     return;
   }
-
+  this.config = config;
 	config = JSON.stringify(config)
 		.replace(/({|}|'|")/g, '')
 		.replace(/:/g, ' ')

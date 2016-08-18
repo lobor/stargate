@@ -27059,11 +27059,11 @@
 
 	var _Config2 = _interopRequireDefault(_Config);
 
-	var _PageNotFound = __webpack_require__(335);
+	var _PageNotFound = __webpack_require__(331);
 
 	var _PageNotFound2 = _interopRequireDefault(_PageNotFound);
 
-	var _Detect = __webpack_require__(336);
+	var _Detect = __webpack_require__(332);
 
 	var _Detect2 = _interopRequireDefault(_Detect);
 
@@ -33438,13 +33438,19 @@
 
 	var _list = __webpack_require__(295);
 
-	var _switch = __webpack_require__(331);
+	var _switch = __webpack_require__(333);
 
 	var _switch2 = _interopRequireDefault(_switch);
 
 	var _axios = __webpack_require__(240);
 
 	var _axios2 = _interopRequireDefault(_axios);
+
+	var _tabs = __webpack_require__(337);
+
+	var _input = __webpack_require__(323);
+
+	var _input2 = _interopRequireDefault(_input);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33471,9 +33477,14 @@
 	    _this.state = {
 	      webcam: {
 	        stream: false,
-	        connect: false
-	      }
+	        connect: false,
+	        record: false,
+	        path: ''
+	      },
+	      tabActive: 0
 	    };
+
+	    _this.handleTabChange = _this.handleTabChange.bind(_this);
 	    return _this;
 	  }
 
@@ -33483,10 +33494,10 @@
 	      var _this2 = this;
 
 	      return _axios2.default.get('/api/config').then(function (response) {
+	        console.log(response.data.response);
 	        _this2.setState(response.data.response);
 	      }).catch(function (error) {
 	        console.log(error);
-	        console.log(_this2);
 	        if (401 === error.status) {
 	          _this2.context.router.push('/user/login');
 	        }
@@ -33515,21 +33526,57 @@
 	      // }
 	    }
 	  }, {
+	    key: 'handleTabChange',
+	    value: function handleTabChange(index) {
+	      this.setState({ tabActive: index });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        _list.List,
-	        null,
-	        _react2.default.createElement(_list.ListSubHeader, { caption: 'Fonctionnalités' }),
-	        _react2.default.createElement(_list.ListDivider, null),
-	        _react2.default.createElement(_list.ListItem, {
-	          disabled: !this.state.webcam.connect ? true : false,
-	          caption: 'Video',
-	          legend: this.state.webcam.connect ? 'Webcam' : 'Webcam not connected',
-	          leftIcon: 'videocam',
-	          rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.webcam.connect ? true : false, key: 'webcam', checked: this.state.webcam.stream, onChange: this.handleChange.bind(this, 'webcam') })]
-	        }),
-	        _react2.default.createElement(_list.ListDivider, null)
+	        _tabs.Tabs,
+	        { index: this.state.tabActive, onChange: this.handleTabChange },
+	        _react2.default.createElement(
+	          _tabs.Tab,
+	          { label: 'Fonctionnalités' },
+	          _react2.default.createElement(
+	            _list.List,
+	            null,
+	            _react2.default.createElement(_list.ListDivider, null),
+	            _react2.default.createElement(_list.ListItem, {
+	              disabled: !this.state.webcam.connect,
+	              caption: 'Video',
+	              legend: this.state.webcam.connect ? 'Webcam' : 'Webcam not connected',
+	              leftIcon: 'videocam',
+	              rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.webcam.connect, key: 'webcam', checked: this.state.webcam.stream, onChange: this.handleChange.bind(this, 'webcam') })]
+	            }),
+	            _react2.default.createElement(_list.ListDivider, null)
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _tabs.Tab,
+	          { label: 'Video' },
+	          _react2.default.createElement(
+	            _list.List,
+	            null,
+	            _react2.default.createElement(_list.ListDivider, null),
+	            _react2.default.createElement(_list.ListItem, {
+	              disabled: !this.state.webcam.connect,
+	              caption: 'Record',
+	              legend: 'Record on motion detection',
+	              leftIcon: 'fiber_manual_record',
+	              rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.webcam.connect, key: 'record', checked: this.state.webcam.record, onChange: this.handleChange.bind(this, 'record') })]
+	            }),
+	            _react2.default.createElement(_list.ListDivider, null),
+	            _react2.default.createElement(_list.ListItem, {
+	              caption: 'Path where save file',
+	              leftIcon: 'folder',
+	              rightActions: [_react2.default.createElement(_input2.default, { type: 'text', key: 'path', label: '/tmp/motion', value: this.state.webcam.path })]
+	            }),
+	            _react2.default.createElement(_list.ListDivider, null)
+	          )
+	        ),
+	        _react2.default.createElement(_tabs.Tab, { label: 'Admin' })
 	      );
 	    }
 	  }]);
@@ -33551,15 +33598,168 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PageNotFound = function (_Component) {
+	  _inherits(PageNotFound, _Component);
+
+	  function PageNotFound() {
+	    _classCallCheck(this, PageNotFound);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PageNotFound).apply(this, arguments));
+	  }
+
+	  _createClass(PageNotFound, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Not found'
+	      );
+	    }
+	  }]);
+
+	  return PageNotFound;
+	}(_react.Component);
+
+	PageNotFound.contextTypes = {
+	  router: _react2.default.PropTypes.object.isRequired
+	};
+	exports.default = PageNotFound;
+
+/***/ },
+/* 332 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _axios = __webpack_require__(240);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Detect = function (_Component) {
+		_inherits(Detect, _Component);
+
+		function Detect() {
+			var _Object$getPrototypeO;
+
+			_classCallCheck(this, Detect);
+
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+
+			var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Detect)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+
+			_this.state = {
+				videos: []
+			};
+			return _this;
+		}
+
+		_createClass(Detect, [{
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+				var _this2 = this;
+
+				return _axios2.default.get('/api/detect').then(function (response) {
+					_this2.setState(response.data.response);
+				}).catch(function (error) {
+					if (401 === error.status) {
+						_this2.context.router.push('/user/login');
+					}
+				});
+			}
+		}, {
+			key: 'click',
+			value: function click(e) {
+				this.refs.src.src = e.target.innerHTML;
+				this.refs.player.play();
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this3 = this;
+
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'video',
+						{ ref: 'player', controls: true },
+						_react2.default.createElement('source', { ref: 'src', src: '' })
+					),
+					_react2.default.createElement(
+						'ul',
+						null,
+						this.state.videos.map(function (video, key) {
+							return _react2.default.createElement(
+								'li',
+								{ onClick: _this3.click.bind(_this3), key: key },
+								video.name
+							);
+						}),
+						_react2.default.createElement('li', null)
+					)
+				);
+			}
+		}]);
+
+		return Detect;
+	}(_react.Component);
+
+	exports.default = Detect;
+
+/***/ },
+/* 333 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.Switch = undefined;
 
 	var _reactCssThemr = __webpack_require__(260);
 
-	var _Switch = __webpack_require__(332);
+	var _Switch = __webpack_require__(334);
 
 	var _identifiers = __webpack_require__(264);
 
-	var _Thumb = __webpack_require__(333);
+	var _Thumb = __webpack_require__(335);
 
 	var _Thumb2 = _interopRequireDefault(_Thumb);
 
@@ -33567,7 +33767,7 @@
 
 	var _ripple2 = _interopRequireDefault(_ripple);
 
-	var _theme = __webpack_require__(334);
+	var _theme = __webpack_require__(336);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -33584,7 +33784,7 @@
 	exports.Switch = ThemedSwitch;
 
 /***/ },
-/* 332 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33614,7 +33814,7 @@
 
 	var _Ripple2 = _interopRequireDefault(_Ripple);
 
-	var _Thumb = __webpack_require__(333);
+	var _Thumb = __webpack_require__(335);
 
 	var _Thumb2 = _interopRequireDefault(_Thumb);
 
@@ -33741,7 +33941,7 @@
 	exports.Switch = Switch;
 
 /***/ },
-/* 333 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33784,14 +33984,14 @@
 	exports.default = factory;
 
 /***/ },
-/* 334 */
+/* 336 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"field":"_2rog8fjx4RvZzuNQnj6gsO","disabled":"_3HqAoaXThJAqupME6TpfBS","text":"_3b1B6ovvTjNiApKZKz5ij1","on":"_3ocqIXtE8hrnJSJX2-GTfQ","off":"Ih3qaCbL4ciM3wU_Reuyo","thumb":"_3ryrTDFZHFdquwd2I2lGOt","ripple":"_1A_PiPsYJN4EM26wiYlg78","input":"_10E4SfdK9eWMimqV8HUQrh","switch-on":"_2n4g1O2TJa0-LuWbFz8kpo","switch-off":"_105FOLQC_wyztd4eFfUBJV"};
 
 /***/ },
-/* 335 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33799,58 +33999,44 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.Tabs = exports.Tab = undefined;
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _reactCssThemr = __webpack_require__(260);
 
-	var _react = __webpack_require__(1);
+	var _identifiers = __webpack_require__(264);
 
-	var _react2 = _interopRequireDefault(_react);
+	var _Tabs = __webpack_require__(338);
+
+	var _TabContent = __webpack_require__(340);
+
+	var _Tab = __webpack_require__(339);
+
+	var _theme = __webpack_require__(341);
+
+	var _theme2 = _interopRequireDefault(_theme);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var PageNotFound = function (_Component) {
-	  _inherits(PageNotFound, _Component);
-
-	  function PageNotFound() {
-	    _classCallCheck(this, PageNotFound);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(PageNotFound).apply(this, arguments));
-	  }
-
-	  _createClass(PageNotFound, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        'Not found'
-	      );
-	    }
-	  }]);
-
-	  return PageNotFound;
-	}(_react.Component);
-
-	PageNotFound.contextTypes = {
-	  router: _react2.default.PropTypes.object.isRequired
+	var applyTheme = function applyTheme(Component) {
+	  return (0, _reactCssThemr.themr)(_identifiers.TABS, _theme2.default)(Component);
 	};
-	exports.default = PageNotFound;
+	var ThemedTabContent = applyTheme(_TabContent.TabContent);
+	var ThemedTab = applyTheme(_Tab.Tab);
+	var ThemedTabs = applyTheme((0, _Tabs.tabsFactory)(ThemedTab, ThemedTabContent));
+
+	exports.Tab = ThemedTab;
+	exports.Tabs = ThemedTabs;
 
 /***/ },
-/* 336 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
+	exports.Tabs = exports.tabsFactory = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -33858,9 +34044,21 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _axios = __webpack_require__(240);
+	var _classnames = __webpack_require__(266);
 
-	var _axios2 = _interopRequireDefault(_axios);
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _reactCssThemr = __webpack_require__(260);
+
+	var _identifiers = __webpack_require__(264);
+
+	var _Tab = __webpack_require__(339);
+
+	var _Tab2 = _interopRequireDefault(_Tab);
+
+	var _TabContent = __webpack_require__(340);
+
+	var _TabContent2 = _interopRequireDefault(_TabContent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33870,78 +34068,372 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Detect = function (_Component) {
-		_inherits(Detect, _Component);
+	var factory = function factory(Tab, TabContent) {
+	  var Tabs = function (_Component) {
+	    _inherits(Tabs, _Component);
 
-		function Detect() {
-			var _Object$getPrototypeO;
+	    function Tabs() {
+	      var _Object$getPrototypeO;
 
-			_classCallCheck(this, Detect);
+	      var _temp, _this, _ret;
 
-			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-				args[_key] = arguments[_key];
-			}
+	      _classCallCheck(this, Tabs);
 
-			var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Detect)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	        args[_key] = arguments[_key];
+	      }
 
-			_this.state = {
-				videos: []
-			};
-			return _this;
-		}
+	      return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Tabs)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	        pointer: {}
+	      }, _this.handleHeaderClick = function (event) {
+	        var idx = parseInt(event.target.id);
+	        if (_this.props.onChange) _this.props.onChange(idx);
+	      }, _temp), _possibleConstructorReturn(_this, _ret);
+	    }
 
-		_createClass(Detect, [{
-			key: 'componentWillMount',
-			value: function componentWillMount() {
-				var _this2 = this;
+	    _createClass(Tabs, [{
+	      key: 'componentDidMount',
+	      value: function componentDidMount() {
+	        !this.props.disableAnimatedBottomBorder && this.updatePointer(this.props.index);
+	      }
+	    }, {
+	      key: 'componentWillReceiveProps',
+	      value: function componentWillReceiveProps(nextProps) {
+	        !this.props.disableAnimatedBottomBorder && this.updatePointer(nextProps.index);
+	      }
+	    }, {
+	      key: 'componentWillUnmount',
+	      value: function componentWillUnmount() {
+	        clearTimeout(this.pointerTimeout);
+	      }
+	    }, {
+	      key: 'parseChildren',
+	      value: function parseChildren() {
+	        var _this2 = this;
 
-				return _axios2.default.get('/api/detect').then(function (response) {
-					_this2.setState(response.data.response);
-				}).catch(function (error) {
-					if (401 === error.status) {
-						_this2.context.router.push('/user/login');
-					}
-				});
-			}
-		}, {
-			key: 'click',
-			value: function click(e) {
-				this.refs.src.src = e.target.innerHTML;
-				this.refs.player.play();
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				var _this3 = this;
+	        var headers = [];
+	        var contents = [];
 
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'video',
-						{ ref: 'player', controls: true },
-						_react2.default.createElement('source', { ref: 'src', src: '' })
-					),
-					_react2.default.createElement(
-						'ul',
-						null,
-						this.state.videos.map(function (video, key) {
-							return _react2.default.createElement(
-								'li',
-								{ onClick: _this3.click.bind(_this3), key: key },
-								video.name
-							);
-						}),
-						_react2.default.createElement('li', null)
-					)
-				);
-			}
-		}]);
+	        _react2.default.Children.forEach(this.props.children, function (item) {
+	          if (item.type === Tab) {
+	            headers.push(item);
+	            if (item.props.children) {
+	              contents.push(_react2.default.createElement(TabContent, { children: item.props.children, theme: _this2.props.theme }));
+	            }
+	          } else if (item.type === TabContent) {
+	            contents.push(item);
+	          }
+	        });
 
-		return Detect;
+	        return { headers: headers, contents: contents };
+	      }
+	    }, {
+	      key: 'updatePointer',
+	      value: function updatePointer(idx) {
+	        var _this3 = this;
+
+	        clearTimeout(this.pointerTimeout);
+	        this.pointerTimeout = setTimeout(function () {
+	          var startPoint = _this3.refs.tabs.getBoundingClientRect().left;
+	          var label = _this3.refs.navigation.children[idx].getBoundingClientRect();
+	          _this3.setState({
+	            pointer: {
+	              top: _this3.refs.navigation.getBoundingClientRect().height + 'px',
+	              left: label.left - startPoint + 'px',
+	              width: label.width + 'px'
+	            }
+	          });
+	        }, 20);
+	      }
+	    }, {
+	      key: 'renderHeaders',
+	      value: function renderHeaders(headers) {
+	        var _this4 = this;
+
+	        return headers.map(function (item, idx) {
+	          return _react2.default.cloneElement(item, {
+	            id: idx,
+	            key: idx,
+	            active: _this4.props.index === idx,
+	            onClick: _this4.handleHeaderClick
+	          });
+	        });
+	      }
+	    }, {
+	      key: 'renderContents',
+	      value: function renderContents(contents) {
+	        var _this5 = this;
+
+	        var activeIdx = contents.findIndex(function (item, idx) {
+	          return _this5.props.index === idx;
+	        });
+
+	        if (contents && contents[activeIdx]) {
+	          return _react2.default.cloneElement(contents[activeIdx], {
+	            key: activeIdx,
+	            active: true,
+	            tabIndex: activeIdx
+	          });
+	        }
+	      }
+	    }, {
+	      key: 'render',
+	      value: function render() {
+	        var _props = this.props;
+	        var className = _props.className;
+	        var theme = _props.theme;
+
+	        var _parseChildren = this.parseChildren();
+
+	        var headers = _parseChildren.headers;
+	        var contents = _parseChildren.contents;
+
+	        return _react2.default.createElement(
+	          'div',
+	          { ref: 'tabs', 'data-react-toolbox': 'tabs', className: (0, _classnames2.default)(theme.tabs, className) },
+	          _react2.default.createElement(
+	            'nav',
+	            { className: theme.navigation, ref: 'navigation' },
+	            this.renderHeaders(headers)
+	          ),
+	          _react2.default.createElement('span', { className: theme.pointer, style: this.state.pointer }),
+	          this.renderContents(contents)
+	        );
+	      }
+	    }]);
+
+	    return Tabs;
+	  }(_react.Component);
+
+	  Tabs.propTypes = {
+	    children: _react.PropTypes.node,
+	    className: _react.PropTypes.string,
+	    disableAnimatedBottomBorder: _react.PropTypes.bool,
+	    index: _react.PropTypes.number,
+	    onChange: _react.PropTypes.func,
+	    theme: _react.PropTypes.shape({
+	      navigation: _react.PropTypes.string,
+	      pointer: _react.PropTypes.string,
+	      tabs: _react.PropTypes.string
+	    })
+	  };
+	  Tabs.defaultProps = {
+	    index: 0
+	  };
+
+
+	  return Tabs;
+	};
+
+	var Tabs = factory(_Tab2.default, _TabContent2.default);
+	exports.default = (0, _reactCssThemr.themr)(_identifiers.TABS)(Tabs);
+	exports.tabsFactory = factory;
+	exports.Tabs = Tabs;
+
+/***/ },
+/* 339 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Tab = undefined;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _classnames2 = __webpack_require__(266);
+
+	var _classnames3 = _interopRequireDefault(_classnames2);
+
+	var _reactCssThemr = __webpack_require__(260);
+
+	var _identifiers = __webpack_require__(264);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Tab = function (_Component) {
+	  _inherits(Tab, _Component);
+
+	  function Tab() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Tab);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Tab)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.handleClick = function (event) {
+	      if (!_this.props.disabled && _this.props.onClick) {
+	        _this.props.onClick(event);
+	      }
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(Tab, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps) {
+	      if (!prevProps.active && this.props.active && this.props.onActive) {
+	        this.props.onActive();
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _classnames;
+
+	      var _props = this.props;
+	      var onActive = _props.onActive;
+	      var active = _props.active;
+	      var activeClassName = _props.activeClassName;
+	      var className = _props.className;
+	      var disabled = _props.disabled;
+	      var hidden = _props.hidden;
+	      var theme = _props.theme;
+
+	      var other = _objectWithoutProperties(_props, ['onActive', 'active', 'activeClassName', 'className', 'disabled', 'hidden', 'theme']);
+
+	      var _className = (0, _classnames3.default)(theme.label, (_classnames = {}, _defineProperty(_classnames, theme.active, active), _defineProperty(_classnames, theme.hidden, hidden), _defineProperty(_classnames, theme.disabled, disabled), _defineProperty(_classnames, activeClassName, active), _classnames), className);
+
+	      return _react2.default.createElement(
+	        'label',
+	        _extends({}, other, { 'data-react-toolbox': 'tab', className: _className, onClick: this.handleClick }),
+	        this.props.label
+	      );
+	    }
+	  }]);
+
+	  return Tab;
 	}(_react.Component);
 
-	exports.default = Detect;
+	Tab.propTypes = {
+	  active: _react.PropTypes.bool,
+	  activeClassName: _react.PropTypes.string,
+	  className: _react.PropTypes.string,
+	  disabled: _react.PropTypes.bool,
+	  hidden: _react.PropTypes.bool,
+	  label: _react.PropTypes.any.isRequired,
+	  onActive: _react.PropTypes.func,
+	  onClick: _react.PropTypes.func,
+	  theme: _react.PropTypes.shape({
+	    active: _react.PropTypes.string,
+	    disabled: _react.PropTypes.string,
+	    hidden: _react.PropTypes.string,
+	    label: _react.PropTypes.string
+	  })
+	};
+	Tab.defaultProps = {
+	  active: false,
+	  className: '',
+	  disabled: false,
+	  hidden: false
+	};
+	exports.default = (0, _reactCssThemr.themr)(_identifiers.TABS)(Tab);
+	exports.Tab = Tab;
+
+/***/ },
+/* 340 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.TabContent = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _classnames2 = __webpack_require__(266);
+
+	var _classnames3 = _interopRequireDefault(_classnames2);
+
+	var _reactCssThemr = __webpack_require__(260);
+
+	var _identifiers = __webpack_require__(264);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var TabContent = function (_Component) {
+	  _inherits(TabContent, _Component);
+
+	  function TabContent() {
+	    _classCallCheck(this, TabContent);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TabContent).apply(this, arguments));
+	  }
+
+	  _createClass(TabContent, [{
+	    key: 'render',
+	    value: function render() {
+	      var className = (0, _classnames3.default)(this.props.theme.tab, _defineProperty({}, this.props.theme.active, this.props.active), this.props.className);
+
+	      return _react2.default.createElement(
+	        'section',
+	        { className: className, tabIndex: this.props.tabIndex },
+	        this.props.children
+	      );
+	    }
+	  }]);
+
+	  return TabContent;
+	}(_react.Component);
+
+	TabContent.propTypes = {
+	  active: _react.PropTypes.bool,
+	  children: _react.PropTypes.node,
+	  className: _react.PropTypes.string,
+	  tabIndex: _react.PropTypes.number,
+	  theme: _react.PropTypes.shape({
+	    active: _react.PropTypes.string,
+	    tab: _react.PropTypes.string
+	  })
+	};
+	TabContent.defaultProps = {
+	  active: false,
+	  className: ''
+	};
+	exports.default = (0, _reactCssThemr.themr)(_identifiers.TABS)(TabContent);
+	exports.TabContent = TabContent;
+
+/***/ },
+/* 341 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+	module.exports = {"tabs":"_2lGJIHW7da7zlIIVMUm7TV","navigation":"_2N9WOMeBXRaafh4v0JbTai","label":"_3A-TluXevN4JwfJK-t6CXY","active":"_2SLiKG-rEwxeTaj2nERBbj","disabled":"_1mq-IScRAV00bdNZFBW8vm","hidden":"_1XZZy10-h80wp7Zhb0EYCn","pointer":"pWCM7tGR6SWwphaRFYWWz","tab":"_2YMGwtrJHTYXjL4nSbNrdS"};
 
 /***/ }
 /******/ ]);
