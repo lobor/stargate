@@ -3,7 +3,7 @@ require('babel/register');
 var Server = require('./server/server');
 
 var exec = require('child_process').exec;
-var motion = require(process.cwd() + '/web/src/utils/motion');
+var motion = require('./server/utils/motion');
 
 var ConfigEnv = require(process.cwd() + '/config/web/environnement');
 var ConfigAdmin = require(process.cwd() + '/config/web/admin');

@@ -23,8 +23,19 @@ class Server{
 		this.server.use('/assets', express.static('web/assets'));
 		this.server.use('/video', express.static('visio/motion_detection'));
 
-		// this.server.use('/video/cam', proxy('localhost:8081', {reqBodyEncoding: null}));
-
+		if (process.env.NODE_ENV != "development"){
+			let fs = require('fs'),
+					options = {
+						key  : fs.readFileSync('server.key'),
+						cert : fs.readFileSync('server.crt')
+					};
+			this.http = require('https').Server(options, this.server);
+		}
+		else{
+			this.http = require('http').Server(this.server);
+		}
+		this.io = require('socket.io')(this.http);
+		
 		this.initSession();
 		this.initCache();
 		this.initTemplate();
@@ -51,9 +62,31 @@ class Server{
 	}
 
 	loadRoutes(){
-		let i = 0, j, sizeAll = loadRoutes.length, sizeRoute, route, routes, dep;
-		for(; i < sizeAll; i++){
-			routes = loadRoutes[i];
+		let i = 0, j, size, sizeRoute, route, routes, dep;
+		var value;
+		// loadRoutes.api
+		// loadRoutes.front
+		for(i = 0, size = loadRoutes.api.length; i < size; i++){
+			routes = loadRoutes.api[i];
+
+			for(j = 0, sizeRoute = routes.length, dep = {}; j < sizeRoute; j++){
+				route = routes[j];
+
+				if(route.dep){
+					route.dep.forEach((el) => {
+						dep[el] = this[el];
+					});
+				}
+				// this.io.on(route.url, route.call.bind(dep));
+				this.io.on(route.url, function(){
+					console.log(3);
+				});
+				// this.server[route.type](route.url, route.call.bind(dep));
+			}
+		}
+
+		for(i = 0, size = loadRoutes.front.length; i < size; i++){
+			routes = loadRoutes.front[i];
 
 			for(j = 0, sizeRoute = routes.length, dep = {}; j < sizeRoute; j++){
 				route = routes[j];
@@ -67,6 +100,7 @@ class Server{
 				this.server[route.type](route.url, route.call.bind(dep));
 			}
 		}
+
 		return this;
 	}
 
@@ -104,6 +138,7 @@ class Server{
 			}
 			else {
 				sess.views = false;
+				console.log(req.xhr);
 				if(req.xhr || req.headers.accept.indexOf('json') > -1){
 					res
 						.status(401)
@@ -123,22 +158,21 @@ class Server{
 	}
 
 	start(){
-		let http;
-		if (process.env.NODE_ENV != "development"){
-			let fs = require('fs'),
-					options = {
-						key  : fs.readFileSync('server.key'),
-						cert : fs.readFileSync('server.crt')
-					};
-			http = require('https').createServer(options, this.server);
-		}
-		else{
-			http = require('http').createServer(this.server);
-		}
+		
 
-		http.listen(process.env.PORT || 7070, function () {
+		
+		this.io.on('logfin', function(){
+			console.log(3);
+		});
+		this.http.listen(process.env.PORT || 7070, function () {
 			console.log('Server is listening...');
 		});
+		// this.io.on('connection', function (socket) {
+				this.io.on('my other event', function (data) {
+					console.log(data);
+				});
+		// });
+		
 	}
 }
 

@@ -15,11 +15,11 @@ var supportedVersions = [
 
 var Motion = function(path) {
   if (path && !shell.test('-e', path)) {
+    this.error = true;
     shell.echo('Sorry, this module cannot find motion on given path: ' + path);
-    process.exit(1);
   } else if (!shell.which('motion')) {
+    this.error = true;
     shell.echo('Sorry, this module requires Motion to be installed');
-    process.exit(1);
   }
 
   this.motionBin = path || 'motion';
@@ -27,7 +27,7 @@ var Motion = function(path) {
 
   if (-1 === supportedVersions.indexOf(this.version)) {
     shell.echo('Sorry, motion version ' + this.version + ' is not supported');
-    process.exit(1);
+    // process.exit(1);
   }
 
   this.configFile = null;
@@ -66,14 +66,14 @@ Motion.prototype.getVersion = function() {
   }).stdout.replace(/\n/, '');
   if (version === '') {
     shell.echo('Sorry, cannot determine Motion version for given Motion binary on : ' + this.motionBin);
-    process.exit(1);
+    // process.exit(1);
   } else {
     var res = versionRegEx.exec(version);
     if (res) {
       return res[1].replace(/\./g, '_').replace(/\+/g, '_');
     } else {
       shell.echo('Sorry, cannot determine Motion version, or version is not supported');
-      process.exit(1);
+      // process.exit(1);
     }
   }
   return null;
@@ -84,7 +84,7 @@ Motion.prototype.getConfig = function() {
 };
 
 Motion.prototype.setConfig = function(config, pathFile, auth) {
-  if (!config || !pathFile) {
+  if (!config || !pathFile || !this.error) {
     return;
   }
   this.config = config;

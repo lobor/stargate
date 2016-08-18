@@ -1,13 +1,11 @@
-module.exports = [
-	// API
-	require('./API/config'),
-	require('./API/user'),
-	require('./API/detect'),
+// module.exports = [
+// 	// API
+// 	require('./API/config'),
+// 	require('./API/user'),
+// 	require('./API/detect'),
 
-	// Page
-	require('./front/video'), // video
-
-
+// 	// Page
+// 	require('./front/video'), // video
 
 
 
@@ -17,6 +15,25 @@ module.exports = [
 
 
 
-	// Not modified, it's route of index
-	require('./front/index')
-];
+
+
+// 	// Not modified, it's route of index
+// 	require('./front/index')
+// ];
+
+module.exports = {
+	api: [
+		// API
+		// require('./API/config'),
+		require('./API/user'),
+		// require('./API/detect'),
+	],
+	front: [
+		// Page
+		require('./front/video'), // video
+
+
+		// Not modified, it's route of index
+		require('./front/index')
+	]
+};

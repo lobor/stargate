@@ -10,23 +10,37 @@ class Login extends Component {
 	constructor(...args){
 		super(...args);
 		this.state = {msg: false, name: false, password: false};
+		// console.log(this.context.io)
+
+		// var global = window;
+		// window.socket.emit('logfin', {
+		// 		name: this.state.name,
+		// 		password: this.state.password
+		// 	});
 	}
+
 
 	submit(e){
 		e.preventDefault();
-		this.setState({msg: false})
-		axios
-			.post('/user/login', {
-				name: this.state.name,
-				password: this.state.password
-			})
-			.then(function (response) {
-				this.context.auth(true);
-				this.context.router.push('/');
-			}.bind(this))
-			.catch(function (error) {
-				this.setState({msg: error.data.errors.message})
-			}.bind(this));
+		this.setState({msg: false});
+
+		// this.context.io.emit('login', {
+		// 		name: this.state.name,
+		// 		password: this.state.password
+		// 	});
+
+		// axios
+			// .post('/user/login', {
+			// 	name: this.state.name,
+			// 	password: this.state.password
+			// })
+		// 	.then(function (response) {
+		// 		this.context.auth(true);
+		// 		this.context.router.push('/');
+		// 	}.bind(this))
+		// 	.catch(function (error) {
+		// 		this.setState({msg: error.data.errors.message})
+		// 	}.bind(this));
 	}
 
 	change(name, value){
@@ -60,7 +74,9 @@ class Login extends Component {
 
 Login.contextTypes = {
 	router: React.PropTypes.object.isRequired,
-	auth: React.PropTypes.func
+	auth: React.PropTypes.func,
+	io: React.PropTypes.object
 };
+
 
 export default Login;
