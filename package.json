@@ -17,7 +17,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.12.0",
     "babel": "^4.7.16",
     "body-parser": "^1.15.2",
     "connect-cachify": "0.0.17",
@@ -25,7 +24,6 @@
     "express": "^4.12.3",
     "express-http-proxy": "^0.9.1",
     "express-session": "^1.14.0",
-    "express.io": "^1.1.13",
     "file-loader": "^0.9.0",
     "imports-loader": "^0.6.5",
     "material-design-icons": "^2.2.3",
