@@ -22,18 +22,14 @@ class Config extends Component {
   }
 
   componentWillMount(){
-    return axios
-			.get('/api/config')
-			.then((response) => {
-        console.log(response.data.response)
-        this.setState(response.data.response);
-			})
-      .catch((error) => {
-        console.log(error);
-        if(401 === error.status){
-          this.context.router.push('/user/login');
-        }
-      });
+    return this.context.io.run('config', {}, (res) => {console.log(res)
+      if(res.response){
+        this.setState(res.response);
+      }
+      else{
+        this.context.router.push('/user/login');
+      }
+    });
   }
 
 
@@ -91,7 +87,7 @@ class Config extends Component {
               legend='Record on motion detection'
               leftIcon='fiber_manual_record'
               rightActions={[
-                <Switch disabled={!this.state.webcam.connect} key="record" checked={this.state.webcam.record} onChange={this.handleChange.bind(this, 'record')} />
+                <Switch disabled={!this.state.webcam.connect} key="record" checked={(this.state.webcam.record !== 'off')} onChange={this.handleChange.bind(this, 'record')} />
               ]}
             />
             <ListDivider />
@@ -115,5 +111,6 @@ class Config extends Component {
 }
 Config.contextTypes = {
 	router: React.PropTypes.object.isRequired,
+	io: React.PropTypes.object
 };
 export default Config;

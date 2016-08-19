@@ -84,7 +84,7 @@ Motion.prototype.getConfig = function() {
 };
 
 Motion.prototype.setConfig = function(config, pathFile, auth) {
-  if (!config || !pathFile || !this.error) {
+  if (!config || !pathFile) {
     return;
   }
   this.config = config;
@@ -97,6 +97,7 @@ Motion.prototype.setConfig = function(config, pathFile, auth) {
 	fs.writeFileSync(pathFile, config);
 
 	this.configFile = pathFile;
+  return this;
 };
 
 
@@ -115,7 +116,7 @@ Motion.prototype.setConfig = function(config, pathFile, auth) {
 Motion.prototype.start = function() {
   var that = this;
   that.stop();
-  if (!that.configFile) {
+  if (!that.configFile || !this.error) {
     return;
   }
   var args = [

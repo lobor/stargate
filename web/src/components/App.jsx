@@ -3,12 +3,8 @@ import Navigation from './Navigation.jsx';
 
 import { Route, Router, browserHistory } from 'react-router';
 import { appCss } from './../style/app.scss';
+var Api = require("imports?this=>window!./../utils/Api")
 
-// import Api from './../utils/Api';
-// var Api = require("imports?this=>window!./../utils/Api")
-// Api.run('logfin')
-
-var global = window;
 class App extends Component {
 	getChildContext() {
 		var auth = false;
@@ -18,9 +14,6 @@ class App extends Component {
 		else if('/user/login' === window.location.pathname){
 			auth = false;
 		}
-		// console.log(Api)
-		// Api.run('logfin')
-// console.log(global.socket)
 
     return {
       auth: (val) => {
@@ -29,7 +22,7 @@ class App extends Component {
 				}
 				return auth;
 			},
-			io: global.socket
+			io: Api
     };
   }
 

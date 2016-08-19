@@ -36,17 +36,22 @@ class Navigation extends Component {
   };
 
 	logout(){
-		axios
-			.get('/user/logout')
-			.then(function (response) {
+		this.context.io.run('logout', {}, (response) => {
+			if(response.response){
 				this.context.auth(false);
 				this.context.router.push('/user/login');
-			}.bind(this))
-			.catch(function (error) {
-				if(error.data.errors.redirect){
-					this.context.router.push('/user/login');
-				}
-			}.bind(this));
+			}
+		})
+			// .get('/user/logout')
+			// .then(function (response) {
+			// 	this.context.auth(false);
+			// 	this.context.router.push('/user/login');
+			// }.bind(this))
+			// .catch(function (error) {
+			// 	if(error.data.errors.redirect){
+			// 		this.context.router.push('/user/login');
+			// 	}
+			// }.bind(this));
 	}
 
 	render() {
@@ -81,7 +86,8 @@ class Navigation extends Component {
 
 Navigation.contextTypes = {
 	router: React.PropTypes.object.isRequired,
-	auth: React.PropTypes.func
+	auth: React.PropTypes.func,
+	io: React.PropTypes.object
 };
 
 export default Navigation;

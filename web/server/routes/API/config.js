@@ -1,9 +1,20 @@
 export default [
 	{
-		'url': '/api/config',
-		'type': 'get',
+		'name': 'config',
 		'dep': ['webcamRunning', 'webcamConnect', 'motion'],
-		'read': require('./config/read').bind(this)
+		'call': function(data, fc){
+			let confMotion = this.motion.getConfig();
+			fc({
+				"response": {
+					'webcam': {
+						'stream': this.webcamRunning,
+						'connect': this.webcamConnect,
+						'record': confMotion.ffmpeg_output_movies,
+						'path': confMotion.target_dir
+					}
+				}
+			});
+		}
 	},
 	// {
 	// 	'url': '/api/config',

@@ -1,27 +1,31 @@
+var ConfigAdmin = require(process.cwd() + '/config/web/admin');
 export default [
-	// {
-	// 	'url': '/user/logout',
-	// 	'type': 'get',
-	// 	'call': function(req, res){
-	// 		let sess = req.session;
-	// 		sess.destroy(function(){
-	// 			res.status(200).json({
-	// 				"response":true
-	// 			});
-	// 		});
-	// 	}
-	// },
 	{
-		'url': 'login',
-		// 'type': 'post',
-		// 'call': function(){
-		// 	return {
-		// 		read: require('./user/create').bind(this)
-		// 	};
-		// },
-		// 'call': require('./user/create')
-		'call': function(){
-			console.log(5);
+		'name': 'logout',
+		'call': function(data, fc){
+			let sess = this.socket.request.session;
+			sess.destroy(fc.bind(undefined, {"response":true}));//{
+		}
+	},
+	{
+		'name': 'login',
+		'call': function(data, fc){
+			if(data.name == ConfigAdmin.user && data.password == ConfigAdmin.password){
+		    var sess = this.socket.request.session;
+		    sess.views = true;
+				sess.save();
+		    fc({
+		      "response":true
+		    });
+		  }
+		  else{
+		    fc({
+		      "response":false,
+		      "errors": {
+		        "message": "Is not good user name or password"
+		      }
+		    });
+		  }
 		}
 	}
 ];

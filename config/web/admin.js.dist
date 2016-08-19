@@ -1,4 +1,4 @@
-exports.user = {
+module.exports = {
 	'user': 'user',
 	'password': 'password'
 };

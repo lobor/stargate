@@ -4,16 +4,12 @@ var session = require('express-session');
 var cachify = require('connect-cachify');
 var ejs = require('ejs');
 var exec = require('child_process').exec;
-// var motion = require(process.cwd() + '/web/src/utils/motion');
 var loadRoutes = require('./routes/load');
 var proxy = require('express-http-proxy');
 
 class Server{
 	constructor(){
 		this.config = {};
-
-		// this.motion = new motion();
-		// this.motion.setConfig(process.cwd() + '/config/motion/confcam.conf');
 
 		this.server = express();
 
@@ -35,17 +31,10 @@ class Server{
 			this.http = require('http').Server(this.server);
 		}
 		this.io = require('socket.io')(this.http);
-		
+
 		this.initSession();
 		this.initCache();
 		this.initTemplate();
-
-		// exec('ls /dev/video0', (error, stdout, stderr) => {
-		// 	if(!error){
-		// 		this.motion.start();
-		// 		this.webcamRunning = true;
-		// 	}
-		// });
 	}
 
 	set(name, value){
@@ -61,15 +50,12 @@ class Server{
 		return this;
 	}
 
-	loadRoutes(){
+	loadSocket(socket){
 		let i = 0, j, size, sizeRoute, route, routes, dep;
-		var value;
-		// loadRoutes.api
-		// loadRoutes.front
 		for(i = 0, size = loadRoutes.api.length; i < size; i++){
 			routes = loadRoutes.api[i];
 
-			for(j = 0, sizeRoute = routes.length, dep = {}; j < sizeRoute; j++){
+			for(j = 0, sizeRoute = routes.length, dep = {socket:socket}; j < sizeRoute; j++){
 				route = routes[j];
 
 				if(route.dep){
@@ -77,13 +63,13 @@ class Server{
 						dep[el] = this[el];
 					});
 				}
-				// this.io.on(route.url, route.call.bind(dep));
-				this.io.on(route.url, function(){
-					console.log(3);
-				});
-				// this.server[route.type](route.url, route.call.bind(dep));
+				socket.on(route.name, route.call.bind(dep));
 			}
 		}
+	}
+
+	loadRoutes(){
+		let i = 0, j, size, sizeRoute, route, routes, dep;
 
 		for(i = 0, size = loadRoutes.front.length; i < size; i++){
 			routes = loadRoutes.front[i];
@@ -121,12 +107,17 @@ class Server{
 	}
 
 	initSession(){
-		this.server.use(session({
+		var sessionMiddleware = session({
 			secret: 'keyboard cat',
 			resave: false,
 			saveUninitialized: true,
 			cookie: { maxAge: 600000 }
-		}));
+		});
+		this.server.use(sessionMiddleware);
+
+		this.io.use(function(socket, next) {
+	    sessionMiddleware(socket.request, socket.request.res, next);
+		});
 
 		this.server.use(function (req, res, next) {
 			let sess = req.session;
@@ -138,7 +129,6 @@ class Server{
 			}
 			else {
 				sess.views = false;
-				console.log(req.xhr);
 				if(req.xhr || req.headers.accept.indexOf('json') > -1){
 					res
 						.status(401)
@@ -158,21 +148,17 @@ class Server{
 	}
 
 	start(){
-		
 
-		
-		this.io.on('logfin', function(){
-			console.log(3);
-		});
-		this.http.listen(process.env.PORT || 7070, function () {
+
+
+		this.http.listen(process.env.PORT || 8080, function () {
 			console.log('Server is listening...');
 		});
-		// this.io.on('connection', function (socket) {
-				this.io.on('my other event', function (data) {
-					console.log(data);
-				});
-		// });
-		
+
+		this.io.on('connection', (socket) => {
+				this.loadSocket(socket);
+		});
+
 	}
 }
 

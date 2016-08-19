@@ -10,13 +10,6 @@ class Login extends Component {
 	constructor(...args){
 		super(...args);
 		this.state = {msg: false, name: false, password: false};
-		// console.log(this.context.io)
-
-		// var global = window;
-		// window.socket.emit('logfin', {
-		// 		name: this.state.name,
-		// 		password: this.state.password
-		// 	});
 	}
 
 
@@ -24,23 +17,18 @@ class Login extends Component {
 		e.preventDefault();
 		this.setState({msg: false});
 
-		// this.context.io.emit('login', {
-		// 		name: this.state.name,
-		// 		password: this.state.password
-		// 	});
-
-		// axios
-			// .post('/user/login', {
-			// 	name: this.state.name,
-			// 	password: this.state.password
-			// })
-		// 	.then(function (response) {
-		// 		this.context.auth(true);
-		// 		this.context.router.push('/');
-		// 	}.bind(this))
-		// 	.catch(function (error) {
-		// 		this.setState({msg: error.data.errors.message})
-		// 	}.bind(this));
+		this.context.io.run('login', {
+			name: this.state.name,
+			password: this.state.password
+		}, (response) => {
+			if(response.response){
+				this.context.auth(true);
+				this.context.router.push('/');
+			}
+			else{
+				this.setState({msg: response.errors.message})
+			}
+		});
 	}
 
 	change(name, value){
