@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 class Detect extends Component {
   constructor(...args){
@@ -10,16 +9,16 @@ class Detect extends Component {
   }
 
 	componentWillMount(){
-    return axios
-			.get('/api/detect')
-			.then((response) => {
-				this.setState(response.data.response);
-			})
-      .catch((error) => {
-        if(401 === error.status){
-          this.context.router.push('/user/login');
-        }
-      });
+    // return axios
+		// 	.get('/api/detect')
+		// 	.then((response) => {
+		// 		this.setState(response.data.response);
+		// 	})
+    //   .catch((error) => {
+    //     if(401 === error.status){
+    //       this.context.router.push('/user/login');
+    //     }
+    //   });
   }
 
 	click(e){

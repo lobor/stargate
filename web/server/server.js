@@ -5,7 +5,6 @@ var cachify = require('connect-cachify');
 var ejs = require('ejs');
 var exec = require('child_process').exec;
 var loadRoutes = require('./routes/load');
-var proxy = require('express-http-proxy');
 
 class Server{
 	constructor(){
@@ -92,7 +91,7 @@ class Server{
 
 	initTemplate(){
 		this.server.set('view engine', 'ejs');
-		this.server.set('views', 'web/src/views');
+		this.server.set('views', 'web/server/html');
 	}
 
 	initCache(){

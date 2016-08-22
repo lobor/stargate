@@ -2,13 +2,13 @@ import React from 'react';
 import { Router, IndexRoute, Route, browserHistory } from 'react-router';
 
 
-import App from './../../web/src/components/App';
-import Login from './../../web/src/components/Login';
-import Home from './../../web/src/components/Home';
-import Video from './../../web/src/components/Video';
-import Config from './../../web/src/components/Config';
-import PageNotFound from './../../web/src/components/PageNotFound';
-import Detect from './../../web/src/components/Detect';
+import App from './../../web/src/views/App';
+import Login from './../../web/src/views/Login';
+import Home from './../../web/src/views/Home';
+import Video from './../../web/src/views/Video';
+import Config from './../../web/src/views/Config';
+import PageNotFound from './../../web/src/views/PageNotFound';
+import Detect from './../../web/src/views/Detect';
 
 
 

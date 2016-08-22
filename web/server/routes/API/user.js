@@ -1,10 +1,29 @@
 var ConfigAdmin = require(process.cwd() + '/config/web/admin');
+var fs = require('fs');
 export default [
 	{
 		'name': 'logout',
 		'call': function(data, fc){
 			let sess = this.socket.request.session;
-			sess.destroy(fc.bind(undefined, {"response":true}));//{
+			sess.destroy(function(){
+				fc({"response":true});
+			});
+		}
+	},
+	{
+		'name': 'user:changePassword',
+		'call': function(data, fc){
+			console.log((data.new_password == data.confirm_new_password));
+			if(data.old_password == ConfigAdmin.password && data.new_password == data.confirm_new_password){
+				fs.writeFile(process.cwd() + '/config/web/admin.js', 'module.exports = {user: "' + ConfigAdmin.user + '", password: "' + data.new_password + '"};',
+					function(){
+						ConfigAdmin.password = data.new_password;
+						fc({"response":true});
+					});
+			}
+			else{
+					fc({"response":false});
+			}
 		}
 	},
 	{
