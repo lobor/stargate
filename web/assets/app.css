@@ -565,6 +565,16 @@ a, abbr, address, article, aside, audio, b, blockquote, body, caption, cite, cod
   border: 0;
   outline: 0; }
 
+header h1 {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  top: 19px; }
+
+header button {
+  z-index: 2; }
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
