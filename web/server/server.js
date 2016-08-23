@@ -5,6 +5,7 @@ var cachify = require('connect-cachify');
 var ejs = require('ejs');
 var exec = require('child_process').exec;
 var loadRoutes = require('./routes/load');
+var compression = require('compression');
 
 class Server{
 	constructor(){
@@ -12,7 +13,7 @@ class Server{
 
 		this.server = express();
 
-
+		this.server.use(compression());
 		this.server.use(bodyParser.urlencoded({ extended: true }));
 		this.server.use(bodyParser.json());
 		this.server.use('/assets', express.static('web/assets'));

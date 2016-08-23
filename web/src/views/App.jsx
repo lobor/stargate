@@ -14,7 +14,6 @@ class App extends Component {
 		else if('/user/login' === window.location.pathname){
 			auth = false;
 		}
-
     return {
       auth: (val) => {
 				if(val){

@@ -7,9 +7,9 @@
     "start": "node web/start.js",
     "dev": "npm run build:js & npm start",
     "live": "npm run watch:js & nodemon web/start.js",
-    "build:js": "webpack --config",
+    "build:js": "webpack --config --optimize-minimize",
     "build:css": "stylus --include-css --compress ./web/src/style/app.styl -o ./web/assets/",
-    "watch:js": "webpack --config -w",
+    "watch:js": "webpack --config -w --optimize-minimize ",
     "watch:css": "stylus -w --include-css --compress ./web/src/style/app.styl -o ./web/assets/",
     "motion": "electron-spawn ./visio/event.js"
   },
@@ -19,6 +19,7 @@
   "dependencies": {
     "babel": "^4.7.16",
     "body-parser": "^1.15.2",
+    "compression": "^1.6.2",
     "connect-cachify": "0.0.17",
     "ejs": "^2.3.1",
     "express": "^4.12.3",
