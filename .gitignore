@@ -1,3 +1,5 @@
 node_modules
 config/web/admin.js
 config/web/environnement.js
+tmp/confcam.conf
+npm-debug.log
