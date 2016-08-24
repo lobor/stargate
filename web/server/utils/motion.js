@@ -101,22 +101,11 @@ Motion.prototype.setConfig = function(config, pathFile, auth) {
 };
 
 
-// Motion.prototype.setConfig = function(configFile) {
-//   if (!configFile) {
-//     return;
-//   }
-//   if (!shell.test('-e', configFile)) {
-//     shell.echo('Sorry, the provided configuration file cannot be found : ' + configFile);
-//     //process.exit(1);
-//   } else {
-//     this.configFile = configFile;
-//   }
-// };
-
 Motion.prototype.start = function() {
   var that = this;
   that.stop();
-  if (!that.configFile || !this.error) {
+
+  if (!that.configFile || this.error) {
     return;
   }
   var args = [
@@ -124,6 +113,7 @@ Motion.prototype.start = function() {
     '-d', '6',
     '-c', that.configFile
   ];
+
   this.motion = spawn(this.motionBin, args);
   this.motion.stdout.on('data', function(data) {
     that.processData(data);
