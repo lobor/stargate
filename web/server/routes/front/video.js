@@ -1,7 +1,7 @@
-var http = require('http');
-var MjpegProxy = require('mjpeg-proxy').MjpegProxy;
-
-var mic = require('mic');
+// var http = require('http');
+// var MjpegProxy = require('mjpeg-proxy').MjpegProxy;
+//
+// var mic = require('mic');
 var micInstance = mic({
 	'rate': '16000',
 	'channels': '1',
@@ -31,11 +31,12 @@ export default [
 		'url': '/video/audio',
 		'type': 'get',
 		'call': function(req, res){
-			res.set({'Content-Type': 'audio/mpeg'});
+			res.json({})
+			// res.set({'Content-Type': 'audio/mpeg'});
 			// micInputStream.on('data', function(data) {
 			//   res.write(data);
 			// });
-			micInputStream.pipe(res);
+			// micInputStream.pipe(res);
 		}
 	},
 ];
