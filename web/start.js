@@ -22,7 +22,6 @@ exec('ls /dev/video0', (error, stdout, stderr) => {
 	config
 		.motion
 		.setConfig(ConfigMotion, process.cwd() + '/tmp/confcam.conf', ConfigAdmin.user + ':' + ConfigAdmin.password);
-		// .setConfig(process.cwd() + '/config/motion/confcam.conf');
 
 	if(!error){
 		console.log('Webcam connected');
@@ -30,6 +29,10 @@ exec('ls /dev/video0', (error, stdout, stderr) => {
 		config.motion.start();
 		config.webcamRunning = true;
 	}
+
+	process.on('exit', function (){
+	  config.motion.stop();
+	});
 
 	server
 		.set(config)

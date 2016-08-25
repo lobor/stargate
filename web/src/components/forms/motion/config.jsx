@@ -5,6 +5,7 @@ import Input from 'react-toolbox/lib/input';
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
 import Switch from 'react-toolbox/lib/switch';
 import FontIcon from 'react-toolbox/lib/font_icon';
+import Dropdown from 'react-toolbox/lib/dropdown';
 
 class Config extends Component{
   constructor(...args){
@@ -47,6 +48,9 @@ class Config extends Component{
 	}
 
   render(){
+    const countries = [
+      { value: 'EN-gb', label: 'England' },
+    ];
     return (
       <form method="POST" className="card__container bg-blue-light" onSubmit={this.submit.bind(this)}>
         <List>

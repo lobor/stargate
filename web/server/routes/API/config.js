@@ -40,6 +40,7 @@ export default [
 			let confMotion = this.motion.getConfig();
 
 			confMotion.target_dir = data.path;
+			confMotion.ffmpeg_output_movies = data.record;
 
 			fs.writeFile(process.cwd() + '/config/motion/confcam.js', 'module.exports = ' + JSON.stringify(confMotion) + ';', (err) => {
 				if(err){
