@@ -26,6 +26,7 @@ module.exports = {
 		// API
 		require('./API/config'),
 		require('./API/user'),
+		require('./API/cpu'),
 		// require('./API/detect'),
 	],
 	front: [

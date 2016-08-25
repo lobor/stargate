@@ -1,4 +1,6 @@
 
+
+
 @font-face {
 	font-family: 'Material Icons';
 	font-style: normal;
@@ -11,6 +13,9 @@
 			url(/assets/font/MaterialIcons-Regular.ttf) format('truetype');
 }
 :global{
+	@import './mobile.scss';
+	@import './desktop.scss';
+
 	html {
 		font-size: 62.5%;
 		font-family: Arial;
@@ -90,6 +95,9 @@
 		padding-top: 6.4rem;
 		font-size: 1.3em;
 	}
+
+
+
 
 
 

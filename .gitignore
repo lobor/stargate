@@ -1,4 +1,5 @@
 node_modules
+visio/video/*
 config/web/admin.js
 config/web/environnement.js
 tmp/confcam.conf

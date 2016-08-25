@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import ItemCard from './ItemCard.jsx';
+import Cpu from './../components/cards/cpu.jsx';
+import LastLogin from './../components/cards/lastLogin.jsx';
 
 class Home extends Component {
 	render() {
     return (
-      <div>
-        <ItemCard data={[{name: 'webcam', icon: 'icono-camera', link: '/video'}]} />
+      <div className="contentCard">
+				<Cpu />
+				<LastLogin />
       </div>
     )
 	}

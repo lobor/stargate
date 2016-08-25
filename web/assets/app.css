@@ -555,6 +555,15 @@
   /* For IE6-8 */
   src: local("Material Icons"), local("MaterialIcons-Regular"), url(/assets/font/MaterialIcons-Regular.woff2) format("woff2"), url(/assets/font/MaterialIcons-Regular.woff) format("woff"), url(/assets/font/MaterialIcons-Regular.ttf) format("truetype"); }
 
+@media only screen and (max-width: 480px) {
+  .contentCard {
+    flex-direction: column; } }
+
+@media only screen and (min-width: 480px) {
+  .contentCard {
+    display: flex;
+    flex-direction: row; } }
+
 html {
   font-size: 62.5%;
   font-family: Arial; }

@@ -10,6 +10,7 @@ var compression = require('compression');
 class Server{
 	constructor(){
 		this.config = {};
+		this.data = {};
 
 		this.server = express();
 
@@ -148,17 +149,13 @@ class Server{
 	}
 
 	start(){
-
-
-
 		this.http.listen(process.env.PORT || 8080, function () {
 			console.log('Server is listening...');
 		});
 
 		this.io.on('connection', (socket) => {
-				this.loadSocket(socket);
+			this.loadSocket(socket);
 		});
-
 	}
 }
 
