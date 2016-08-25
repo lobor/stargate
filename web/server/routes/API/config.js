@@ -27,7 +27,7 @@ export default [
 				"response": {
 					'stream': this.webcamRunning,
 					'connect': this.webcamConnect,
-					'record': confMotion.ffmpeg_output_movies,
+					'record': ('on' === confMotion.ffmpeg_output_movies) ? true : false,
 					'path': confMotion.target_dir
 				}
 			});
@@ -40,7 +40,7 @@ export default [
 			let confMotion = this.motion.getConfig();
 
 			confMotion.target_dir = data.path;
-			confMotion.ffmpeg_output_movies = data.record;
+			confMotion.ffmpeg_output_movies = (data.record) ? 'on' : 'off';
 
 			fs.writeFile(process.cwd() + '/config/motion/confcam.js', 'module.exports = ' + JSON.stringify(confMotion) + ';', (err) => {
 				if(err){

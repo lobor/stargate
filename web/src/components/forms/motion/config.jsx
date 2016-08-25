@@ -31,7 +31,6 @@ class Config extends Component{
   }
 
   handleChange(name, value) {
-    console.log(name, value)
     this.setState({[name]: value});
   }
 
@@ -61,7 +60,7 @@ class Config extends Component{
             legend='Record on motion detection'
             leftIcon='fiber_manual_record'
             rightActions={[
-              <Switch disabled={!this.state.connect} key="record" checked={(this.state.record !== 'off')} onChange={this.handleChange.bind(this, 'record')} />
+              <Switch disabled={!this.state.connect} key="record" checked={this.state.record} onChange={this.handleChange.bind(this, 'record')} />
             ]}
           />
           <ListDivider />
