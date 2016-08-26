@@ -18,7 +18,7 @@ class Server{
 		this.server.use(bodyParser.urlencoded({ extended: true }));
 		this.server.use(bodyParser.json());
 		this.server.use('/assets', express.static('web/assets'));
-		this.server.use('/video', express.static('visio/motion_detection'));
+		this.server.use('/visio', express.static('visio/detect'));
 
 		if (process.env.NODE_ENV != "development"){
 			let fs = require('fs'),
