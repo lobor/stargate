@@ -5,11 +5,11 @@ class LastLogin extends Component{
   constructor(...args){
     super(...args);
     this.state = {
-      date: 0
+      date: []
     }
 
     this.context.io.run('lastLogin', {}, (data) => {
-      this.setState({date: data.lastLogin})
+      this.setState({date: data.lastLogin});
     });
 	}
 
@@ -21,7 +21,7 @@ class LastLogin extends Component{
         <CardText>
           <ul>
             {this.state.date.map(function(date){
-              return <li>date</li>;
+              return <li>{date}</li>;
             })}
           </ul>
         </CardText>
