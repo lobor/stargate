@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-var clm = require('./../utils/clmtrackr/clmtrackr');
-var model = require('./../utils/clmtrackr/models/model_pca_20_svm');
-console.log(clm);
+//var clm = require('./../utils/clmtrackr/clmtrackr');
+//var model = require('./../utils/clmtrackr/models/model_pca_20_svm');
+//console.log(clm);
 class Detect extends Component {
   constructor(...args){
     super(...args);
@@ -23,8 +23,8 @@ class Detect extends Component {
 
       // var videoInput = document.getElementById('inputVideo');
 
-      var ctracker = new clm.tracker();
-      ctracker.init(model);
+  //    var ctracker = new clm.tracker();
+    //  ctracker.init(model);
       // ctracker.start(videoInput);
 
     });
