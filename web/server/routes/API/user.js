@@ -29,13 +29,19 @@ export default [
 		'name': 'lastLogin',
 		'dep': ['data'],
 		'call': function(data, fc){
-			var date = this.data.LastLogin, hour, minutes, day, month;
-			hour = (('' + date.getHours()).length > 1 ) ? date.getHours() : '0' + date.getHours();
-			minutes = (('' + date.getMinutes()).length > 1 ) ? date.getMinutes() : '0' + date.getMinutes();
-			month = (('' + date.getMonth()).length > 1 ) ? date.getMonth() : '0' + date.getMonth();
-			day = (('' + date.getDay()).length > 1 ) ? date.getDay() : '0' + date.getDay();
+			var date, hour, minutes, day, month, arrayDate = [];
 
-			fc({"lastLogin": day + '/' + month + '/' + date.getFullYear() + ' ' + hour + ':' + minutes});
+			for(var key in this.data.LastLogin){
+				date = this.data.LastLogin[key];
+				hour = (('' + date.getHours()).length > 1 ) ? date.getHours() : '0' + date.getHours();
+				minutes = (('' + date.getMinutes()).length > 1 ) ? date.getMinutes() : '0' + date.getMinutes();
+				month = (('' + date.getMonth()).length > 1 ) ? date.getMonth() : '0' + date.getMonth();
+				day = (('' + date.getDay()).length > 1 ) ? date.getDay() : '0' + date.getDay();
+
+				arrayDate.push(day + '/' + month + '/' + date.getFullYear() + ' ' + hour + ':' + minutes);
+			}
+
+			fc({"lastLogin": arrayDate});
 		}
 	},
 	{
@@ -46,7 +52,17 @@ export default [
 		    var sess = this.socket.request.session;
 		    sess.views = true;
 				sess.save();
-				this.data.LastLogin = new Date();
+
+				if('[object Array]' !== Object.prototype.toString.call(this.data.LastLogin)){
+					this.data.LastLogin = [];
+				}
+
+				if(5 === this.data.LastLogin.length){
+					this.data.LastLogin.shift();
+				}
+
+				this.data.LastLogin.push(new Date());
+
 		    fc({
 		      "response":true
 		    });

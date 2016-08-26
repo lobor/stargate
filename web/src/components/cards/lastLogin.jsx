@@ -19,7 +19,11 @@ class LastLogin extends Component{
       <Card>
         <CardTitle title="Last Login" />
         <CardText>
-          {this.state.date}
+          <ul>
+            {this.state.date.map(function(date){
+              return <li>date</li>;
+            })}
+          </ul>
         </CardText>
       </Card>
     );
