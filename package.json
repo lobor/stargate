@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node web/start.js",
     "build:js": "webpack --config --optimize-minimize",
-    "watch:js": "webpack --config -w",
+    "watch:js": "webpack --config -w"
   },
   "keywords": [],
   "author": "",
