@@ -14,6 +14,7 @@ Application for security camera on Raspberry Pi, Mac OSX
 
 ## Script
 ```npm run build:js``` => build js file compressed
+
 ```npm run watch:js``` => watch modification on js file and re-build
 
 ## RoadMap
