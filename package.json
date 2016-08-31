@@ -5,13 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node web/start.js",
-    "dev": "npm run build:js & npm start",
-    "live": "npm run watch:js & nodemon web/start.js",
     "build:js": "webpack --config --optimize-minimize",
-    "build:css": "stylus --include-css --compress ./web/src/style/app.styl -o ./web/assets/",
     "watch:js": "webpack --config -w",
-    "watch:css": "stylus -w --include-css --compress ./web/src/style/app.styl -o ./web/assets/",
-    "motion": "electron-spawn ./visio/event.js"
   },
   "keywords": [],
   "author": "",
