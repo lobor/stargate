@@ -7,17 +7,16 @@ class Cpu extends Component{
     this.state = {
       cpu: 0 + '%'
     }
-
-    this.context.io.run('cpu')
 	}
 
   componentWillMount(){
+    this.context.io.run('cpu');
     this.context.io.on('cpu:change', (data) => {
       var st = {
         cpu: ''
-      }
+      };
       st.cpu = Math.floor(data.cpu) + '%';
-      this.setState(st)
+      this.setState(st);
     });
   }
 

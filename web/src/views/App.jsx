@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Navigation from './Navigation.jsx';
+import Navigation from './../components/navigation/Navigation.jsx';
 
 import { Route, Router, browserHistory } from 'react-router';
 import { appCss } from './../style/app.scss';
