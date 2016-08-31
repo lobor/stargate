@@ -1,5 +1,5 @@
 # stargate
-Application for security camera on Raspberry Pi
+Application for security camera on Raspberry Pi, Mac OSX
 
 ## Config
 1. Install Motion on raspberry pi => [link](http://www.lavrsen.dk/foswiki/bin/view/Motion/WebHome) 
