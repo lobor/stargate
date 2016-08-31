@@ -1,4 +1,6 @@
-var spawn = require('child_process').spawn;
+var cp = require('child_process');
+var spawn = cp.spawn;
+var exec = cp.exec;
 
 var shell = require('shelljs');
 
@@ -14,69 +16,83 @@ var supportedVersions = [
 ];
 
 var Motion = function(path) {
-  if (path && !shell.test('-e', path)) {
-    this.error = true;
-    shell.echo('Sorry, this module cannot find motion on given path: ' + path);
-  } else if (!shell.which('motion')) {
-    this.error = true;
-    shell.echo('Sorry, this module requires Motion to be installed');
+  if(path){
+    try{
+      fs.accessSync(path, fs.constants.F_OK);
+    }
+    catch (e){
+      this.error = true;
+      console.log('Sorry, this module cannot find motion on given path: ' + path);
+    }
+  } else {
+    const which = spawn('which', ['motion']);
+    which.stdout.on('data', (data) => {
+      this.motionBin = path || 'motion';
+      this.version = this.getVersion();
+
+      if (-1 === supportedVersions.indexOf(this.version)) {
+        console.log('Sorry, motion version ' + this.version + ' is not supported');
+      }
+
+      this.configFile = null;
+      this.motion = null;
+
+      this.httpBackendStarted = false;
+      this.streamStarted = false;
+
+      this.messageArray = [{
+        version: '3_2_12',
+        regex: /^motion-httpd: waiting for data on port TCP (\d+)/,
+        action: 'backend'
+      }, {
+        version: '3_2_12',
+        regex: /^Started stream webcam server in port (\d+)/,
+        action: 'stream'
+      }, {
+        version: '3_2_12_git20140228',
+        regex: /httpd_run: motion-httpd: waiting for data on (localhost|\d\.\d\.\d\.\d) port TCP (\d+)/,
+        match: 2,
+        action: 'backend'
+      }, {
+        version: '3_2_12_git20140228',
+        regex: /motion_init: Started motion-stream server in port (\d+).*$/,
+        action: 'stream'
+      }];
+    });
+
+    which.on('close', (code) => {
+      if(1 === code){
+        console.log('Sorry, this module requires Motion to be installed');
+        this.error = true;
+      }
+    });
   }
-
-  this.motionBin = path || 'motion';
-  this.version = this.getVersion();
-
-  if (-1 === supportedVersions.indexOf(this.version)) {
-    shell.echo('Sorry, motion version ' + this.version + ' is not supported');
-    // process.exit(1);
-  }
-
-  this.configFile = null;
-  this.motion = null;
-
-  this.httpBackendStarted = false;
-  this.streamStarted = false;
-
-  this.messageArray = [{
-    version: '3_2_12',
-    regex: /^motion-httpd: waiting for data on port TCP (\d+)/,
-    action: 'backend'
-  }, {
-    version: '3_2_12',
-    regex: /^Started stream webcam server in port (\d+)/,
-    action: 'stream'
-  }, {
-    version: '3_2_12_git20140228',
-    regex: /httpd_run: motion-httpd: waiting for data on (localhost|\d\.\d\.\d\.\d) port TCP (\d+)/,
-    match: 2,
-    action: 'backend'
-  }, {
-    version: '3_2_12_git20140228',
-    regex: /motion_init: Started motion-stream server in port (\d+).*$/,
-    action: 'stream'
-  }];
 };
 
 util.inherits(Motion, Emitter);
 
 Motion.prototype.getVersion = function() {
-  var helpCmd = this.motionBin + ' -h | head -n 1';
-  var versionRegEx = /^motion Version ([\d\.\+a-z]+), .*$/;
-  var version = shell.exec(helpCmd, {
-    silent: true
-  }).stdout.replace(/\n/, '');
-  if (version === '') {
-    shell.echo('Sorry, cannot determine Motion version for given Motion binary on : ' + this.motionBin);
-    // process.exit(1);
-  } else {
-    var res = versionRegEx.exec(version);
-    if (res) {
-      return res[1].replace(/\./g, '_').replace(/\+/g, '_');
-    } else {
-      shell.echo('Sorry, cannot determine Motion version, or version is not supported');
-      // process.exit(1);
-    }
+  if(!this.error){
+    var helpCmd = this.motionBin + ' -h | head -n 1';
+    var versionRegEx = /^motion Version ([\d\.\+a-z]+), .*$/;
+    var version;
+    exec(helpCmd, (error, stdout, stderr) => {
+      version = stdout.replace(/\n/, '');
+      if (version === '') {
+        console.log('Sorry, cannot determine Motion version for given Motion binary on : ' + this.motionBin);
+      } else {
+        var res = versionRegEx.exec(version);
+        if (res) {
+          return res[1].replace(/\./g, '_').replace(/\+/g, '_');
+        } else {
+          console.log('Sorry, cannot determine Motion version, or version is not supported');
+        }
+      }
+    });
   }
-  return null;
+  else{
+    return null;
+  }
 };
 
 Motion.prototype.getConfig = function() {
