@@ -33,10 +33,11 @@ export default [
 
 			for(var key in this.data.LastLogin){
 				date = this.data.LastLogin[key];
+				month = date.getMonth() + 1;
 				hour = (('' + date.getHours()).length > 1 ) ? date.getHours() : '0' + date.getHours();
 				minutes = (('' + date.getMinutes()).length > 1 ) ? date.getMinutes() : '0' + date.getMinutes();
-				month = (('' + date.getMonth()).length > 1 ) ? date.getMonth() : '0' + date.getMonth();
-				day = (('' + date.getDay()).length > 1 ) ? date.getDay() : '0' + date.getDay();
+				month = (('' + month).length > 1 ) ? month : '0' + month;
+				day = (('' + date.getDate()).length > 1 ) ? date.getDate() : '0' + date.getDate();
 
 				arrayDate.push(day + '/' + month + '/' + date.getFullYear() + ' ' + hour + ':' + minutes);
 			}

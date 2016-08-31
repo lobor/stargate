@@ -11,7 +11,7 @@ class Cpu extends Component{
     this.context.io.run('cpu')
 	}
 
-  componentDidMount(){
+  componentWillMount(){
     this.context.io.on('cpu:change', (data) => {
       var st = {
         cpu: ''

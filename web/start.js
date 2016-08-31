@@ -4,6 +4,7 @@ var Server = require('./server/server');
 
 var exec = require('child_process').exec;
 var motion = require('./server/utils/motion');
+var fs = require('fs');
 
 var ConfigEnv = require(process.cwd() + '/config/web/environnement');
 var ConfigAdmin = require(process.cwd() + '/config/web/admin');
@@ -18,6 +19,12 @@ exec('ls /dev/video0', (error, stdout, stderr) => {
 		webcamConnect: false,
 		motion: new motion()
 	};
+
+	try {
+    fs.accessSync(process.cwd() + '/tmp/', fs.F_OK);
+	} catch (e) {
+    fs.mkdirSync(process.cwd() + '/tmp/', 0777)
+	}
 
 	config
 		.motion

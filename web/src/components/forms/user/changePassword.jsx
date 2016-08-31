@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import Input from 'react-toolbox/lib/input';
 import { Button } from 'react-toolbox/lib/button';
 
+import Notify from './../../commons/notify';
+
 class ChangePassword extends Component{
   constructor(...args){
     super(...args)
@@ -18,14 +20,18 @@ class ChangePassword extends Component{
     this.submit = this.submit.bind(this);
   }
 
+  componentDidMount(){
+    this._notify = this.refs.notification;
+  }
+
   submit(e){
     e.preventDefault();
     this.context.io.run('user:changePassword', this.state, (res) => {
 			if(res.response){
-        this.setState({msg: 'ok'});
+        this._notify.addNotify({msg: 'The password has been changed', type: 'success'});
 			}
 			else{
-        this.setState({msg: 'error'});
+        this._notify.addNotify({msg: 'An error has occured', type: 'error'});
 			}
 		});
   }
@@ -38,6 +44,7 @@ class ChangePassword extends Component{
     return (
       <div>
         <form onSubmit={this.submit}>
+          <Notify ref="notification" />
           <Input name="old_password" id="old_password" type="password" required label="Current password" onChange={this.change.bind(this, 'old_password')} /><br/>
           <Input name="new_password" id="new_password" type="password" required label="New password" onChange={this.change.bind(this, 'new_password')} /><br/>
           <Input name="confirm_new_password" id="comfirm_new_password" type="password" required label="Comfirm new password" onChange={this.change.bind(this, 'confirm_new_password')} /><br/>

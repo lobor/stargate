@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Notify from './../../commons/notify';
+
 import { Button } from 'react-toolbox/lib/button';
 import Input from 'react-toolbox/lib/input';
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
@@ -13,7 +15,8 @@ class Config extends Component{
     this.state = {
       stream: false,
       connect: false,
-      record: false,
+      record_video: false,
+      record_picture: false,
       path: '',
       msg: false
     };
@@ -30,6 +33,10 @@ class Config extends Component{
     });
   }
 
+  componentDidMount(){
+    this._notify = this.refs.notification;
+  }
+
   handleChange(name, value) {
     this.setState({[name]: value});
   }
@@ -38,10 +45,12 @@ class Config extends Component{
     e.preventDefault();
     this.context.io.run('config:motion:post', this.state, (res) => {
       if(res.response){
-        this.setState({msg: 'ok'});
+        this._notify.addNotify({
+          msg: 'Has been saved',
+          type: 'success'
+        });
       }
       else{
-        // this.context.router.push('/user/login');
       }
     });
 	}
@@ -52,15 +61,26 @@ class Config extends Component{
     ];
     return (
       <form method="POST" className="card__container bg-blue-light" onSubmit={this.submit.bind(this)}>
+        <Notify ref="notification" />
         <List>
           <ListDivider />
           <ListItem
             disabled={!this.state.connect}
-            caption='Record'
+            caption='Record video'
             legend='Record on motion detection'
             leftIcon='fiber_manual_record'
             rightActions={[
-              <Switch disabled={!this.state.connect} key="record" checked={this.state.record} onChange={this.handleChange.bind(this, 'record')} />
+              <Switch disabled={!this.state.connect} key="record_video" checked={this.state.record_video} onChange={this.handleChange.bind(this, 'record_video')} />
+            ]}
+          />
+          <ListDivider />
+          <ListItem
+            disabled={!this.state.connect}
+            caption='Record picture'
+            legend='Record on motion detection'
+            leftIcon='fiber_manual_record'
+            rightActions={[
+              <Switch disabled={!this.state.connect} key="record_picture" checked={this.state.record_picture} onChange={this.handleChange.bind(this, 'record_picture')} />
             ]}
           />
           <ListDivider />

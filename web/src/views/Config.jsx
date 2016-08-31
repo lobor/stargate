@@ -24,16 +24,16 @@ class Config extends Component {
     this.handleTabChange = this.handleTabChange.bind(this);
   }
 
-  // componentWillMount(){
-  //   return this.context.io.run('config', {}, (res) => {
-  //     if(res.response){
-  //       this.setState(res.response);
-  //     }
-  //     else{
-  //       this.context.router.push('/user/login');
-  //     }
-  //   });
-  // }
+  componentWillMount(){
+    return this.context.io.run('config', {}, (res) => {
+      if(res.response){
+        this.setState(res.response);
+      }
+      else{
+        this.context.router.push('/user/login');
+      }
+    });
+  }
 
 
   handleChange(field, value) {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import FontIcon from 'react-toolbox/lib/font_icon';
 
 //var clm = require('./../utils/clmtrackr/clmtrackr');
 //var model = require('./../utils/clmtrackr/models/model_pca_20_svm');
@@ -11,33 +12,15 @@ class Detect extends Component {
 		};
   }
 
+
 	componentDidMount(){
     this.context.io.run('detect:get', {}, (data) => {
-
       this.setState({
         img: data.map(function(el){
-          return {src: '/visio/' + el};
+          return {src: '/visio/' + el, name: el};
         })
       });
-
-
-      // var videoInput = document.getElementById('inputVideo');
-
-  //    var ctracker = new clm.tracker();
-    //  ctracker.init(model);
-      // ctracker.start(videoInput);
-
     });
-    // return axios
-		// 	.get('/api/detect')
-		// 	.then((response) => {
-		// 		this.setState(response.data.response);
-		// 	})
-    //   .catch((error) => {
-    //     if(401 === error.status){
-    //       this.context.router.push('/user/login');
-    //     }
-    //   });
   }
 
 	click(e){
@@ -45,12 +28,33 @@ class Detect extends Component {
 		this.refs.player.play();
 	}
 
+  delete(name){
+    this.context.io.run('detect:delete', {picture: name}, (data) => {
+      this.setState({img: this.state.img.filter(function(el){
+        return el.name !== name;
+      })});
+    });
+  }
+
 	render() {
+    var styleButton = {
+      'backgroundColor': 'rgba(0,0,0,0.5)',
+      'position': 'absolute',
+      bottom: '0',
+      width: '100%',
+    }
     return (
       <div>
-				<ul>
+				<ul style={{'listStyle': 'none'}}>
 					{this.state.img.map((img, key) => {
-						return <li key={key}><img src={img.src} /></li>
+						return (
+              <li key={key} style={{position: 'relative', float: 'left', color: 'white'}}>
+                <img src={img.src} style={{display: 'block'}} />
+                <div style={styleButton}>
+                  <FontIcon value='delete' style={{cursor: 'pointer'}} onClick={this.delete.bind(this, img.name)} />
+                </div>
+              </li>
+            );
 					})}
 				</ul>
       </div>

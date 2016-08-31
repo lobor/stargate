@@ -6,13 +6,11 @@ export default [
 		'name': 'cpu',
 		'call': function(data, fc){
       let socket = this.socket;
-      if(false === cpu){
-        cpu = setInterval(function(){
-          usage.lookup(process.pid, function(err, result) {
-            socket.emit('cpu:change', result);
-          });
-        }, 1000);
-      }
+      cpu = setInterval(function(){
+        usage.lookup(process.pid, function(err, result) {
+          socket.emit('cpu:change', result);
+        });
+      }, 1000);
 		}
 	},
   {
