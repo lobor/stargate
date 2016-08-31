@@ -1,2 +1,2 @@
-exports.NODE_ENV  = 'production'; // 'development' || 'production'
+exports.NODE_ENV  = 'development'; // 'development' || 'production'
 exports.PORT  = '8080';
