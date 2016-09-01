@@ -1,4 +1,12 @@
 import React, { Component } from 'react';
+import { Width, Style } from './style';
+
+
+
+// navigator.getUserMedia = ( navigator.getUserMedia ||
+//                        navigator.webkitGetUserMedia ||
+//                        navigator.mozGetUserMedia ||
+//                        navigator.msGetUserMedia);
 
 class Video extends Component{
   constructor(...args){
@@ -9,73 +17,89 @@ class Video extends Component{
   }
 
   componentDidMount(){
-    var audioCtx = new AudioContext();
-    this.context.io.on('audio', function(data){
-      // console.log(data);
-      // var toto = new Float32Array(data);
-      // audioCtx.decodeAudioData(toto, function(buffer) {
-      // });
-      // console.log(toto);
-    });
+
+    // navigator.getUserMedia({video: false, audio: true}, (stream) => {
+    //   console.log(stream);
+    //   console.log(this.refs.audio);
+    //   this.refs.audio.src = window.URL.createObjectURL(stream);
+    //   this.refs.audio.play();
+    // }, function(err){console.log("The following error occured: " + err);});
+
+
+    // var audioCtx = new AudioContext();
+    // var source;
+    // // source = audioCtx.createBufferSource();
+    // var first = false;
+    // this.context.io.on('audio', function(data){
+    // //
+    //   if(!first){
+    //     source = audioCtx.createBufferSource();
+    //     first = true;
+    //     audioCtx.decodeAudioData(data, function(buffer) {
+    //       if(buffer)
+    //         source.buffer = buffer;
+    //
+    //       source.connect(audioCtx.destination);
+    //       source.loop = false;
+    //       source.start(0);
+    //     });
+    //   }
+    // //
+    // //   // console.log(toto);
+    // });
 
 
     // var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     // var source;
     //
-    // source = audioCtx.createBufferSource();
     // var request = new XMLHttpRequest();
-    //
+    // //
     // request.open('GET', '/video/audio', true);
-    //
+    // //
     // request.responseType = 'arraybuffer';
-    //
-    // request.onload = function() {
+    // //
+    // request.onreadystatechange = function() {
+    //   // console.log('onload');
     //   var audioData = request.response;
-    //   audioCtx.decodeAudioData(audioData, function(buffer) {
-    //       source.buffer = buffer;
+    //   if(!first){
+    //     first = true;
+    //     console.log(request);
+    //   }
+    //   // console.log(arguments);
+    //   if(audioData)
+    //     audioCtx.decodeAudioData(audioData, function(buffer) {
+    //         source.buffer = buffer;
     //
-    //       source.connect(audioCtx.destination);
-    //       source.loop = true;
+    //         source.connect(audioCtx.destination);
+    //         source.loop = true;
+    //         source.start(0);
+    //       },
     //
-    //     },
-    //
-    //     function(e){"Error with decoding audio data" + e.err});
+    //       function(e){}
+    //     );
     //
     // }
-    //
-    // request.send(null);
+    // //
+    // request.send();
     //
     // // request.addEventListener('readystatechange', function(d) {
     // //   console.log(request);
     // //     // Votre code…
-    // // });
-    // source.start(0);
+    // // });838/16/1
   }
 
-  error(e, f, r){
+  error(){
     this.setState({msg: 'An error has been occured'});
   }
 
   render(){
-    let width = {
-      width: '100%',
-      'maxWidth': '400px',
-    };
-    let style = {
-      background: 'black',
-      display: 'block',
-      margin: 'auto',
-      marginTop: '25px',
-      color: 'red',
-      height: '300px',
-      textAlign: 'center'
-    };
-    Object.assign(style, width);
+    Object.assign(Style, Width);
     return (
       <div>
-        <img style={style} alt={this.state.msg} src='/video/cam' onError={this.error} />
+        <img style={Style} alt={this.state.msg} src='/video/cam' onError={this.error} />
       </div>
     )
+    // <audio ref="audio" controls></audio>
   }
 }
 Video.contextTypes = {

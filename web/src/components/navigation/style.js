@@ -1,0 +1,1 @@
+exports.Icon = {color: 'white'};

@@ -1,15 +1,22 @@
 var MjpegProxy = require('mjpeg-proxy').MjpegProxy;
-// var mic = require('mic');
+
+// var mic = require('microphone');
 //
+// mic.startCapture({'mp3output' : true});
+// var mic = require('mic');
+// //
 // var micInstance = mic({
 // 	'rate': '16000',
 // 	'channels': '1',
 // 	'debug': false,
 // 	'exitOnSilence': 6
 // });
-//
+
 // var micInputStream = micInstance.getAudioStream();
 // micInstance.start();
+//
+// var mic = require('microphone');
+// mic.startCapture({'mp3output' : true});
 
 export default [
 	{
@@ -23,6 +30,9 @@ export default [
 			}
 			else{
 
+				// mic.audioStream.on('data', (data) => {
+				//   this.io.emit('audio', data);
+				// });
 				// micInputStream.on('data', (data) => {
 				// 	this.io.emit('audio', data);
 				// });
@@ -31,11 +41,11 @@ export default [
 			}
 		}
 	},
-	// {
-	// 	'url': '/video/audio',
-	// 	'type': 'get',
-	// 	'call': function(req, res){
-	// 		micInputStream.pipe(res);
-	// 	}
-	// },
+	{
+		'url': '/video/audio',
+		'type': 'get',
+		'call': function(req, res){
+			// micInputStream.pipe(res);
+		}
+	},
 ];

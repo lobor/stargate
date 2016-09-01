@@ -8,6 +8,8 @@ import Drawer from 'react-toolbox/lib/drawer';
 
 import Menu from './../../collections/menu';
 
+import {Icon} from './style';
+
 class Navigation extends Component {
 	constructor(...args){
 		super(...args);
@@ -50,7 +52,7 @@ class Navigation extends Component {
 
 			rendu = (
 				<AppBar fixed flat>
-					<IconButton icon='menu' onClick={this.handleToggle} style={{color: 'white'}} />
+					<IconButton icon='menu' onClick={this.handleToggle} style={Icon} />
 					<h1>{this.state.title}</h1>
 					<Drawer active={this.state.active} onOverlayClick={this.handleToggle}>
 						<List selectable ripple>

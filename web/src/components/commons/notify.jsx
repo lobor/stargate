@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { TypeNotify, StyleContainer, StyleMsg } from './style';
+
 class Notify extends Component{
   constructor(...args){
     super(...args);
@@ -22,34 +24,12 @@ class Notify extends Component{
   render(){
     var html = false;
 
-    let typeNotify = {
-      'success': {
-        backgroundColor: '#32e432'
-      },
-      'error': {
-        backgroundColor: 'red'
-      }
-    }
-
-    let styleContainer = {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'center'
-    };
-
-    let styleMsg = {
-      padding: '10px'
-    };
-
-    Object.assign(styleMsg, typeNotify[this.state.type]);
+    Object.assign(StyleMsg, TypeNotify[this.state.type]);
 
     if(this.state.msg){
       html = (
-        <div style={styleContainer}>
-          <div style={styleMsg}>
+        <div style={StyleContainer}>
+          <div style={StyleMsg}>
             {this.state.msg}
           </div>
         </div>
