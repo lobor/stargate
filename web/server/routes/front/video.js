@@ -24,12 +24,11 @@ export default [
 		'type': 'get',
 		'dep': ['webcamRunning', 'io'],
 		'call': function(...args){
-			if(!this.webcamRunning){
-				args[1].status(404);
-				args[1].end();
-			}
-			else{
-
+			// if(!this.webcamRunning){
+			// 	args[1].status(404);
+			// 	args[1].end();
+			// }
+			// else{
 				// mic.audioStream.on('data', (data) => {
 				//   this.io.emit('audio', data);
 				// });
@@ -37,8 +36,8 @@ export default [
 				// 	this.io.emit('audio', data);
 				// });
 
-				return new MjpegProxy('http://localhost:8081').proxyRequest(...args);
-			}
+				return new MjpegProxy('http://localhost:' + args[0].query.port).proxyRequest(...args);
+			// }
 		}
 	},
 	{

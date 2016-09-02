@@ -26,8 +26,8 @@ class Config extends Component {
 
   componentWillMount(){
     return this.context.io.run('config', {}, (res) => {
-      if(res.response){
-        this.setState(res.response);
+      if(res){
+        this.setState(res);
       }
       else{
         this.context.router.push('/user/login');
@@ -87,7 +87,6 @@ class Config extends Component {
 	}
 }
 Config.contextTypes = {
-	router: React.PropTypes.object.isRequired,
 	io: React.PropTypes.object
 };
 export default Config;

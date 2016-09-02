@@ -122,6 +122,7 @@ class Server{
 
 		this.server.use(function (req, res, next) {
 			let sess = req.session;
+
 			if ((sess.views && '/user/login' !== req.originalUrl) || (!sess.views && '/user/login' === req.originalUrl)) {
 				next();
 			}
@@ -142,6 +143,8 @@ class Server{
 						});
 				}
 				else{
+					// console.log(Object.keys(req));
+					// console.log(Object.keys(req.socket));
 					res.redirect('/user/login');
 				}
 			}
@@ -154,6 +157,11 @@ class Server{
 		});
 
 		this.io.on('connection', (socket) => {
+			// console.log(Object.keys(this.server));
+			// console.log(Object.keys(socket.handshake.headers));
+			// socket.req = function(){
+			// 	console.log(3);
+			// }
 			this.loadSocket(socket);
 		});
 	}

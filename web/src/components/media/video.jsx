@@ -94,9 +94,10 @@ class Video extends Component{
 
   render(){
     Object.assign(Style, Width);
+    let url = '/video/cam?port=' + this.props.port
     return (
       <div>
-        <img style={Style} alt={this.state.msg} src='/video/cam' onError={this.error} />
+        <img style={Style} alt={this.state.msg} src={url} onError={this.error} />
       </div>
     )
     // <audio ref="audio" controls></audio>

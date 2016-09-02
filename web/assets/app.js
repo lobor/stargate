@@ -20850,19 +20850,19 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Login = __webpack_require__(294);
+	var _Login = __webpack_require__(295);
 
 	var _Login2 = _interopRequireDefault(_Login);
 
-	var _Home = __webpack_require__(308);
+	var _Home = __webpack_require__(309);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
-	var _Video = __webpack_require__(311);
+	var _Video = __webpack_require__(312);
 
 	var _Video2 = _interopRequireDefault(_Video);
 
-	var _Config = __webpack_require__(314);
+	var _Config = __webpack_require__(316);
 
 	var _Config2 = _interopRequireDefault(_Config);
 
@@ -27138,7 +27138,7 @@
 
 	var _reactRouter = __webpack_require__(173);
 
-	var _app = __webpack_require__(292);
+	var _app = __webpack_require__(293);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27148,7 +27148,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Api = __webpack_require__(293);
+	var Api = __webpack_require__(294);
 
 	var App = function (_Component) {
 		_inherits(App, _Component);
@@ -27244,7 +27244,7 @@
 
 	var _menu2 = _interopRequireDefault(_menu);
 
-	var _style = __webpack_require__(335);
+	var _style = __webpack_require__(292);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31106,10 +31106,18 @@
 /* 292 */
 /***/ function(module, exports) {
 
-	// removed by extract-text-webpack-plugin
+	'use strict';
+
+	exports.Icon = { color: 'white' };
 
 /***/ },
 /* 293 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 294 */
 /***/ function(module, exports) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -31130,7 +31138,7 @@
 	}.call(window));
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31145,13 +31153,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _card = __webpack_require__(295);
+	var _card = __webpack_require__(296);
 
-	var _login = __webpack_require__(302);
+	var _login = __webpack_require__(303);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _style = __webpack_require__(307);
+	var _style = __webpack_require__(308);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31195,7 +31203,7 @@
 	exports.default = Login;
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31209,21 +31217,21 @@
 
 	var _identifiers = __webpack_require__(242);
 
-	var _Card = __webpack_require__(296);
+	var _Card = __webpack_require__(297);
 
-	var _CardActions = __webpack_require__(297);
+	var _CardActions = __webpack_require__(298);
 
-	var _CardMedia = __webpack_require__(298);
+	var _CardMedia = __webpack_require__(299);
 
-	var _CardText = __webpack_require__(299);
+	var _CardText = __webpack_require__(300);
 
-	var _CardTitle = __webpack_require__(300);
+	var _CardTitle = __webpack_require__(301);
 
 	var _avatar = __webpack_require__(265);
 
 	var _avatar2 = _interopRequireDefault(_avatar);
 
-	var _theme = __webpack_require__(301);
+	var _theme = __webpack_require__(302);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -31244,7 +31252,7 @@
 	exports.CardTitle = ThemedCardTitle;
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31305,7 +31313,7 @@
 	exports.Card = Card;
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31359,7 +31367,7 @@
 	exports.CardActions = CardActions;
 
 /***/ },
-/* 298 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31440,7 +31448,7 @@
 	exports.CardMedia = CardMedia;
 
 /***/ },
-/* 299 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31498,7 +31506,7 @@
 	exports.CardText = CardText;
 
 /***/ },
-/* 300 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31597,14 +31605,14 @@
 	exports.cardTitleFactory = factory;
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"card":"_2nWQbf9_gir4yr9Y6Kohm8","raised":"_2PPOHIKOzzaEUarFjZC4jg","cardMedia":"_3WTvGOgdujtF5hQ2q-5uZI","wide":"_3c58SGV5m5PtkwZTnwDUHD","square":"_1a9i8XyXkfKsynrj0usMWd","content":"FopufGcx5mqKe3YCVgiB8","contentOverlay":"_1KYpivop1ltD8w4E5iouPQ","cardTitle":"_3Tyrr7H34SFNF2qwcCZ__1","cardActions":"_1aHjqIN9XUt7ZL0r6eCxbA","cardText":"_3ElKZsb_3WeEgfZ9ZDtRw6","subtitle":"grD6gF3fVcQpEX3V2YKex","large":"_3eNqf0ZbdKN--HCBIWGZH-","title":"_35WsyKiPmLYSdXkRA2PyqI","small":"_3Q56x0LUSMqfIpi-ku00e3"};
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31621,11 +31629,11 @@
 
 	var _button = __webpack_require__(253);
 
-	var _input = __webpack_require__(303);
+	var _input = __webpack_require__(304);
 
 	var _input2 = _interopRequireDefault(_input);
 
-	var _font_icon = __webpack_require__(306);
+	var _font_icon = __webpack_require__(307);
 
 	var _font_icon2 = _interopRequireDefault(_font_icon);
 
@@ -31719,7 +31727,7 @@
 	exports.default = Login;
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31733,13 +31741,13 @@
 
 	var _reactCssThemr = __webpack_require__(238);
 
-	var _Input = __webpack_require__(304);
+	var _Input = __webpack_require__(305);
 
 	var _FontIcon = __webpack_require__(246);
 
 	var _FontIcon2 = _interopRequireDefault(_FontIcon);
 
-	var _theme = __webpack_require__(305);
+	var _theme = __webpack_require__(306);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -31752,7 +31760,7 @@
 	exports.Input = ThemedInput;
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32045,14 +32053,14 @@
 	exports.Input = Input;
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"input":"qUQeP4vSum-yZJg0Uzi4y","withIcon":"f6YT1VE7X3uZFUEIHfn2_","icon":"_1_C6ZP22v6BzzNXdROchbh","inputElement":"_27dyYjXAJ-F9DXR-57enPv","bar":"_2GHebHej1HcTQqLkrF3NUu","label":"tqKDtJ_99SEglONe8X4xj","fixed":"_2pXa4VTvyH_0k34iDQZvD5","required":"_2OgFqPf2vspp77p26dy1nh","hint":"_2D9g-Zn3oxO_CX2fL6F27F","filled":"_1UI7ZBcRwkQr5o28wM5yO","error":"_3ilniza3AFPY0bDxzm7nwl","counter":"_398REp2MZ6FmQalrcEZEEa","disabled":"_6VTPWAqN4D1sg9LdEMfxU","errored":"_3peD4M-4DKKmz3qPG8QQIC","hidden":"_3lRxhdkXXOXZg5J5I8_z7k"};
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32072,7 +32080,7 @@
 	exports.FontIcon = _FontIcon2.default;
 
 /***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32086,7 +32094,7 @@
 	};
 
 /***/ },
-/* 308 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32101,11 +32109,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _cpu = __webpack_require__(309);
+	var _cpu = __webpack_require__(310);
 
 	var _cpu2 = _interopRequireDefault(_cpu);
 
-	var _lastLogin = __webpack_require__(310);
+	var _lastLogin = __webpack_require__(311);
 
 	var _lastLogin2 = _interopRequireDefault(_lastLogin);
 
@@ -32147,7 +32155,7 @@
 	exports.default = Home;
 
 /***/ },
-/* 309 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32162,7 +32170,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _card = __webpack_require__(295);
+	var _card = __webpack_require__(296);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32237,7 +32245,7 @@
 	exports.default = Cpu;
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32252,7 +32260,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _card = __webpack_require__(295);
+	var _card = __webpack_require__(296);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32322,13 +32330,13 @@
 	exports.default = LastLogin;
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -32337,11 +32345,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _video = __webpack_require__(312);
+	var _video = __webpack_require__(313);
 
 	var _video2 = _interopRequireDefault(_video);
 
-	var _deplacement = __webpack_require__(313);
+	var _deplacement = __webpack_require__(315);
 
 	var _deplacement2 = _interopRequireDefault(_deplacement);
 
@@ -32354,33 +32362,63 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var Video = function (_Component) {
-	  _inherits(Video, _Component);
+		_inherits(Video, _Component);
 
-	  function Video() {
-	    _classCallCheck(this, Video);
+		function Video() {
+			var _ref;
 
-	    return _possibleConstructorReturn(this, (Video.__proto__ || Object.getPrototypeOf(Video)).apply(this, arguments));
-	  }
+			_classCallCheck(this, Video);
 
-	  _createClass(Video, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(_video2.default, null),
-	        _react2.default.createElement(_deplacement2.default, null)
-	      );
-	    }
-	  }]);
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
 
-	  return Video;
+			var _this = _possibleConstructorReturn(this, (_ref = Video.__proto__ || Object.getPrototypeOf(Video)).call.apply(_ref, [this].concat(args)));
+
+			_this.state = { webcam: [] };
+			return _this;
+		}
+
+		_createClass(Video, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var _this2 = this;
+
+				this.context.io.run('video:get', {}, function (data) {
+					_this2.setState(data);
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var html = '';
+				if (this.state.webcam.length) {
+					html = [];
+					this.state.webcam.forEach(function (el, i) {
+						html.push(_react2.default.createElement(_video2.default, { key: i, port: el.port }));
+					});
+				} else {
+					html = 'Thea are not webcam';
+				}
+
+				return _react2.default.createElement(
+					'div',
+					null,
+					html
+				);
+			}
+		}]);
+
+		return Video;
 	}(_react.Component);
 
+	Video.contextTypes = {
+		io: _react2.default.PropTypes.object
+	};
 	exports.default = Video;
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32395,7 +32433,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _style = __webpack_require__(334);
+	var _style = __webpack_require__(314);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32512,10 +32550,11 @@
 	    key: 'render',
 	    value: function render() {
 	      Object.assign(_style.Style, _style.Width);
+	      var url = '/video/cam?port=' + this.props.port;
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement('img', { style: _style.Style, alt: this.state.msg, src: '/video/cam', onError: this.error })
+	        _react2.default.createElement('img', { style: _style.Style, alt: this.state.msg, src: url, onError: this.error })
 	      );
 	      // <audio ref="audio" controls></audio>
 	    }
@@ -32530,7 +32569,27 @@
 	exports.default = Video;
 
 /***/ },
-/* 313 */
+/* 314 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.Width = {
+	  width: '100%',
+	  'maxWidth': '400px'
+	};
+	exports.Style = {
+	  background: 'black',
+	  display: 'block',
+	  margin: 'auto',
+	  marginTop: '25px',
+	  color: 'red',
+	  height: '300px',
+	  textAlign: 'center'
+	};
+
+/***/ },
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32545,7 +32604,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _font_icon = __webpack_require__(306);
+	var _font_icon = __webpack_require__(307);
 
 	var _font_icon2 = _interopRequireDefault(_font_icon);
 
@@ -32660,7 +32719,7 @@
 	exports.default = Deplacement;
 
 /***/ },
-/* 314 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32677,21 +32736,21 @@
 
 	var _list = __webpack_require__(264);
 
-	var _switch = __webpack_require__(315);
+	var _switch = __webpack_require__(317);
 
 	var _switch2 = _interopRequireDefault(_switch);
 
-	var _input = __webpack_require__(303);
+	var _input = __webpack_require__(304);
 
 	var _input2 = _interopRequireDefault(_input);
 
-	var _tabs = __webpack_require__(319);
+	var _tabs = __webpack_require__(321);
 
-	var _changePassword = __webpack_require__(324);
+	var _changePassword = __webpack_require__(326);
 
 	var _changePassword2 = _interopRequireDefault(_changePassword);
 
-	var _config = __webpack_require__(326);
+	var _config = __webpack_require__(329);
 
 	var _config2 = _interopRequireDefault(_config);
 
@@ -32737,8 +32796,8 @@
 	      var _this2 = this;
 
 	      return this.context.io.run('config', {}, function (res) {
-	        if (res.response) {
-	          _this2.setState(res.response);
+	        if (res) {
+	          _this2.setState(res);
 	        } else {
 	          _this2.context.router.push('/user/login');
 	        }
@@ -32806,13 +32865,12 @@
 	}(_react.Component);
 
 	Config.contextTypes = {
-	  router: _react2.default.PropTypes.object.isRequired,
 	  io: _react2.default.PropTypes.object
 	};
 	exports.default = Config;
 
 /***/ },
-/* 315 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32824,11 +32882,11 @@
 
 	var _reactCssThemr = __webpack_require__(238);
 
-	var _Switch = __webpack_require__(316);
+	var _Switch = __webpack_require__(318);
 
 	var _identifiers = __webpack_require__(242);
 
-	var _Thumb = __webpack_require__(317);
+	var _Thumb = __webpack_require__(319);
 
 	var _Thumb2 = _interopRequireDefault(_Thumb);
 
@@ -32836,7 +32894,7 @@
 
 	var _ripple2 = _interopRequireDefault(_ripple);
 
-	var _theme = __webpack_require__(318);
+	var _theme = __webpack_require__(320);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -32853,7 +32911,7 @@
 	exports.Switch = ThemedSwitch;
 
 /***/ },
-/* 316 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32883,7 +32941,7 @@
 
 	var _Ripple2 = _interopRequireDefault(_Ripple);
 
-	var _Thumb = __webpack_require__(317);
+	var _Thumb = __webpack_require__(319);
 
 	var _Thumb2 = _interopRequireDefault(_Thumb);
 
@@ -33010,7 +33068,7 @@
 	exports.Switch = Switch;
 
 /***/ },
-/* 317 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33053,14 +33111,14 @@
 	exports.default = factory;
 
 /***/ },
-/* 318 */
+/* 320 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"field":"_2rog8fjx4RvZzuNQnj6gsO","disabled":"_3HqAoaXThJAqupME6TpfBS","text":"_3b1B6ovvTjNiApKZKz5ij1","on":"_3ocqIXtE8hrnJSJX2-GTfQ","off":"Ih3qaCbL4ciM3wU_Reuyo","thumb":"_3ryrTDFZHFdquwd2I2lGOt","ripple":"_1A_PiPsYJN4EM26wiYlg78","input":"_10E4SfdK9eWMimqV8HUQrh","switch-on":"_2n4g1O2TJa0-LuWbFz8kpo","switch-off":"_105FOLQC_wyztd4eFfUBJV"};
 
 /***/ },
-/* 319 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33074,13 +33132,13 @@
 
 	var _identifiers = __webpack_require__(242);
 
-	var _Tabs = __webpack_require__(320);
+	var _Tabs = __webpack_require__(322);
 
-	var _TabContent = __webpack_require__(322);
+	var _TabContent = __webpack_require__(324);
 
-	var _Tab = __webpack_require__(321);
+	var _Tab = __webpack_require__(323);
 
-	var _theme = __webpack_require__(323);
+	var _theme = __webpack_require__(325);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -33097,7 +33155,7 @@
 	exports.Tabs = ThemedTabs;
 
 /***/ },
-/* 320 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33121,11 +33179,11 @@
 
 	var _identifiers = __webpack_require__(242);
 
-	var _Tab = __webpack_require__(321);
+	var _Tab = __webpack_require__(323);
 
 	var _Tab2 = _interopRequireDefault(_Tab);
 
-	var _TabContent = __webpack_require__(322);
+	var _TabContent = __webpack_require__(324);
 
 	var _TabContent2 = _interopRequireDefault(_TabContent);
 
@@ -33300,7 +33358,7 @@
 	exports.Tabs = Tabs;
 
 /***/ },
-/* 321 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33421,7 +33479,7 @@
 	exports.Tab = Tab;
 
 /***/ },
-/* 322 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33498,14 +33556,14 @@
 	exports.TabContent = TabContent;
 
 /***/ },
-/* 323 */
+/* 325 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"tabs":"_2lGJIHW7da7zlIIVMUm7TV","navigation":"_2N9WOMeBXRaafh4v0JbTai","label":"_3A-TluXevN4JwfJK-t6CXY","active":"_2SLiKG-rEwxeTaj2nERBbj","disabled":"_1mq-IScRAV00bdNZFBW8vm","hidden":"_1XZZy10-h80wp7Zhb0EYCn","pointer":"pWCM7tGR6SWwphaRFYWWz","tab":"_2YMGwtrJHTYXjL4nSbNrdS"};
 
 /***/ },
-/* 324 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33520,13 +33578,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _input = __webpack_require__(303);
+	var _input = __webpack_require__(304);
 
 	var _input2 = _interopRequireDefault(_input);
 
 	var _button = __webpack_require__(253);
 
-	var _notify = __webpack_require__(325);
+	var _notify = __webpack_require__(327);
 
 	var _notify2 = _interopRequireDefault(_notify);
 
@@ -33626,7 +33684,7 @@
 	exports.default = ChangePassword;
 
 /***/ },
-/* 325 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33641,7 +33699,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _style = __webpack_require__(333);
+	var _style = __webpack_require__(328);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33713,7 +33771,35 @@
 	exports.default = Notify;
 
 /***/ },
-/* 326 */
+/* 328 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.TypeNotify = {
+	  'success': {
+	    backgroundColor: '#32e432'
+	  },
+	  'error': {
+	    backgroundColor: 'red'
+	  }
+	};
+
+	exports.StyleContainer = {
+	  position: 'absolute',
+	  top: 0,
+	  left: 0,
+	  width: '100%',
+	  display: 'flex',
+	  justifyContent: 'center'
+	};
+
+	exports.StyleMsg = {
+	  padding: '10px'
+	};
+
+/***/ },
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33728,29 +33814,31 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _notify = __webpack_require__(325);
+	var _notify = __webpack_require__(327);
 
 	var _notify2 = _interopRequireDefault(_notify);
 
 	var _button = __webpack_require__(253);
 
-	var _input = __webpack_require__(303);
+	var _input = __webpack_require__(304);
 
 	var _input2 = _interopRequireDefault(_input);
 
 	var _list = __webpack_require__(264);
 
-	var _switch = __webpack_require__(315);
+	var _switch = __webpack_require__(317);
 
 	var _switch2 = _interopRequireDefault(_switch);
 
-	var _font_icon = __webpack_require__(306);
+	var _font_icon = __webpack_require__(307);
 
 	var _font_icon2 = _interopRequireDefault(_font_icon);
 
-	var _dropdown = __webpack_require__(327);
+	var _dropdown = __webpack_require__(333);
 
 	var _dropdown2 = _interopRequireDefault(_dropdown);
+
+	var _tabs = __webpack_require__(321);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33777,24 +33865,34 @@
 	    var _this = _possibleConstructorReturn(this, (_ref = Config.__proto__ || Object.getPrototypeOf(Config)).call.apply(_ref, [this].concat(args)));
 
 	    _this.state = {
-	      stream: false,
-	      connect: false,
-	      record_video: false,
-	      record_picture: false,
-	      path: '',
-	      msg: false
+	      // stream: false,
+	      // connect: false,
+	      // record_video: false,
+	      // record_picture: false,
+	      webcam: [],
+	      // path: '',
+	      // msg: false,
+	      tabActive: 0
 	    };
+
+	    _this.handleTabChange = _this.handleTabChange.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(Config, [{
+	    key: 'handleTabChange',
+	    value: function handleTabChange(index) {
+	      this.setState({ tabActive: index });
+	    }
+	  }, {
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      var _this2 = this;
 
 	      this.context.io.run('config:motion', {}, function (res) {
-	        if (res.response) {
-	          _this2.setState(res.response);
+	        if (res) {
+	          console.log(res);
+	          _this2.setState(res);
 	        } else {
 	          _this2.context.router.push('/user/login');
 	        }
@@ -33828,44 +33926,74 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this4 = this;
+
 	      var countries = [{ value: 'EN-gb', label: 'England' }];
+	      var cam = [];
+	      for (var i = 0; i < this.state.nbWebcam; i++) {
+	        cam.push(i);
+	      }
+	      // if(this.state.nbWebcam > 1){
+	      //   cam = <Button type="submit" label="Save" raised primary />
+	      // }
+
+
 	      return _react2.default.createElement(
-	        'form',
-	        { method: 'POST', className: 'card__container bg-blue-light', onSubmit: this.submit.bind(this) },
+	        _tabs.Tabs,
+	        { index: this.state.tabActive, onChange: this.handleTabChange },
 	        _react2.default.createElement(_notify2.default, { ref: 'notification' }),
 	        _react2.default.createElement(
-	          _list.List,
-	          null,
-	          _react2.default.createElement(_list.ListDivider, null),
-	          _react2.default.createElement(_list.ListItem, {
-	            disabled: !this.state.connect,
-	            caption: 'Record video',
-	            legend: 'Record on motion detection',
-	            leftIcon: 'fiber_manual_record',
-	            rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.connect, key: 'record_video', checked: this.state.record_video, onChange: this.handleChange.bind(this, 'record_video') })]
-	          }),
-	          _react2.default.createElement(_list.ListDivider, null),
-	          _react2.default.createElement(_list.ListItem, {
-	            disabled: !this.state.connect,
-	            caption: 'Record picture',
-	            legend: 'Record on motion detection',
-	            leftIcon: 'fiber_manual_record',
-	            rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.connect, key: 'record_picture', checked: this.state.record_picture, onChange: this.handleChange.bind(this, 'record_picture') })]
-	          }),
-	          _react2.default.createElement(_list.ListDivider, null),
-	          _react2.default.createElement(_list.ListItem, {
-	            caption: 'Path where save file',
-	            leftIcon: 'folder',
-	            rightActions: [_react2.default.createElement(_input2.default, { type: 'text', key: 'path', label: '/tmp/motion', onChange: this.handleChange.bind(this, 'path'), value: this.state.path })]
-	          }),
-	          _react2.default.createElement(_list.ListDivider, null)
+	          _tabs.Tab,
+	          { label: 'General', key: '0' },
+	          _react2.default.createElement(
+	            'form',
+	            { method: 'POST', className: 'card__container bg-blue-light', onSubmit: this.submit.bind(this) },
+	            _react2.default.createElement(
+	              _list.List,
+	              null,
+	              _react2.default.createElement(_list.ListDivider, null),
+	              _react2.default.createElement(_list.ListItem, {
+	                disabled: !this.state.connect,
+	                caption: 'Record video',
+	                legend: 'Record on motion detection',
+	                leftIcon: 'fiber_manual_record',
+	                rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.connect, key: 'record_video', checked: this.state.record_video, onChange: this.handleChange.bind(this, 'record_video') })]
+	              }),
+	              _react2.default.createElement(_list.ListDivider, null),
+	              _react2.default.createElement(_list.ListItem, {
+	                disabled: !this.state.connect,
+	                caption: 'Record picture',
+	                legend: 'Record on motion detection',
+	                leftIcon: 'fiber_manual_record',
+	                rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.connect, key: 'record_picture', checked: this.state.record_picture, onChange: this.handleChange.bind(this, 'record_picture') })]
+	              }),
+	              _react2.default.createElement(_list.ListDivider, null)
+	            ),
+	            _react2.default.createElement(_button.Button, { type: 'submit', label: 'Save', raised: true, primary: true })
+	          )
 	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { style: this.state.msg ? {} : { 'display': 'none' } },
-	          this.state.msg
-	        ),
-	        _react2.default.createElement(_button.Button, { type: 'submit', label: 'Save', raised: true, primary: true })
+	        this.state.webcam.map(function (el, i) {
+	          var name = 'Webcam ' + (i + 1);
+	          return _react2.default.createElement(
+	            _tabs.Tab,
+	            { label: name, key: i + 1 },
+	            _react2.default.createElement(
+	              'form',
+	              { method: 'POST', className: 'card__container bg-blue-light', onSubmit: _this4.submit.bind(_this4) },
+	              _react2.default.createElement(
+	                _list.List,
+	                null,
+	                _react2.default.createElement(_list.ListItem, {
+	                  caption: 'Path where save file',
+	                  leftIcon: 'folder',
+	                  rightActions: [_react2.default.createElement(_input2.default, { type: 'text', key: 'path', label: '/tmp/motion', onChange: _this4.handleChange.bind(_this4, 'path'), value: _this4.state.path })]
+	                }),
+	                _react2.default.createElement(_list.ListDivider, null)
+	              ),
+	              _react2.default.createElement(_button.Button, { type: 'submit', label: 'Save', raised: true, primary: true })
+	            )
+	          );
+	        })
 	      );
 	    }
 	  }]);
@@ -33880,7 +34008,196 @@
 	exports.default = Config;
 
 /***/ },
-/* 327 */
+/* 330 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(167);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PageNotFound = function (_Component) {
+	  _inherits(PageNotFound, _Component);
+
+	  function PageNotFound() {
+	    _classCallCheck(this, PageNotFound);
+
+	    return _possibleConstructorReturn(this, (PageNotFound.__proto__ || Object.getPrototypeOf(PageNotFound)).apply(this, arguments));
+	  }
+
+	  _createClass(PageNotFound, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Not found'
+	      );
+	    }
+	  }]);
+
+	  return PageNotFound;
+	}(_react.Component);
+
+	PageNotFound.contextTypes = {
+	  router: _react2.default.PropTypes.object.isRequired
+	};
+	exports.default = PageNotFound;
+
+/***/ },
+/* 331 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(167);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _font_icon = __webpack_require__(307);
+
+	var _font_icon2 = _interopRequireDefault(_font_icon);
+
+	var _style = __webpack_require__(332);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Detect = function (_Component) {
+	  _inherits(Detect, _Component);
+
+	  function Detect() {
+	    var _ref;
+
+	    _classCallCheck(this, Detect);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_ref = Detect.__proto__ || Object.getPrototypeOf(Detect)).call.apply(_ref, [this].concat(args)));
+
+	    _this.state = {
+	      img: []
+	    };
+	    return _this;
+	  }
+
+	  _createClass(Detect, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      this.context.io.run('detect:get', {}, function (data) {
+	        _this2.setState({
+	          img: data.map(function (el) {
+	            return { src: '/visio/' + el, name: el };
+	          })
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'click',
+	    value: function click(e) {
+	      this.refs.src.src = e.target.innerHTML;
+	      this.refs.player.play();
+	    }
+	  }, {
+	    key: 'delete',
+	    value: function _delete(name) {
+	      var _this3 = this;
+
+	      this.context.io.run('detect:delete', { picture: name }, function (data) {
+	        _this3.setState({ img: _this3.state.img.filter(function (el) {
+	            return el.name !== name;
+	          }) });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this4 = this;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'ul',
+	          { style: _style.Ul },
+	          this.state.img.map(function (img, key) {
+	            return _react2.default.createElement(
+	              'li',
+	              { key: key, style: _style.Li },
+	              _react2.default.createElement('img', { src: img.src, style: _style.Img }),
+	              _react2.default.createElement(
+	                'div',
+	                { style: _style.Button },
+	                _react2.default.createElement(_font_icon2.default, { value: 'delete', style: _style.Icon, onClick: _this4.delete.bind(_this4, img.name) })
+	              )
+	            );
+	          })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Detect;
+	}(_react.Component);
+
+	Detect.contextTypes = {
+	  io: _react2.default.PropTypes.object
+	};
+	exports.default = Detect;
+
+/***/ },
+/* 332 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.Button = {
+	  'backgroundColor': 'rgba(0,0,0,0.5)',
+	  'position': 'absolute',
+	  bottom: '0',
+	  width: '100%'
+	};
+
+	exports.Ul = { 'listStyle': 'none' };
+
+	exports.Li = { position: 'relative', float: 'left', color: 'white' };
+
+	exports.Img = { display: 'block' };
+
+	exports.Icon = { cursor: 'pointer' };
+
+/***/ },
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33894,11 +34211,11 @@
 
 	var _identifiers = __webpack_require__(242);
 
-	var _Dropdown = __webpack_require__(328);
+	var _Dropdown = __webpack_require__(334);
 
-	var _input = __webpack_require__(303);
+	var _input = __webpack_require__(304);
 
-	var _theme = __webpack_require__(329);
+	var _theme = __webpack_require__(335);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -33911,7 +34228,7 @@
 	exports.Dropdown = ThemedDropdown;
 
 /***/ },
-/* 328 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33941,7 +34258,7 @@
 
 	var _identifiers = __webpack_require__(242);
 
-	var _Input = __webpack_require__(304);
+	var _Input = __webpack_require__(305);
 
 	var _Input2 = _interopRequireDefault(_Input);
 
@@ -34181,256 +34498,11 @@
 	exports.Dropdown = Dropdown;
 
 /***/ },
-/* 329 */
+/* 335 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"dropdown":"co-4MRoly8FOwxUBqwGN5","active":"_31xyK1Jh0GKeFOrfBKVdDB","values":"_1jS4gihUpwGQxFmpzl28YP","label":"_1lqXIaELcQNCu6oKV214JM","value":"mflIwpS3uRp9Wu21n2aoT","up":"_3kWOPTDR3DQhtEGEmXbMRb","disabled":"_3yAxBqMomAz0LtxOrtG9yU","input":"_3wRmHCvYPYqOCCzjJC29Tn","field":"_1elDxyLQIuvlco8-TY1KWt","errored":"w5ZKso1A0S9dKOU4SFC-j","templateValue":"_3if5oiIqflF832N5AG6nrl","error":"_2QR6bMeE1OmYGQs1H428y2","selected":"_2Uc3rTeBxmjFANnmypvzQ1"};
-
-/***/ },
-/* 330 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(167);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var PageNotFound = function (_Component) {
-	  _inherits(PageNotFound, _Component);
-
-	  function PageNotFound() {
-	    _classCallCheck(this, PageNotFound);
-
-	    return _possibleConstructorReturn(this, (PageNotFound.__proto__ || Object.getPrototypeOf(PageNotFound)).apply(this, arguments));
-	  }
-
-	  _createClass(PageNotFound, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        'Not found'
-	      );
-	    }
-	  }]);
-
-	  return PageNotFound;
-	}(_react.Component);
-
-	PageNotFound.contextTypes = {
-	  router: _react2.default.PropTypes.object.isRequired
-	};
-	exports.default = PageNotFound;
-
-/***/ },
-/* 331 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(167);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _font_icon = __webpack_require__(306);
-
-	var _font_icon2 = _interopRequireDefault(_font_icon);
-
-	var _style = __webpack_require__(332);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Detect = function (_Component) {
-	  _inherits(Detect, _Component);
-
-	  function Detect() {
-	    var _ref;
-
-	    _classCallCheck(this, Detect);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    var _this = _possibleConstructorReturn(this, (_ref = Detect.__proto__ || Object.getPrototypeOf(Detect)).call.apply(_ref, [this].concat(args)));
-
-	    _this.state = {
-	      img: []
-	    };
-	    return _this;
-	  }
-
-	  _createClass(Detect, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      this.context.io.run('detect:get', {}, function (data) {
-	        _this2.setState({
-	          img: data.map(function (el) {
-	            return { src: '/visio/' + el, name: el };
-	          })
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'click',
-	    value: function click(e) {
-	      this.refs.src.src = e.target.innerHTML;
-	      this.refs.player.play();
-	    }
-	  }, {
-	    key: 'delete',
-	    value: function _delete(name) {
-	      var _this3 = this;
-
-	      this.context.io.run('detect:delete', { picture: name }, function (data) {
-	        _this3.setState({ img: _this3.state.img.filter(function (el) {
-	            return el.name !== name;
-	          }) });
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this4 = this;
-
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'ul',
-	          { style: _style.Ul },
-	          this.state.img.map(function (img, key) {
-	            return _react2.default.createElement(
-	              'li',
-	              { key: key, style: _style.Li },
-	              _react2.default.createElement('img', { src: img.src, style: _style.Img }),
-	              _react2.default.createElement(
-	                'div',
-	                { style: _style.Button },
-	                _react2.default.createElement(_font_icon2.default, { value: 'delete', style: _style.Icon, onClick: _this4.delete.bind(_this4, img.name) })
-	              )
-	            );
-	          })
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Detect;
-	}(_react.Component);
-
-	Detect.contextTypes = {
-	  io: _react2.default.PropTypes.object
-	};
-	exports.default = Detect;
-
-/***/ },
-/* 332 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	exports.Button = {
-	  'backgroundColor': 'rgba(0,0,0,0.5)',
-	  'position': 'absolute',
-	  bottom: '0',
-	  width: '100%'
-	};
-
-	exports.Ul = { 'listStyle': 'none' };
-
-	exports.Li = { position: 'relative', float: 'left', color: 'white' };
-
-	exports.Img = { display: 'block' };
-
-	exports.Icon = { cursor: 'pointer' };
-
-/***/ },
-/* 333 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	exports.TypeNotify = {
-	  'success': {
-	    backgroundColor: '#32e432'
-	  },
-	  'error': {
-	    backgroundColor: 'red'
-	  }
-	};
-
-	exports.StyleContainer = {
-	  position: 'absolute',
-	  top: 0,
-	  left: 0,
-	  width: '100%',
-	  display: 'flex',
-	  justifyContent: 'center'
-	};
-
-	exports.StyleMsg = {
-	  padding: '10px'
-	};
-
-/***/ },
-/* 334 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	exports.Width = {
-	  width: '100%',
-	  'maxWidth': '400px'
-	};
-	exports.Style = {
-	  background: 'black',
-	  display: 'block',
-	  margin: 'auto',
-	  marginTop: '25px',
-	  color: 'red',
-	  height: '300px',
-	  textAlign: 'center'
-	};
-
-/***/ },
-/* 335 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	exports.Icon = { color: 'white' };
 
 /***/ }
 /******/ ]);

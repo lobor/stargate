@@ -1,0 +1,1 @@
+module.exports = {"videodevice":"/dev/video1","stream_port":"8081","stream_localhost":"on"};

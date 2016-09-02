@@ -20,6 +20,7 @@ var Motion = function() {
   this.motionBin = 'motion';
 
   this.configFile = null;
+  this.config = {};
   this.motion = null;
 
   this.httpBackendStarted = false;
@@ -38,13 +39,15 @@ Motion.prototype.setConfig = function(config, pathFile, auth) {
   if (!config || !pathFile) {
     return;
   }
-  this.config = config;
+  Object.assign(this.config, config)
+  delete config.thread;
 	config = JSON.stringify(config)
 		.replace(/({|}|'|")/g, '')
 		.replace(/:/g, ' ')
 		.replace(/,/g, os.EOL)
     .replace(/username password/g, auth || 'username:password');
 
+  config += os.EOL + 'thread ' + this.config.thread.join(os.EOL + 'thread ');
 	fs.writeFileSync(pathFile, config);
 
 	this.configFile = pathFile;

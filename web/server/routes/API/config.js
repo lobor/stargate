@@ -3,35 +3,35 @@ var fs = require('fs');
 export default [
 	{
 		'name': 'config',
-		'dep': ['webcamRunning', 'webcamConnect', 'motion'],
+		'dep': ['webcam', 'motion'],
 		'call': function(data, fc){
 			let confMotion = this.motion.getConfig();
 			fc({
-				"response": {
-					'webcam': {
-						'stream': this.webcamRunning,
-						'connect': this.webcamConnect,
-						'record_video': confMotion.ffmpeg_output_movies,
-						'record_picture': confMotion.output_pictures,
-						'path': confMotion.target_dir
-					}
-				}
+				// "response": {
+				// 	'webcam': {
+				// 		'stream': this.webcamRunning,
+				// 		'connect': this.webcamConnect,
+				// 		'record_video': confMotion.ffmpeg_output_movies,
+				// 		'record_picture': confMotion.output_pictures,
+				// 		'path': confMotion.target_dir
+				// 	}
+				// }
 			});
 		}
 	},
 	{
 		'name': 'config:motion',
-		'dep': ['webcamRunning', 'webcamConnect', 'motion'],
+		'dep': ['webcam', 'motion'],
 		'call': function(data, fc){
 			let confMotion = this.motion.getConfig();
 			fc({
-				"response": {
-					'stream': this.webcamRunning,
-					'connect': this.webcamConnect,
-					'record_video': ('on' === confMotion.ffmpeg_output_movies) ? true : false,
-					'record_picture': ('on' === confMotion.output_pictures) ? true : false,
-					'path': confMotion.target_dir
-				}
+				webcam: this.webcam,
+				// 'stream': this.webcamRunning,
+				// 'connect': this.webcamConnect,
+				// 'nbWebcam': this.webcamNumber,
+				'record_video': ('on' === confMotion.ffmpeg_output_movies) ? true : false,
+				'record_picture': ('on' === confMotion.output_pictures) ? true : false,
+				// 'path': confMotion.target_dir
 			});
 		}
 	},
