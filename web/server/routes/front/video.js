@@ -24,6 +24,15 @@ export default [
 		'type': 'get',
 		'dep': ['webcamRunning', 'io'],
 		'call': function(...args){
+			// var spawn = require('electron-spawn');
+			//
+			// var electron = spawn('./test.js');
+			// electron.stderr.on('data', function (data) {
+			//   console.error(data.toString())
+			// })
+			// electron.stdout.on('data', function (data) {
+			//   console.log(data.toString())
+			// });
 			// if(!this.webcamRunning){
 			// 	args[1].status(404);
 			// 	args[1].end();

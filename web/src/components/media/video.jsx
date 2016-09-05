@@ -28,24 +28,23 @@ class Video extends Component{
 
     // var audioCtx = new AudioContext();
     // var source;
-    // // source = audioCtx.createBufferSource();
     // var first = false;
+    // // source = audioCtx.createBufferSource();
     // this.context.io.on('audio', function(data){
-    // //
     //   if(!first){
     //     source = audioCtx.createBufferSource();
     //     first = true;
     //     audioCtx.decodeAudioData(data, function(buffer) {
-    //       if(buffer)
+    //       if(buffer){
     //         source.buffer = buffer;
     //
-    //       source.connect(audioCtx.destination);
-    //       source.loop = false;
-    //       source.start(0);
+    //         source.connect(audioCtx.destination);
+    //         source.loop = true;
+    //         source.start();
+    //       }
+    //
     //     });
     //   }
-    // //
-    // //   // console.log(toto);
     // });
 
 
