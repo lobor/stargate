@@ -7,6 +7,16 @@ var util = require('util');
 var spawn = cp.spawn;
 var exec = cp.exec;
 
+
+
+function cleanJsonToConf(data){
+  return JSON.stringify(data)
+		.replace(/({|}|'|")/g, '')
+		.replace(/:/g, ' ')
+		.replace(/,/g, os.EOL);
+}
+
+
 var Motion = function() {
   const which = spawn('which', ['motion']);
 
@@ -20,12 +30,15 @@ var Motion = function() {
   this.motionBin = 'motion';
 
   this.configFile = null;
+  this.configPath = null;
+  this.camera = [];
   this.config = {};
   this.motion = null;
 
   this.httpBackendStarted = false;
   this.streamStarted = false;
 
+  return this;
 };
 
 util.inherits(Motion, Emitter);
@@ -35,22 +48,65 @@ Motion.prototype.getConfig = function() {
   return this.config;
 };
 
-Motion.prototype.setConfig = function(config, pathFile, auth) {
-  if (!config || !pathFile) {
+Motion.prototype.setConfigPath = function(path) {
+  this.configPath = path;
+  this.configFile = this.configPath + 'confcam.conf';
+  return this;
+};
+
+Motion.prototype.build = function() {
+  if (!this.config || !this.camera.length || !this.configFile) {
     return;
   }
-  Object.assign(this.config, config)
+
+  let config = {};
+  Object.assign(config, this.config)
   delete config.thread;
-	config = JSON.stringify(config)
-		.replace(/({|}|'|")/g, '')
-		.replace(/:/g, ' ')
-		.replace(/,/g, os.EOL)
-    .replace(/username password/g, auth || 'username:password');
 
+	config = cleanJsonToConf(config).replace(/username password/g, 'username:password');
   config += os.EOL + 'thread ' + this.config.thread.join(os.EOL + 'thread ');
-	fs.writeFileSync(pathFile, config);
+	fs.writeFileSync(this.configFile, config);
 
-	this.configFile = pathFile;
+
+  this.camera.forEach((el, i) => {
+    fs.writeFileSync(process.cwd() + '/tmp/cam' + i + '.conf', cleanJsonToConf(el));
+  })
+
+  return this;
+};
+
+Motion.prototype.addCam = function(dataCam) {
+  this.camera.push(dataCam);
+  if(undefined === this.config.thread){
+    this.config.thread = [];
+  }
+
+  this.config.thread.push(this.configPath + 'cam' + this.config.thread.length + '.conf');
+  return this;
+};
+
+Motion.prototype.getCamConfig = function(index) {
+  if(index){
+    return this.camera[index];
+  }
+  else{
+    return this.camera;
+  }
+};
+
+Motion.prototype.setCamConfig = function(data, index) {
+  if(index){
+    this.camera[index] = data;
+  }
+  else{
+    this.camera = data;
+  }
+
+  return this;
+};
+
+Motion.prototype.setConfig = function(config) {
+  Object.assign(this.config, config);
   return this;
 };
 

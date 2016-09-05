@@ -35,24 +35,6 @@ class Config extends Component {
     });
   }
 
-
-  handleChange(field, value) {
-    this
-      .context
-      .io
-      .run('config:post', {
-        value: value,
-        name: field
-      }, (res) => {
-        if(res.response){
-          this.setState(res.response);
-        }
-        else{
-          this.context.router.push('/user/login');
-        }
-      });
-  }
-
   handleTabChange(index){
     this.setState({tabActive: index});
   }
@@ -60,21 +42,6 @@ class Config extends Component {
 	render() {
     return (
       <Tabs index={this.state.tabActive} onChange={this.handleTabChange}>
-        <Tab label='Fonctionnalités'>
-          <List>
-            <ListDivider />
-            <ListItem
-              disabled={!this.state.webcam.connect}
-              caption='Video'
-              legend={ this.state.webcam.connect ? 'Webcam' : 'Webcam not connected' }
-              leftIcon='videocam'
-              rightActions={[
-                <Switch disabled={!this.state.webcam.connect} key="webcam" checked={this.state.webcam.stream} onChange={this.handleChange.bind(this, 'webcam')} />
-              ]}
-            />
-            <ListDivider />
-          </List>
-        </Tab>
         <Tab label='Video'>
           <FormMotion />
         </Tab>

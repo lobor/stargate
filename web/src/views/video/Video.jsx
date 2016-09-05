@@ -20,7 +20,7 @@ class Video extends Component {
 		if(this.state.webcam.length){
 			html = [];
 			this.state.webcam.forEach((el, i) => {
-				html.push(<MediaVideo key={i} port={el.port} />);
+				html.push(<MediaVideo key={i} port={el.stream_port} />);
 			})
 		}
 		else{

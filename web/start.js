@@ -4,6 +4,7 @@ var Server = require('./server/server');
 
 var exec = require('child_process').exec;
 var motion = require('./server/utils/motion');
+var toolbox = require('./server/utils/toolbox');
 var fs = require('fs');
 var os = require('os');
 
@@ -14,6 +15,7 @@ Object.assign(process.env, ConfigEnv);
 
 let server = new Server();
 
+
 exec('ls /dev/video*', (error, stdout, stderr) => {
 	let webCam = stdout.split('\n'); // output => ['/dev/video0', '/dev/video1', '']
 
@@ -22,31 +24,42 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 
 	let config = {
 		webcam: [],
-		motion: new motion()
+		motion: new motion().setConfigPath(process.cwd() + '/tmp/'),
+		toolbox: toolbox
 	};
 
-	ConfigMotion.thread = [];
 	webCam.forEach((el, i) => {
-		let configJson = {
-			videodevice: el,
-			stream_port: '808' + (i + 1),
-			stream_localhost: 'on'
-		};
+		let configJson = {};
+		try {
+			configJson = require(process.cwd() + '/config/motion/camera/cam' + i + '.js')
+		} catch (e) {
+			configJson = {
+				videodevice: el,
+				stream_port: '808' + (i + 1),
+				stream_localhost: 'on',
+				target_dir: process.cwd() + '/visio/detect/camera' + i
+			};
+
+			config.toolbox.writeCameraJs(configJson, i)
+		}
+
 		config.webcam.push({
-			running: false,
-			name: el,
-			port: configJson.stream_port
+			videodevice: el,
+			stream_port: configJson.stream_port,
+			target_dir: configJson.target_dir
 		});
 
-		fs.writeFileSync(process.cwd() + '/config/motion/cam' + i + '.js', 'module.exports = ' + JSON.stringify(configJson) + ';');
-		configJson = JSON.stringify(configJson)
-			.replace(/({|}|'|")/g, '')
-			.replace(/:/g, ' ')
-			.replace(/,/g, os.EOL);
+		config.motion.addCam(configJson);
 
-		fs.writeFileSync(process.cwd() + '/tmp/cam' + i + '.conf', configJson);
 
-		ConfigMotion.thread.push(process.cwd() + '/tmp/cam' + i + '.conf');
+		// configJson = JSON.stringify(configJson)
+		// 	.replace(/({|}|'|")/g, '')
+		// 	.replace(/:/g, ' ')
+		// 	.replace(/,/g, os.EOL);
+		//
+		// fs.writeFileSync(process.cwd() + '/tmp/cam' + i + '.conf', configJson);
+		//
+		// ConfigMotion.thread.push(process.cwd() + '/tmp/cam' + i + '.conf');
 	});
 
 	// create directory tmp if not exist
@@ -58,7 +71,8 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 
 	config
 		.motion
-		.setConfig(ConfigMotion, process.cwd() + '/tmp/confcam.conf', ConfigAdmin.user + ':' + ConfigAdmin.password);
+		.setConfig(ConfigMotion, ConfigAdmin.user + ':' + ConfigAdmin.password)
+		.build();
 
 	if(!error){
 		config.motion.start();

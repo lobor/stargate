@@ -48,12 +48,24 @@ class Config extends Component{
     this._notify = this.refs.notification;
   }
 
-  handleChange(name, value) {
-    this.setState({[name]: value});
+  handleChange(name, index, value) {
+    if(typeof value !== 'object'){
+      let webcam = this.state.webcam;
+      webcam[index][name] = value;
+      this.setState({webcam: webcam});
+    }
+    else{
+      this.setState({[name]: index});
+    }
   }
 
-	submit(e){
+	submit(index, e){
+    if(!e){
+      e = index;
+    }
     e.preventDefault();
+    // console.log(index);
+    // console.log(this.state.webcam[index]);
     this.context.io.run('config:motion:post', this.state, (res) => {
       if(res.response){
         this._notify.addNotify({
@@ -62,22 +74,15 @@ class Config extends Component{
         });
       }
       else{
+        this._notify.addNotify({
+          msg: 'An error has been occured',
+          type: 'error'
+        });
       }
     });
 	}
 
   render(){
-    const countries = [
-      { value: 'EN-gb', label: 'England' },
-    ];
-    let cam = [];
-    for(let i = 0; i < this.state.nbWebcam; i++){cam.push(i);}
-    // if(this.state.nbWebcam > 1){
-    //   cam = <Button type="submit" label="Save" raised primary />
-    // }
-
-
-
     return (
       <Tabs index={this.state.tabActive} onChange={this.handleTabChange}>
         <Notify ref="notification" />
@@ -86,22 +91,20 @@ class Config extends Component{
             <List>
               <ListDivider />
               <ListItem
-                disabled={!this.state.connect}
                 caption='Record video'
                 legend='Record on motion detection'
                 leftIcon='fiber_manual_record'
                 rightActions={[
-                  <Switch disabled={!this.state.connect} key="record_video" checked={this.state.record_video} onChange={this.handleChange.bind(this, 'record_video')} />
+                  <Switch key="record_video" checked={this.state.record_video} onChange={this.handleChange.bind(this, 'record_video')} />
                 ]}
               />
               <ListDivider />
               <ListItem
-                disabled={!this.state.connect}
                 caption='Record picture'
                 legend='Record on motion detection'
                 leftIcon='fiber_manual_record'
                 rightActions={[
-                  <Switch disabled={!this.state.connect} key="record_picture" checked={this.state.record_picture} onChange={this.handleChange.bind(this, 'record_picture')} />
+                  <Switch key="record_picture" checked={this.state.record_picture} onChange={this.handleChange.bind(this, 'record_picture')} />
                 ]}
               />
               <ListDivider />
@@ -110,16 +113,16 @@ class Config extends Component{
           </form>
         </Tab>
         {this.state.webcam.map((el, i) => {
-          let name = 'Webcam ' + (i + 1)
+          let name = 'Camera ' + (i + 1)
           return (
             <Tab label={name} key={i + 1}>
-              <form method="POST" className="card__container bg-blue-light" onSubmit={this.submit.bind(this)}>
+              <form method="POST" className="card__container bg-blue-light" onSubmit={this.submit.bind(this, i)}>
                 <List>
                   <ListItem
                     caption='Path where save file'
                     leftIcon='folder'
                     rightActions={[
-                      <Input type='text' key="path" label='/tmp/motion' onChange={this.handleChange.bind(this, 'path')} value={this.state.path} />
+                      <Input type='text' key="path" label='/tmp/motion' onChange={this.handleChange.bind(this, 'target_dir', i)} value={this.state.webcam[i].target_dir} />
                     ]}
                   />
                   <ListDivider />

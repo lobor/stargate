@@ -20866,11 +20866,11 @@
 
 	var _Config2 = _interopRequireDefault(_Config);
 
-	var _PageNotFound = __webpack_require__(330);
+	var _PageNotFound = __webpack_require__(333);
 
 	var _PageNotFound2 = _interopRequireDefault(_PageNotFound);
 
-	var _Detect = __webpack_require__(331);
+	var _Detect = __webpack_require__(334);
 
 	var _Detect2 = _interopRequireDefault(_Detect);
 
@@ -32395,7 +32395,7 @@
 				if (this.state.webcam.length) {
 					html = [];
 					this.state.webcam.forEach(function (el, i) {
-						html.push(_react2.default.createElement(_video2.default, { key: i, port: el.port }));
+						html.push(_react2.default.createElement(_video2.default, { key: i, port: el.stream_port }));
 					});
 				} else {
 					html = 'Thea are not webcam';
@@ -32804,22 +32804,6 @@
 	      });
 	    }
 	  }, {
-	    key: 'handleChange',
-	    value: function handleChange(field, value) {
-	      var _this3 = this;
-
-	      this.context.io.run('config:post', {
-	        value: value,
-	        name: field
-	      }, function (res) {
-	        if (res.response) {
-	          _this3.setState(res.response);
-	        } else {
-	          _this3.context.router.push('/user/login');
-	        }
-	      });
-	    }
-	  }, {
 	    key: 'handleTabChange',
 	    value: function handleTabChange(index) {
 	      this.setState({ tabActive: index });
@@ -32830,23 +32814,6 @@
 	      return _react2.default.createElement(
 	        _tabs.Tabs,
 	        { index: this.state.tabActive, onChange: this.handleTabChange },
-	        _react2.default.createElement(
-	          _tabs.Tab,
-	          { label: 'Fonctionnalités' },
-	          _react2.default.createElement(
-	            _list.List,
-	            null,
-	            _react2.default.createElement(_list.ListDivider, null),
-	            _react2.default.createElement(_list.ListItem, {
-	              disabled: !this.state.webcam.connect,
-	              caption: 'Video',
-	              legend: this.state.webcam.connect ? 'Webcam' : 'Webcam not connected',
-	              leftIcon: 'videocam',
-	              rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.webcam.connect, key: 'webcam', checked: this.state.webcam.stream, onChange: this.handleChange.bind(this, 'webcam') })]
-	            }),
-	            _react2.default.createElement(_list.ListDivider, null)
-	          )
-	        ),
 	        _react2.default.createElement(
 	          _tabs.Tab,
 	          { label: 'Video' },
@@ -33808,6 +33775,8 @@
 	  value: true
 	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(167);
@@ -33834,7 +33803,7 @@
 
 	var _font_icon2 = _interopRequireDefault(_font_icon);
 
-	var _dropdown = __webpack_require__(333);
+	var _dropdown = __webpack_require__(330);
 
 	var _dropdown2 = _interopRequireDefault(_dropdown);
 
@@ -33905,38 +33874,44 @@
 	    }
 	  }, {
 	    key: 'handleChange',
-	    value: function handleChange(name, value) {
-	      this.setState(_defineProperty({}, name, value));
+	    value: function handleChange(name, index, value) {
+	      if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) !== 'object') {
+	        var webcam = this.state.webcam;
+	        webcam[index][name] = value;
+	        this.setState({ webcam: webcam });
+	      } else {
+	        this.setState(_defineProperty({}, name, index));
+	      }
 	    }
 	  }, {
 	    key: 'submit',
-	    value: function submit(e) {
+	    value: function submit(index, e) {
 	      var _this3 = this;
 
+	      if (!e) {
+	        e = index;
+	      }
 	      e.preventDefault();
+	      // console.log(index);
+	      // console.log(this.state.webcam[index]);
 	      this.context.io.run('config:motion:post', this.state, function (res) {
 	        if (res.response) {
 	          _this3._notify.addNotify({
 	            msg: 'Has been saved',
 	            type: 'success'
 	          });
-	        } else {}
+	        } else {
+	          _this3._notify.addNotify({
+	            msg: 'An error has been occured',
+	            type: 'error'
+	          });
+	        }
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this4 = this;
-
-	      var countries = [{ value: 'EN-gb', label: 'England' }];
-	      var cam = [];
-	      for (var i = 0; i < this.state.nbWebcam; i++) {
-	        cam.push(i);
-	      }
-	      // if(this.state.nbWebcam > 1){
-	      //   cam = <Button type="submit" label="Save" raised primary />
-	      // }
-
 
 	      return _react2.default.createElement(
 	        _tabs.Tabs,
@@ -33953,19 +33928,17 @@
 	              null,
 	              _react2.default.createElement(_list.ListDivider, null),
 	              _react2.default.createElement(_list.ListItem, {
-	                disabled: !this.state.connect,
 	                caption: 'Record video',
 	                legend: 'Record on motion detection',
 	                leftIcon: 'fiber_manual_record',
-	                rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.connect, key: 'record_video', checked: this.state.record_video, onChange: this.handleChange.bind(this, 'record_video') })]
+	                rightActions: [_react2.default.createElement(_switch2.default, { key: 'record_video', checked: this.state.record_video, onChange: this.handleChange.bind(this, 'record_video') })]
 	              }),
 	              _react2.default.createElement(_list.ListDivider, null),
 	              _react2.default.createElement(_list.ListItem, {
-	                disabled: !this.state.connect,
 	                caption: 'Record picture',
 	                legend: 'Record on motion detection',
 	                leftIcon: 'fiber_manual_record',
-	                rightActions: [_react2.default.createElement(_switch2.default, { disabled: !this.state.connect, key: 'record_picture', checked: this.state.record_picture, onChange: this.handleChange.bind(this, 'record_picture') })]
+	                rightActions: [_react2.default.createElement(_switch2.default, { key: 'record_picture', checked: this.state.record_picture, onChange: this.handleChange.bind(this, 'record_picture') })]
 	              }),
 	              _react2.default.createElement(_list.ListDivider, null)
 	            ),
@@ -33973,20 +33946,20 @@
 	          )
 	        ),
 	        this.state.webcam.map(function (el, i) {
-	          var name = 'Webcam ' + (i + 1);
+	          var name = 'Camera ' + (i + 1);
 	          return _react2.default.createElement(
 	            _tabs.Tab,
 	            { label: name, key: i + 1 },
 	            _react2.default.createElement(
 	              'form',
-	              { method: 'POST', className: 'card__container bg-blue-light', onSubmit: _this4.submit.bind(_this4) },
+	              { method: 'POST', className: 'card__container bg-blue-light', onSubmit: _this4.submit.bind(_this4, i) },
 	              _react2.default.createElement(
 	                _list.List,
 	                null,
 	                _react2.default.createElement(_list.ListItem, {
 	                  caption: 'Path where save file',
 	                  leftIcon: 'folder',
-	                  rightActions: [_react2.default.createElement(_input2.default, { type: 'text', key: 'path', label: '/tmp/motion', onChange: _this4.handleChange.bind(_this4, 'path'), value: _this4.state.path })]
+	                  rightActions: [_react2.default.createElement(_input2.default, { type: 'text', key: 'path', label: '/tmp/motion', onChange: _this4.handleChange.bind(_this4, 'target_dir', i), value: _this4.state.webcam[i].target_dir })]
 	                }),
 	                _react2.default.createElement(_list.ListDivider, null)
 	              ),
@@ -34016,206 +33989,17 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(167);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var PageNotFound = function (_Component) {
-	  _inherits(PageNotFound, _Component);
-
-	  function PageNotFound() {
-	    _classCallCheck(this, PageNotFound);
-
-	    return _possibleConstructorReturn(this, (PageNotFound.__proto__ || Object.getPrototypeOf(PageNotFound)).apply(this, arguments));
-	  }
-
-	  _createClass(PageNotFound, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        'Not found'
-	      );
-	    }
-	  }]);
-
-	  return PageNotFound;
-	}(_react.Component);
-
-	PageNotFound.contextTypes = {
-	  router: _react2.default.PropTypes.object.isRequired
-	};
-	exports.default = PageNotFound;
-
-/***/ },
-/* 331 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(167);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _font_icon = __webpack_require__(307);
-
-	var _font_icon2 = _interopRequireDefault(_font_icon);
-
-	var _style = __webpack_require__(332);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Detect = function (_Component) {
-	  _inherits(Detect, _Component);
-
-	  function Detect() {
-	    var _ref;
-
-	    _classCallCheck(this, Detect);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    var _this = _possibleConstructorReturn(this, (_ref = Detect.__proto__ || Object.getPrototypeOf(Detect)).call.apply(_ref, [this].concat(args)));
-
-	    _this.state = {
-	      img: []
-	    };
-	    return _this;
-	  }
-
-	  _createClass(Detect, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      this.context.io.run('detect:get', {}, function (data) {
-	        _this2.setState({
-	          img: data.map(function (el) {
-	            return { src: '/visio/' + el, name: el };
-	          })
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'click',
-	    value: function click(e) {
-	      this.refs.src.src = e.target.innerHTML;
-	      this.refs.player.play();
-	    }
-	  }, {
-	    key: 'delete',
-	    value: function _delete(name) {
-	      var _this3 = this;
-
-	      this.context.io.run('detect:delete', { picture: name }, function (data) {
-	        _this3.setState({ img: _this3.state.img.filter(function (el) {
-	            return el.name !== name;
-	          }) });
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this4 = this;
-
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'ul',
-	          { style: _style.Ul },
-	          this.state.img.map(function (img, key) {
-	            return _react2.default.createElement(
-	              'li',
-	              { key: key, style: _style.Li },
-	              _react2.default.createElement('img', { src: img.src, style: _style.Img }),
-	              _react2.default.createElement(
-	                'div',
-	                { style: _style.Button },
-	                _react2.default.createElement(_font_icon2.default, { value: 'delete', style: _style.Icon, onClick: _this4.delete.bind(_this4, img.name) })
-	              )
-	            );
-	          })
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Detect;
-	}(_react.Component);
-
-	Detect.contextTypes = {
-	  io: _react2.default.PropTypes.object
-	};
-	exports.default = Detect;
-
-/***/ },
-/* 332 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	exports.Button = {
-	  'backgroundColor': 'rgba(0,0,0,0.5)',
-	  'position': 'absolute',
-	  bottom: '0',
-	  width: '100%'
-	};
-
-	exports.Ul = { 'listStyle': 'none' };
-
-	exports.Li = { position: 'relative', float: 'left', color: 'white' };
-
-	exports.Img = { display: 'block' };
-
-	exports.Icon = { cursor: 'pointer' };
-
-/***/ },
-/* 333 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
 	exports.Dropdown = undefined;
 
 	var _reactCssThemr = __webpack_require__(238);
 
 	var _identifiers = __webpack_require__(242);
 
-	var _Dropdown = __webpack_require__(334);
+	var _Dropdown = __webpack_require__(331);
 
 	var _input = __webpack_require__(304);
 
-	var _theme = __webpack_require__(335);
+	var _theme = __webpack_require__(332);
 
 	var _theme2 = _interopRequireDefault(_theme);
 
@@ -34228,7 +34012,7 @@
 	exports.Dropdown = ThemedDropdown;
 
 /***/ },
-/* 334 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34498,11 +34282,200 @@
 	exports.Dropdown = Dropdown;
 
 /***/ },
-/* 335 */
+/* 332 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 	module.exports = {"dropdown":"co-4MRoly8FOwxUBqwGN5","active":"_31xyK1Jh0GKeFOrfBKVdDB","values":"_1jS4gihUpwGQxFmpzl28YP","label":"_1lqXIaELcQNCu6oKV214JM","value":"mflIwpS3uRp9Wu21n2aoT","up":"_3kWOPTDR3DQhtEGEmXbMRb","disabled":"_3yAxBqMomAz0LtxOrtG9yU","input":"_3wRmHCvYPYqOCCzjJC29Tn","field":"_1elDxyLQIuvlco8-TY1KWt","errored":"w5ZKso1A0S9dKOU4SFC-j","templateValue":"_3if5oiIqflF832N5AG6nrl","error":"_2QR6bMeE1OmYGQs1H428y2","selected":"_2Uc3rTeBxmjFANnmypvzQ1"};
+
+/***/ },
+/* 333 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(167);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PageNotFound = function (_Component) {
+	  _inherits(PageNotFound, _Component);
+
+	  function PageNotFound() {
+	    _classCallCheck(this, PageNotFound);
+
+	    return _possibleConstructorReturn(this, (PageNotFound.__proto__ || Object.getPrototypeOf(PageNotFound)).apply(this, arguments));
+	  }
+
+	  _createClass(PageNotFound, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        'Not found'
+	      );
+	    }
+	  }]);
+
+	  return PageNotFound;
+	}(_react.Component);
+
+	PageNotFound.contextTypes = {
+	  router: _react2.default.PropTypes.object.isRequired
+	};
+	exports.default = PageNotFound;
+
+/***/ },
+/* 334 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(167);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _font_icon = __webpack_require__(307);
+
+	var _font_icon2 = _interopRequireDefault(_font_icon);
+
+	var _style = __webpack_require__(335);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Detect = function (_Component) {
+	  _inherits(Detect, _Component);
+
+	  function Detect() {
+	    var _ref;
+
+	    _classCallCheck(this, Detect);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_ref = Detect.__proto__ || Object.getPrototypeOf(Detect)).call.apply(_ref, [this].concat(args)));
+
+	    _this.state = {
+	      img: []
+	    };
+	    return _this;
+	  }
+
+	  _createClass(Detect, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      this.context.io.run('detect:get', {}, function (data) {
+	        _this2.setState({
+	          img: data.map(function (el) {
+	            return { src: '/visio/' + el, name: el };
+	          })
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'click',
+	    value: function click(e) {
+	      this.refs.src.src = e.target.innerHTML;
+	      this.refs.player.play();
+	    }
+	  }, {
+	    key: 'delete',
+	    value: function _delete(name) {
+	      var _this3 = this;
+
+	      this.context.io.run('detect:delete', { picture: name }, function (data) {
+	        _this3.setState({ img: _this3.state.img.filter(function (el) {
+	            return el.name !== name;
+	          }) });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this4 = this;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'ul',
+	          { style: _style.Ul },
+	          this.state.img.map(function (img, key) {
+	            return _react2.default.createElement(
+	              'li',
+	              { key: key, style: _style.Li },
+	              _react2.default.createElement('img', { src: img.src, style: _style.Img }),
+	              _react2.default.createElement(
+	                'div',
+	                { style: _style.Button },
+	                _react2.default.createElement(_font_icon2.default, { value: 'delete', style: _style.Icon, onClick: _this4.delete.bind(_this4, img.name) })
+	              )
+	            );
+	          })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Detect;
+	}(_react.Component);
+
+	Detect.contextTypes = {
+	  io: _react2.default.PropTypes.object
+	};
+	exports.default = Detect;
+
+/***/ },
+/* 335 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.Button = {
+	  'backgroundColor': 'rgba(0,0,0,0.5)',
+	  'position': 'absolute',
+	  bottom: '0',
+	  width: '100%'
+	};
+
+	exports.Ul = { 'listStyle': 'none' };
+
+	exports.Li = { position: 'relative', float: 'left', color: 'white' };
+
+	exports.Img = { display: 'block' };
+
+	exports.Icon = { cursor: 'pointer' };
 
 /***/ }
 /******/ ]);
