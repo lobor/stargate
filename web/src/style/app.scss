@@ -121,6 +121,25 @@
 	}
 
 
+	.container-upload{
+		position: relative;
+    height: 3.6rem;
+		.fake-button{
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			z-index: 1;
+			width: 50%;
+		}
 
-
+		.upload{
+			cursor: pointer;
+			width: 50%;
+	    height: 3.6rem;
+			position: relative;
+			text-align: right;
+			opacity: 0;
+			z-index: 2;
+		}
+	}
 }

@@ -35,7 +35,6 @@ class Config extends Component{
   componentWillMount(){
     this.context.io.run('config:motion', {}, (res) => {
       if(res){
-        console.log(res);
         this.setState(res);
       }
       else{

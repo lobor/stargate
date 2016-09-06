@@ -1,6 +1,6 @@
 node_modules
-visio/video/*
-visio/detect/*
+visio/detect/**
+visio/collections/**
 config/motion/camera/*.js
 config/web/admin.js
 config/web/environnement.js

@@ -641,6 +641,24 @@ header button {
 
 [class*="flex"].between {
   justify-content: space-between; }
+
+.container-upload {
+  position: relative;
+  height: 3.6rem; }
+  .container-upload .fake-button {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+    width: 50%; }
+  .container-upload .upload {
+    cursor: pointer;
+    width: 50%;
+    height: 3.6rem;
+    position: relative;
+    text-align: right;
+    opacity: 0;
+    z-index: 2; }
 ._2nWQbf9_gir4yr9Y6Kohm8 {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   display: flex;

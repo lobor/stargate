@@ -7,6 +7,7 @@ import {Tab, Tabs} from 'react-toolbox/lib/tabs';
 
 import FormChangePassword from './../../components/forms/user/changePassword.jsx';
 import FormMotion from './../../components/forms/motion/config.jsx';
+import ModelFR from './../../components/faceRecognition/model.jsx';
 
 class Config extends Component {
   constructor(...args){
@@ -47,6 +48,9 @@ class Config extends Component {
         </Tab>
         <Tab label='Admin'>
           <FormChangePassword />
+        </Tab>
+        <Tab label='Face recognition'>
+          <ModelFR />
         </Tab>
       </Tabs>
 

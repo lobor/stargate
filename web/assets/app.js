@@ -20874,6 +20874,14 @@
 
 	var _Detect2 = _interopRequireDefault(_Detect);
 
+	var _Model = __webpack_require__(337);
+
+	var _Model2 = _interopRequireDefault(_Model);
+
+	var _Add = __webpack_require__(340);
+
+	var _Add2 = _interopRequireDefault(_Add);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createElement(
@@ -20885,7 +20893,17 @@
 			_react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default, auth: ['user'] }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'video', auth: ['user'], component: _Video2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'video/detect', auth: ['user'], component: _Detect2.default }),
-			_react2.default.createElement(_reactRouter.Route, { path: 'config', auth: ['user'], component: _Config2.default }),
+			_react2.default.createElement(
+				_reactRouter.Route,
+				{ path: 'config' },
+				_react2.default.createElement(_reactRouter.IndexRoute, { component: _Config2.default }),
+				_react2.default.createElement(
+					_reactRouter.Route,
+					{ path: 'facerecognition' },
+					_react2.default.createElement(_reactRouter.Route, { path: 'add', component: _Add2.default }),
+					_react2.default.createElement(_reactRouter.Route, { path: 'model', component: _Model2.default })
+				)
+			),
 			_react2.default.createElement(
 				_reactRouter.Route,
 				{ path: 'user/' },
@@ -32753,6 +32771,10 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
+	var _model = __webpack_require__(336);
+
+	var _model2 = _interopRequireDefault(_model);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32822,6 +32844,11 @@
 	          _tabs.Tab,
 	          { label: 'Admin' },
 	          _react2.default.createElement(_changePassword2.default, null)
+	        ),
+	        _react2.default.createElement(
+	          _tabs.Tab,
+	          { label: 'Face recognition' },
+	          _react2.default.createElement(_model2.default, null)
 	        )
 	      );
 	    }
@@ -33859,7 +33886,6 @@
 
 	      this.context.io.run('config:motion', {}, function (res) {
 	        if (res) {
-	          console.log(res);
 	          _this2.setState(res);
 	        } else {
 	          _this2.context.router.push('/user/login');
@@ -34475,6 +34501,398 @@
 	exports.Img = { display: 'block' };
 
 	exports.Icon = { cursor: 'pointer' };
+
+/***/ },
+/* 336 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(167);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _list = __webpack_require__(264);
+
+	var _ListSubHeader = __webpack_require__(338);
+
+	var _ListSubHeader2 = _interopRequireDefault(_ListSubHeader);
+
+	var _button = __webpack_require__(253);
+
+	var _notify = __webpack_require__(327);
+
+	var _notify2 = _interopRequireDefault(_notify);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Config = function (_Component) {
+	  _inherits(Config, _Component);
+
+	  function Config() {
+	    var _ref;
+
+	    _classCallCheck(this, Config);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_ref = Config.__proto__ || Object.getPrototypeOf(Config)).call.apply(_ref, [this].concat(args)));
+
+	    _this.state = {
+	      tabActive: 0,
+	      model: []
+	    };
+
+	    _this.goToAdd = _this.goToAdd.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Config, [{
+	    key: 'handleTabChange',
+	    value: function handleTabChange(index) {
+	      this.setState({ tabActive: index });
+	    }
+	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+
+	      this.context.io.run('fr:list', {}, function (res) {
+	        _this2.setState({ model: res });
+	      });
+	    }
+	  }, {
+	    key: 'goToAdd',
+	    value: function goToAdd() {
+	      this.context.router.push('/config/facerecognition/add');
+	    }
+	  }, {
+	    key: 'goTo',
+	    value: function goTo(id) {
+	      this.context.router.push({
+	        'pathname': '/config/facerecognition/model',
+	        state: { id: id }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
+
+	      return _react2.default.createElement(
+	        _list.List,
+	        { selectable: true, ripple: true },
+	        _react2.default.createElement(_ListSubHeader2.default, { caption: 'Models', rightActions: _react2.default.createElement(_button.Button, { type: 'submit', label: 'Add model', raised: true, primary: true, onClick: this.goToAdd }) }),
+	        _react2.default.createElement(_list.ListDivider, null),
+	        this.state.model.map(function (e) {
+	          return _react2.default.createElement(_list.ListItem, { caption: e, key: e, leftIcon: 'perm_identity', onClick: _this3.goTo.bind(_this3, e) });
+	        })
+	      );
+	    }
+	  }]);
+
+	  return Config;
+	}(_react.Component);
+
+	Config.contextTypes = {
+	  router: _react2.default.PropTypes.object.isRequired,
+	  io: _react2.default.PropTypes.object
+	};
+
+	exports.default = Config;
+
+/***/ },
+/* 337 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(167);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ModelFR = function (_Component) {
+	  _inherits(ModelFR, _Component);
+
+	  function ModelFR() {
+	    var _ref;
+
+	    _classCallCheck(this, ModelFR);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_ref = ModelFR.__proto__ || Object.getPrototypeOf(ModelFR)).call.apply(_ref, [this].concat(args)));
+
+	    _this.state = {
+	      img: []
+	    };
+	    return _this;
+	  }
+
+	  _createClass(ModelFR, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+
+	      this.context.io.run('fr:get', { id: this.props.location.state.id }, function (data) {
+	        _this2.setState({ img: data });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        this.state.img.map(function (el, i) {
+	          var url = '/facerecognition/img/' + _this3.props.location.state.id + '/' + el;
+	          return _react2.default.createElement('img', { key: i, src: url, width: '200' });
+	        })
+	      );
+	    }
+	  }]);
+
+	  return ModelFR;
+	}(_react.Component);
+
+	ModelFR.contextTypes = {
+	  router: _react2.default.PropTypes.object.isRequired,
+	  io: _react2.default.PropTypes.object
+	};
+
+	exports.default = ModelFR;
+
+/***/ },
+/* 338 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(167);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _list = __webpack_require__(264);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ListSubHeaderCustom = function (_Component) {
+	  _inherits(ListSubHeaderCustom, _Component);
+
+	  function ListSubHeaderCustom() {
+	    _classCallCheck(this, ListSubHeaderCustom);
+
+	    return _possibleConstructorReturn(this, (ListSubHeaderCustom.__proto__ || Object.getPrototypeOf(ListSubHeaderCustom)).apply(this, arguments));
+	  }
+
+	  _createClass(ListSubHeaderCustom, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { style: { display: "flex", justifyContent: "space-between" } },
+	        _react2.default.createElement(_list.ListSubHeader, { caption: this.props.caption }),
+	        this.props.rightActions
+	      );
+	    }
+	  }]);
+
+	  return ListSubHeaderCustom;
+	}(_react.Component);
+
+	exports.default = ListSubHeaderCustom;
+
+/***/ },
+/* 339 */,
+/* 340 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(167);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _input = __webpack_require__(304);
+
+	var _input2 = _interopRequireDefault(_input);
+
+	var _button = __webpack_require__(253);
+
+	var _notify = __webpack_require__(327);
+
+	var _notify2 = _interopRequireDefault(_notify);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddFR = function (_Component) {
+	  _inherits(AddFR, _Component);
+
+	  function AddFR() {
+	    var _ref;
+
+	    _classCallCheck(this, AddFR);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_ref = AddFR.__proto__ || Object.getPrototypeOf(AddFR)).call.apply(_ref, [this].concat(args)));
+
+	    _this.state = {
+	      name: '',
+	      images: [],
+	      preview: []
+	    };
+
+	    _this.submit = _this.submit.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(AddFR, [{
+	    key: 'change',
+	    value: function change(name, value, e) {
+	      if (name === 'name') {
+	        this.setState({ name: value });
+	      } else {
+	        this.setState({ images: value.target.files, preview: [] });
+
+	        var file;
+	        var reader = [];
+	        var index = 0;
+
+	        for (var i = 0, len = value.target.files.length; i < len; i++) {
+	          file = value.target.files[i];
+	          reader.push(new FileReader());
+	          index = reader.length - 1;
+	          reader[index].onloadend = function (t, fileReady) {
+	            var toto = this.state.preview;
+
+	            toto.push({
+	              data: reader[t].result,
+	              name: fileReady.name
+	            });
+	            this.setState({ preview: toto });
+	          }.bind(this, index, file);
+
+	          if (file) {
+	            reader[index].readAsDataURL(file);
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this._notify = this.refs.notification;
+	    }
+	  }, {
+	    key: 'submit',
+	    value: function submit(e) {
+	      var _this2 = this;
+
+	      e.preventDefault();
+	      this.context.io.run('fr:upload', { name: this.state.name, files: this.state.preview }, function (res) {
+	        if (res.state) {
+	          _this2._notify.addNotify({
+	            msg: 'Has been saved',
+	            type: 'success'
+	          });
+	          _this2.context.router.push('/config');
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_notify2.default, { ref: 'notification' }),
+	        _react2.default.createElement(
+	          'form',
+	          null,
+	          _react2.default.createElement(_input2.default, { type: 'text', label: 'Name of model', name: 'name', onChange: this.change.bind(this, 'name') }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container-upload' },
+	            _react2.default.createElement('input', { type: 'file', id: 'fileinput', multiple: 'multiple', className: 'upload', accept: 'image/*', onChange: this.change.bind(this, 'img') }),
+	            _react2.default.createElement(_button.Button, { className: 'fake-button', label: 'Add picture', raised: true, primary: true, onClick: this.goToAdd })
+	          ),
+	          this.state.preview.map(function (el, i) {
+	            return _react2.default.createElement('img', { src: el.data, key: i, width: '100' });
+	          }),
+	          _react2.default.createElement(_button.Button, { type: 'submit', label: 'Create model', raised: true, primary: true, onClick: this.submit })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AddFR;
+	}(_react.Component);
+
+	AddFR.contextTypes = {
+	  router: _react2.default.PropTypes.object.isRequired,
+	  io: _react2.default.PropTypes.object
+	};
+
+	exports.default = AddFR;
 
 /***/ }
 /******/ ]);
