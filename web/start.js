@@ -3,6 +3,7 @@ require('babel/register');
 var Server = require('./server/server');
 
 var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var motion = require('./server/utils/motion');
 var toolbox = require('./server/utils/toolbox');
 var fs = require('fs');
@@ -75,7 +76,33 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 		.build();
 
 	if(!error){
-		config.motion.start();
+		var ls = spawn('gst-launch-1.0', [
+			'v4l2src', 'device=/dev/video0',
+			'!', 'facedetect',
+			'!', 'motioncells',
+			'!', 'videoconvert',
+			'!', 'videoscale',
+			'!', 'video/x-raw,width=320,height=240',
+			'!', 'theoraenc',
+			'!', 'oggmux',
+			'!', 'tcpserversink', 'host=127.0.0.1', 'port=9000'
+		])
+
+		ls.stdout.on('data', (data) => {
+		  console.log(`stdout: ${data}`);
+		});
+
+		ls.stderr.on('data', (data) => {
+			// console.log(data.toString('utf8').match(/facedetect/g));
+			if(data.toString('utf8').match(/gst_bin_change_state_func/g) && data.toString('utf8').match(/facedetect/g))
+				// console.log(data.toString('utf8'));
+		  	console.log(`stderr: ${data}`);
+		});
+		//
+		ls.on('close', (code) => {
+		  console.log(`child process exited with code ${code}`);
+		});
+		// config.motion.start();
 	}
 
 	process.on('exit', function (){

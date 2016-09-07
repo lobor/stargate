@@ -96,9 +96,10 @@ class Video extends Component{
     let url = '/video/cam?port=' + this.props.port
     return (
       <div>
-        <img style={Style} alt={this.state.msg} src={url} onError={this.error} />
+        <video src="http://localhost:9000" style={Style} autoPlay></video>
       </div>
     )
+    // <img style={Style} alt={this.state.msg} src={url} onError={this.error} />
     // <audio ref="audio" controls></audio>
   }
 }
