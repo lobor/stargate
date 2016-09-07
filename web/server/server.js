@@ -143,8 +143,6 @@ class Server{
 						});
 				}
 				else{
-					// console.log(Object.keys(req));
-					// console.log(Object.keys(req.socket));
 					res.redirect('/user/login');
 				}
 			}
@@ -157,11 +155,6 @@ class Server{
 		});
 
 		this.io.on('connection', (socket) => {
-			// console.log(Object.keys(this.server));
-			// console.log(Object.keys(socket.handshake.headers));
-			// socket.req = function(){
-			// 	console.log(3);
-			// }
 			this.loadSocket(socket);
 		});
 	}
