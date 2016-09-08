@@ -7,6 +7,7 @@ var motion = require('./server/utils/motion');
 var toolbox = require('./server/utils/toolbox');
 var fs = require('fs');
 var os = require('os');
+var Visio = require(process.cwd() + '/visio/visio');
 
 var ConfigEnv = require(process.cwd() + '/config/web/environnement');
 var ConfigAdmin = require(process.cwd() + '/config/web/admin');
@@ -65,12 +66,32 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 		.build();
 
 	if(!error){
+		var visio = new Visio();
+		config.webcam.forEach((cam)=>{
+			visio.addStream({port: cam.stream_port});
+		})
+
+		fs.readdir(process.cwd() + '/visio/collections/', function(err, files){
+			files.forEach((file)=>{
+				visio.addCollection(file);
+			})
+		});
+
+		config.motion.on('start',function(){
+			visio.start();
+		})
+
 		config.motion.start();
 	}
 
 	process.on('exit', function (){
 	  config.motion.stop();
 	});
+
+
+
+
+	// visio.start();
 
 	server
 		.set(config)

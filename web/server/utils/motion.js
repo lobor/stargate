@@ -127,6 +127,12 @@ Motion.prototype.start = function() {
   this.motion.on('close', function(code) {
     that.emit('exit', 'child process exited with code ' + code);
   });
+
+  this.motion.stderr.on('data', (data) => {
+    if(data.toString('utf8').match(/Started motion-stream server in port/g)){
+      that.emit('start');
+    }
+  });
 };
 
 Motion.prototype.stop = function() {
