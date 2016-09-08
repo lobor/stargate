@@ -5,6 +5,6 @@ function compareFaces(fileA, fileB, fc){
   return spawnSync('br', ['-algorithm', 'FaceRecognition', '-compare', fileA, fileB]).stdout.toString('utf8');
 }
 
-export default {
+module.exports = {
   compareFaces: compareFaces
 }

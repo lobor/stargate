@@ -1,43 +1,37 @@
 var cv = require('opencv');
 var extract = require('jpeg-extract');
+var fs = require('fs');
+var openBr = require('./utils/openBR');
 // var request = require('request');
-var i = 0;
-function launch(index) {
+function launch() {
   extract('http://localhost:8081/',(img) => {
-    try{
-      cv.readImage(img, (err, im) => {
-        if(!err){
-          im.detectObject(cv.FACE_CASCADE, {}, (err, faces) => {
-            if(!err){
-              if(faces.length){
-                console.log('detect', index);
-                for (var i=0;i<faces.length; i++){
-                  var x = faces[i]
-                  im.ellipse(x.x + x.width/2, x.y + x.height/2, x.width/2, x.height/2);
-                }
-                im.save('./visio/detect/out' + index + '.jpg');
+    fs.writeFile('./img.jpg', img, function(){
+      cv.readImage('./img.jpg', (err, im) => {
+        im.detectObject(cv.FACE_CASCADE, {}, (err, faces) => {
+          if(!err){
+            if(faces.length){
+              for (var i=0;i<faces.length; i++){
+                var x = faces[i]
+                im.ellipse(x.x + x.width/2, x.y + x.height/2, x.width/2, x.height/2);
               }
-              else{
-                // console.log('not detect');
+              im.save('./visio/detect/out.jpg');
+              var result = openBr.compareFaces('./visio/collections/g/lunette.jpg', './visio/detect/out.jpg');
+              if(result > 1){
+                console.log('detect face =>', 'g');
               }
-
-              launch(index + 1);
             }
             else{
-              console.log(err);
+              // console.log('not detect');
             }
+            launch();
+          }
+          else{
+            console.log(err);
+          }
 
-          });
-        }
-        else{
-          console.log(err);
-        }
+        });
       })
-    }
-    catch(e){
-      launch(index + 1);
-    }
+    });
   });
-
 }
-launch(i);
+launch();
