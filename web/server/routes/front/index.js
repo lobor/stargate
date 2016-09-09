@@ -9,9 +9,7 @@ export default [
 			// 		console.log(data);
 			// 	});
 			// });
-			res.render('template', {
-				output: ''
-			});
+			res.sendFile(process.cwd() + '/web/server/html/template.html')
 		}
 	}
 ];

@@ -16,11 +16,12 @@
 
 		<link href="/assets/app.css" rel="stylesheet">
     <script src="/socket.io/socket.io.js"></script>
-    
+
 	</head>
 	<body>
-		<div id="container"><%- output %></div>
+		<div id="container"></div>
 
-		<%- cachify_js("/assets/app.min.js") %>
+
+		<script type="text/javascript" src="/assets/app.js"></script>
 	</body>
 </html>

@@ -1,8 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var cachify = require('connect-cachify');
-var ejs = require('ejs');
 var exec = require('child_process').exec;
 var loadRoutes = require('./routes/load');
 var compression = require('compression');
@@ -34,8 +32,6 @@ class Server{
 		this.io = require('socket.io')(this.http);
 
 		this.initSession();
-		this.initCache();
-		this.initTemplate();
 	}
 
 	set(name, value){
@@ -89,22 +85,6 @@ class Server{
 		}
 
 		return this;
-	}
-
-	initTemplate(){
-		this.server.set('view engine', 'ejs');
-		this.server.set('views', 'web/server/html');
-	}
-
-	initCache(){
-		let assets = {
-			"/assets/app.min.js": [ "/assets/app.js" ]
-		};
-
-		this.server.use(cachify.setup(assets, {
-			root: "./web/",
-			production: (process.env.NODE_ENV != "development"),
-		}));
 	}
 
 	initSession(){
