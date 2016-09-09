@@ -7,6 +7,12 @@ module.exports = {
     if(undefined !== index){
       path = path.replace('{{index}}', index);
       data = data.replace('{{data}}', JSON.stringify(config));
+      // create directory tmp if not exist
+      try {
+        fs.accessSync(process.cwd() + '/config/motion/camera', fs.F_OK);
+      } catch (e) {
+        fs.mkdirSync(process.cwd() + '/config/motion/camera', '0777')
+      }
       fs.writeFileSync(path, data);
     }
     else if(undefined === index && Array.isArray(data)){

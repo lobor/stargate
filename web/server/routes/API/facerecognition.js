@@ -64,6 +64,13 @@ export default [
 		'call': function(data, fc){
 			let pathToSaveImg = process.cwd() + '/visio/collections/' + data.name;
 			var img, passage = 0;
+
+			try {
+        fs.accessSync(process.cwd() + '/visio/collections', fs.F_OK);
+      } catch (e) {
+        fs.mkdirSync(process.cwd() + '/visio/collections', '0777')
+      }
+
 			try {
 		    fs.accessSync(pathToSaveImg, fs.F_OK);
 			} catch (e) {
