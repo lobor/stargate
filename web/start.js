@@ -26,7 +26,8 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 	let config = {
 		webcam: [],
 		motion: new motion().setConfigPath(process.cwd() + '/tmp/'),
-		toolbox: toolbox
+		toolbox: toolbox,
+		visio: new Visio()
 	};
 
 	webCam.forEach((el, i) => {
@@ -66,19 +67,14 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 		.build();
 
 	if(!error){
-		var visio = new Visio();
-		config.webcam.forEach((cam)=>{
-			visio.addStream({port: cam.stream_port});
-		})
 
-		fs.readdir(process.cwd() + '/visio/collections/', function(err, files){
-			files.forEach((file)=>{
-				visio.addCollection(file);
-			})
-		});
+		config.webcam.forEach((cam)=>{
+			config.visio.addStream({port: cam.stream_port});
+		})
+		config.visio.setPathCollection(process.cwd() + '/visio/collections/');
 
 		config.motion.on('start',function(){
-			visio.start();
+			config.visio.start();
 		})
 
 		config.motion.start();

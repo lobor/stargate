@@ -1,91 +1,37 @@
 import React, { Component } from 'react';
-import { Width, Style } from './style';
+import { Width, Style, Container } from './style';
 
-
-
-// navigator.getUserMedia = ( navigator.getUserMedia ||
-//                        navigator.webkitGetUserMedia ||
-//                        navigator.mozGetUserMedia ||
-//                        navigator.msGetUserMedia);
 
 class Video extends Component{
   constructor(...args){
     super(...args)
-    this.state = {msg:false};
-
+    this.state = {
+      msg:false,
+      collection: '',
+      score: ''
+    };
+    console.log(this);
     this.error = this.error.bind(this);
   }
 
-  componentDidMount(){
+  componentWillMount(){
+		this.context.io.on('video:detect', (data) => {
+      if(this.props.port === data.port){
+        var name = '';
+  			var score = '';
+  			if(data && data.collection){
+  				name = data.collection;
+  				score = data.score
+  			}
 
-    // navigator.getUserMedia({video: false, audio: true}, (stream) => {
-    //   console.log(stream);
-    //   console.log(this.refs.audio);
-    //   this.refs.audio.src = window.URL.createObjectURL(stream);
-    //   this.refs.audio.play();
-    // }, function(err){console.log("The following error occured: " + err);});
+  			this.setState({visio: name, score: score})
+      }
+		});
+	}
 
-
-    // var audioCtx = new AudioContext();
-    // var source;
-    // var first = false;
-    // // source = audioCtx.createBufferSource();
-    // this.context.io.on('audio', function(data){
-    //   if(!first){
-    //     source = audioCtx.createBufferSource();
-    //     first = true;
-    //     audioCtx.decodeAudioData(data, function(buffer) {
-    //       if(buffer){
-    //         source.buffer = buffer;
-    //
-    //         source.connect(audioCtx.destination);
-    //         source.loop = true;
-    //         source.start();
-    //       }
-    //
-    //     });
-    //   }
-    // });
-
-
-    // var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    // var source;
-    //
-    // var request = new XMLHttpRequest();
-    // //
-    // request.open('GET', '/video/audio', true);
-    // //
-    // request.responseType = 'arraybuffer';
-    // //
-    // request.onreadystatechange = function() {
-    //   // console.log('onload');
-    //   var audioData = request.response;
-    //   if(!first){
-    //     first = true;
-    //     console.log(request);
-    //   }
-    //   // console.log(arguments);
-    //   if(audioData)
-    //     audioCtx.decodeAudioData(audioData, function(buffer) {
-    //         source.buffer = buffer;
-    //
-    //         source.connect(audioCtx.destination);
-    //         source.loop = true;
-    //         source.start(0);
-    //       },
-    //
-    //       function(e){}
-    //     );
-    //
-    // }
-    // //
-    // request.send();
-    //
-    // // request.addEventListener('readystatechange', function(d) {
-    // //   console.log(request);
-    // //     // Votre code…
-    // // });838/16/1
-  }
+	componentWillUnmount(){
+		this.context.io.off('video:detect');
+	}
 
   error(){
     this.setState({msg: 'An error has been occured'});
@@ -95,11 +41,11 @@ class Video extends Component{
     Object.assign(Style, Width);
     let url = '/video/cam?port=' + this.props.port
     return (
-      <div>
+      <div style={Container}>
         <img style={Style} alt={this.state.msg} src={url} onError={this.error} />
+        {this.state.visio} => {this.state.score}
       </div>
     )
-    // <audio ref="audio" controls></audio>
   }
 }
 Video.contextTypes = {

@@ -7,8 +7,13 @@ class Video extends Component {
 	constructor(...args){
 		super(...args);
 
-		this.state = {webcam:[]};
+		this.state = {
+			webcam:[],
+			visio: '',
+			score: ''
+		};
 	}
+
 	componentDidMount(){
 		this.context.io.run('video:get', {}, (data) => {
 			this.setState(data);

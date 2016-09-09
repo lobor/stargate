@@ -1,4 +1,5 @@
 var fs = require('fs');
+var spawn = require('child_process').spawn;
 
 export default [
 	{
@@ -18,7 +19,48 @@ export default [
 		}
 	},
 	{
+		'name': 'fr:delete',
+		dep: ['visio'],
+		'call': function(data, fc){
+			var ls = spawn('rm', ['-Rf', process.cwd() + '/visio/collections/' + data.id]);
+
+			ls.on('close', (code) => {
+				console.log(code);
+				if(0 === code){
+					this.visio.deleteCollection(data.id);
+					fc(true);
+				}
+			});
+		}
+	},
+	{
+		'name': 'fr:update',
+		'call': function(data, fc){
+			let pathToSaveImg = process.cwd() + '/visio/collections/' + data.name;
+			var img, passage = 0;
+
+			data.files.forEach((file, i) => {
+				var name = '';
+				img = data.files[i].data.replace(/^data:image\/\w+;base64,/, '');
+				try {
+			    fs.accessSync(pathToSaveImg + '/' + file.name, fs.F_OK);
+					name = file.name.replace('.', '0.');
+				} catch (e) {
+					name = file.name;
+				}
+
+	      fs.writeFile(pathToSaveImg + '/' + name, img, {encoding: 'base64'}, function(err){
+					passage++;
+					if(passage === data.files.length){
+						fc({'state': true});
+					}
+	      });
+			})
+		}
+	},
+	{
 		'name': 'fr:upload',
+		'dep': ['visio'],
 		'call': function(data, fc){
 			let pathToSaveImg = process.cwd() + '/visio/collections/' + data.name;
 			var img, passage = 0;
@@ -26,6 +68,7 @@ export default [
 		    fs.accessSync(pathToSaveImg, fs.F_OK);
 			} catch (e) {
 		    fs.mkdirSync(pathToSaveImg, '0777');
+				this.visio.addCollection(data.name);
 			}
 
 			data.files.forEach((file, i) => {

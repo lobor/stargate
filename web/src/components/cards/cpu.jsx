@@ -21,6 +21,7 @@ class Cpu extends Component{
   }
 
   componentWillUnmount(){
+    this.context.io.off('cpu:change');
     this.context.io.run('cpu:stop');
   }
 

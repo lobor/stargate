@@ -128,9 +128,15 @@ Motion.prototype.start = function() {
     that.emit('exit', 'child process exited with code ' + code);
   });
 
+  var nbCam = this.camera.length;
+  var nbPassage = 0;
+
   this.motion.stderr.on('data', (data) => {
     if(data.toString('utf8').match(/Started motion-stream server in port/g)){
-      that.emit('start');
+      nbPassage++;
+      if(nbPassage === nbCam){
+        that.emit('start');
+      }
     }
   });
 };

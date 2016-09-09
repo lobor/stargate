@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { List, ListItem, ListDivider } from 'react-toolbox/lib/list';
 import ListSubHeader from './../toolbox/list/ListSubHeader';
 import { Button } from 'react-toolbox/lib/button';
+import {IconMenu, MenuItem, MenuDivider } from 'react-toolbox/lib/menu';
 
 import Notify from './../commons/notify';
 
@@ -50,7 +51,12 @@ class Config extends Component{
         <ListDivider />
         {this.state.model.map((e) => {
           return (
-            <ListItem caption={e} key={e} leftIcon='perm_identity' onClick={this.goTo.bind(this, e)} />
+            <ListItem
+              caption={e}
+              key={e}
+              leftIcon='perm_identity'
+              onClick={this.goTo.bind(this, e)}
+            />
           );
         })}
       </List>

@@ -6,5 +6,8 @@ module.exports = {
   },
   on: function(name, cb){
     io.on(name, cb);
+  },
+  off: function(name){
+    io.off(name);
   }
 };

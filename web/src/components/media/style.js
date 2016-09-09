@@ -11,3 +11,7 @@ exports.Style = {
   height: '300px',
   textAlign: 'center'
 };
+
+exports.Container = {
+  textAlign: 'center'
+};
