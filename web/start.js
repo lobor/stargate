@@ -74,7 +74,7 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 		config.visio.setPathCollection(process.cwd() + '/visio/collections/');
 
 		config.motion.on('start',function(){
-			config.visio.start();
+			// config.visio.start();
 		})
 
 		config.motion.start();
