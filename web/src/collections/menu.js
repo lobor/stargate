@@ -9,11 +9,11 @@ module.exports = [
     "href": "/video",
     "icon": "videocam"
   },
-  // {
-  //   "label": "Detect",
-  //   "href": "/video/detect",
-  //   "icon": "fingerprint"
-  // },
+  {
+    "label": "Detect",
+    "href": "/video/detect",
+    "icon": "fingerprint"
+  },
   {
     "label": "Config",
     "href": "/config",

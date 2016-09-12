@@ -11,6 +11,16 @@ export default [
 		}
 	},
 	{
+		'name': 'fr:onOff',
+		dep: ['visio'],
+		'call': function(data, fc){
+			if(undefined !== data.state){
+				this.visio.stop();
+			}
+			fc(this.visio.isStarting);
+		}
+	},
+	{
 		'name': 'fr:get',
 		'call': function(data, fc){
 			fs.readdir(process.cwd() + '/visio/collections/' + data.id, function(err, files){
@@ -25,7 +35,6 @@ export default [
 			var ls = spawn('rm', ['-Rf', process.cwd() + '/visio/collections/' + data.id]);
 
 			ls.on('close', (code) => {
-				console.log(code);
 				if(0 === code){
 					this.visio.deleteCollection(data.id);
 					fc(true);

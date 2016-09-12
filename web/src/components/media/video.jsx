@@ -7,15 +7,13 @@ class Video extends Component{
     super(...args)
     this.state = {
       msg:false,
-      collection: '',
-      score: ''
+      msgFR: ''
     };
-    console.log(this);
     this.error = this.error.bind(this);
   }
 
   componentWillMount(){
-		this.context.io.on('video:detect', (data) => {
+		this.context.io.on('fr:result', (data) => {
       if(this.props.port === data.port){
         var name = '';
   			var score = '';
@@ -24,13 +22,20 @@ class Video extends Component{
   				score = data.score
   			}
 
-  			this.setState({visio: name, score: score})
+  			this.setState({msgFR: name + ' => ' + score});
+      }
+		});
+
+    this.context.io.on('fr:noFace', (data) => {
+      if(this.props.port === data.port){
+  			this.setState({msgFR: ''});
       }
 		});
 	}
 
 	componentWillUnmount(){
-		this.context.io.off('video:detect');
+		this.context.io.off('fr:result');
+    this.context.io.off('fr:noFace');
 	}
 
   error(){
@@ -43,7 +48,7 @@ class Video extends Component{
     return (
       <div style={Container}>
         <img style={Style} alt={this.state.msg} src={url} onError={this.error} />
-        {this.state.visio} => {this.state.score}
+        {this.state.msgFR}
       </div>
     )
   }

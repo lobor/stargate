@@ -40,9 +40,16 @@ class Detect extends Component {
       <div>
 				<ul style={Ul}>
 					{this.state.img.map((img, key) => {
+            let toto;
+            if(img.src.match(/avi/g)){
+              toto = (<video src={img.src} style={Img} controls></video>)
+            }
+            else{
+              toto = (<img src={img.src} style={Img} />)
+            }
 						return (
               <li key={key} style={Li}>
-                <img src={img.src} style={Img} />
+                {toto}
                 <div style={Button}>
                   <FontIcon value='delete' style={Icon} onClick={this.delete.bind(this, img.name)} />
                 </div>

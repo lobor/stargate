@@ -61,6 +61,10 @@ export default class Visio {
     }
   }
 
+  stop(){
+    this.isStarting = false;
+  }
+
   start(){
     var that = this;
     if(!this.pathCollection && !this.collections.length && !this.stream.length){
@@ -75,15 +79,19 @@ export default class Visio {
       }, mjpeg2jpegs((res) => {
         var onPasse = true;
         res.on("imageData", (data) => {
-          if(onPasse){
+          if(onPasse && this.isStarting){
             onPasse = false;
             fs.writeFile(pathTmpMjpeg2jpegs.replace('{{index}}', index), data, () => {
               workers = workerFarm(process.cwd() + '/visio/worker.js');
               workers(index, this.collections, (err, outp) => {
                 workerFarm.end(workers)
-                if(outp)
+                if(outp){
                   outp.port = stream.port;
-                that.emit('detect', outp)
+                  that.emit('result', outp)
+                }
+                else{
+                  that.emit('noFace', {port: stream.port})
+                }
                 onPasse = true;
               })
             });

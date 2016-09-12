@@ -31108,13 +31108,11 @@
 	  "label": "Video",
 	  "href": "/video",
 	  "icon": "videocam"
-	},
-	// {
-	//   "label": "Detect",
-	//   "href": "/video/detect",
-	//   "icon": "fingerprint"
-	// },
-	{
+	}, {
+	  "label": "Detect",
+	  "href": "/video/detect",
+	  "icon": "fingerprint"
+	}, {
 	  "label": "Config",
 	  "href": "/config",
 	  "icon": "settings"
@@ -32485,10 +32483,8 @@
 
 	    _this.state = {
 	      msg: false,
-	      collection: '',
-	      score: ''
+	      msgFR: ''
 	    };
-	    console.log(_this);
 	    _this.error = _this.error.bind(_this);
 	    return _this;
 	  }
@@ -32498,7 +32494,7 @@
 	    value: function componentWillMount() {
 	      var _this2 = this;
 
-	      this.context.io.on('video:detect', function (data) {
+	      this.context.io.on('fr:result', function (data) {
 	        if (_this2.props.port === data.port) {
 	          var name = '';
 	          var score = '';
@@ -32507,14 +32503,21 @@
 	            score = data.score;
 	          }
 
-	          _this2.setState({ visio: name, score: score });
+	          _this2.setState({ msgFR: name + ' => ' + score });
+	        }
+	      });
+
+	      this.context.io.on('fr:noFace', function (data) {
+	        if (_this2.props.port === data.port) {
+	          _this2.setState({ msgFR: '' });
 	        }
 	      });
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      this.context.io.off('video:detect');
+	      this.context.io.off('fr:result');
+	      this.context.io.off('fr:noFace');
 	    }
 	  }, {
 	    key: 'error',
@@ -32530,9 +32533,7 @@
 	        'div',
 	        { style: _style.Container },
 	        _react2.default.createElement('img', { style: _style.Style, alt: this.state.msg, src: url, onError: this.error }),
-	        this.state.visio,
-	        ' => ',
-	        this.state.score
+	        this.state.msgFR
 	      );
 	    }
 	  }]);
@@ -32735,6 +32736,10 @@
 
 	var _config2 = _interopRequireDefault(_config);
 
+	var _on_off = __webpack_require__(354);
+
+	var _on_off2 = _interopRequireDefault(_on_off);
+
 	var _model = __webpack_require__(333);
 
 	var _model2 = _interopRequireDefault(_model);
@@ -32812,6 +32817,7 @@
 	        _react2.default.createElement(
 	          _tabs.Tab,
 	          { label: 'Face recognition' },
+	          _react2.default.createElement(_on_off2.default, null),
 	          _react2.default.createElement(_model2.default, null)
 	        )
 	      );
@@ -33824,13 +33830,7 @@
 	    var _this = _possibleConstructorReturn(this, (_ref = Config.__proto__ || Object.getPrototypeOf(Config)).call.apply(_ref, [this].concat(args)));
 
 	    _this.state = {
-	      // stream: false,
-	      // connect: false,
-	      // record_video: false,
-	      // record_picture: false,
 	      webcam: [],
-	      // path: '',
-	      // msg: false,
 	      tabActive: 0
 	    };
 
@@ -33881,8 +33881,6 @@
 	        e = index;
 	      }
 	      e.preventDefault();
-	      // console.log(index);
-	      // console.log(this.state.webcam[index]);
 	      this.context.io.run('config:motion:post', this.state, function (res) {
 	        if (res.response) {
 	          _this3._notify.addNotify({
@@ -33903,59 +33901,63 @@
 	      var _this4 = this;
 
 	      return _react2.default.createElement(
-	        _tabs.Tabs,
-	        { index: this.state.tabActive, onChange: this.handleTabChange },
+	        'div',
+	        null,
 	        _react2.default.createElement(_notify2.default, { ref: 'notification' }),
 	        _react2.default.createElement(
-	          _tabs.Tab,
-	          { label: 'General', key: '0' },
+	          _tabs.Tabs,
+	          { index: this.state.tabActive, onChange: this.handleTabChange },
 	          _react2.default.createElement(
-	            'form',
-	            { method: 'POST', className: 'card__container bg-blue-light', onSubmit: this.submit.bind(this) },
-	            _react2.default.createElement(
-	              _list.List,
-	              null,
-	              _react2.default.createElement(_list.ListDivider, null),
-	              _react2.default.createElement(_list.ListItem, {
-	                caption: 'Record video',
-	                legend: 'Record on motion detection',
-	                leftIcon: 'fiber_manual_record',
-	                rightActions: [_react2.default.createElement(_switch2.default, { key: 'record_video', checked: this.state.record_video, onChange: this.handleChange.bind(this, 'record_video') })]
-	              }),
-	              _react2.default.createElement(_list.ListDivider, null),
-	              _react2.default.createElement(_list.ListItem, {
-	                caption: 'Record picture',
-	                legend: 'Record on motion detection',
-	                leftIcon: 'fiber_manual_record',
-	                rightActions: [_react2.default.createElement(_switch2.default, { key: 'record_picture', checked: this.state.record_picture, onChange: this.handleChange.bind(this, 'record_picture') })]
-	              }),
-	              _react2.default.createElement(_list.ListDivider, null)
-	            ),
-	            _react2.default.createElement(_button.Button, { type: 'submit', label: 'Save', raised: true, primary: true })
-	          )
-	        ),
-	        this.state.webcam.map(function (el, i) {
-	          var name = 'Camera ' + (i + 1);
-	          return _react2.default.createElement(
 	            _tabs.Tab,
-	            { label: name, key: i + 1 },
+	            { label: 'General', key: '0' },
 	            _react2.default.createElement(
 	              'form',
-	              { method: 'POST', className: 'card__container bg-blue-light', onSubmit: _this4.submit.bind(_this4, i) },
+	              { method: 'POST', className: 'card__container bg-blue-light', onSubmit: this.submit.bind(this) },
 	              _react2.default.createElement(
 	                _list.List,
 	                null,
+	                _react2.default.createElement(_list.ListDivider, null),
 	                _react2.default.createElement(_list.ListItem, {
-	                  caption: 'Path where save file',
-	                  leftIcon: 'folder',
-	                  rightActions: [_react2.default.createElement(_input2.default, { type: 'text', key: 'path', label: '/tmp/motion', onChange: _this4.handleChange.bind(_this4, 'target_dir', i), value: _this4.state.webcam[i].target_dir })]
+	                  caption: 'Record video',
+	                  legend: 'Record on motion detection',
+	                  leftIcon: 'fiber_manual_record',
+	                  rightActions: [_react2.default.createElement(_switch2.default, { key: 'record_video', checked: this.state.record_video, onChange: this.handleChange.bind(this, 'record_video') })]
+	                }),
+	                _react2.default.createElement(_list.ListDivider, null),
+	                _react2.default.createElement(_list.ListItem, {
+	                  caption: 'Record picture',
+	                  legend: 'Record on motion detection',
+	                  leftIcon: 'fiber_manual_record',
+	                  rightActions: [_react2.default.createElement(_switch2.default, { key: 'record_picture', checked: this.state.record_picture, onChange: this.handleChange.bind(this, 'record_picture') })]
 	                }),
 	                _react2.default.createElement(_list.ListDivider, null)
 	              ),
 	              _react2.default.createElement(_button.Button, { type: 'submit', label: 'Save', raised: true, primary: true })
 	            )
-	          );
-	        })
+	          ),
+	          this.state.webcam.map(function (el, i) {
+	            var name = 'Camera ' + (i + 1);
+	            return _react2.default.createElement(
+	              _tabs.Tab,
+	              { label: name, key: i + 1 },
+	              _react2.default.createElement(
+	                'form',
+	                { method: 'POST', className: 'card__container bg-blue-light', onSubmit: _this4.submit.bind(_this4, i) },
+	                _react2.default.createElement(
+	                  _list.List,
+	                  null,
+	                  _react2.default.createElement(_list.ListItem, {
+	                    caption: 'Path where save file',
+	                    leftIcon: 'folder',
+	                    rightActions: [_react2.default.createElement(_input2.default, { type: 'text', key: 'path', label: '/tmp/motion', onChange: _this4.handleChange.bind(_this4, 'target_dir', i), value: _this4.state.webcam[i].target_dir })]
+	                  }),
+	                  _react2.default.createElement(_list.ListDivider, null)
+	                ),
+	                _react2.default.createElement(_button.Button, { type: 'submit', label: 'Save', raised: true, primary: true })
+	              )
+	            );
+	          })
+	        )
 	      );
 	    }
 	  }]);
@@ -35661,10 +35663,16 @@
 	          'ul',
 	          { style: _style.Ul },
 	          this.state.img.map(function (img, key) {
+	            var toto = void 0;
+	            if (img.src.match(/avi/g)) {
+	              toto = _react2.default.createElement('video', { src: img.src, style: _style.Img, controls: true });
+	            } else {
+	              toto = _react2.default.createElement('img', { src: img.src, style: _style.Img });
+	            }
 	            return _react2.default.createElement(
 	              'li',
 	              { key: key, style: _style.Li },
-	              _react2.default.createElement('img', { src: img.src, style: _style.Img }),
+	              toto,
 	              _react2.default.createElement(
 	                'div',
 	                { style: _style.Button },
@@ -35694,17 +35702,25 @@
 	exports.Button = {
 	  'backgroundColor': 'rgba(0,0,0,0.5)',
 	  'position': 'absolute',
-	  bottom: '0',
+	  top: '0',
 	  width: '100%'
 	};
 
 	exports.Ul = { 'listStyle': 'none' };
 
-	exports.Li = { position: 'relative', float: 'left', color: 'white' };
+	exports.Li = {
+	  position: 'relative',
+	  float: 'left',
+	  color: 'white'
+	};
 
-	exports.Img = { display: 'block' };
+	exports.Img = {
+	  display: 'block'
+	};
 
-	exports.Icon = { cursor: 'pointer' };
+	exports.Icon = {
+	  cursor: 'pointer'
+	};
 
 /***/ },
 /* 347 */
@@ -36239,6 +36255,109 @@
 	};
 
 	exports.default = AddFR;
+
+/***/ },
+/* 354 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(167);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _list = __webpack_require__(264);
+
+	var _switch = __webpack_require__(317);
+
+	var _switch2 = _interopRequireDefault(_switch);
+
+	var _font_icon = __webpack_require__(307);
+
+	var _font_icon2 = _interopRequireDefault(_font_icon);
+
+	var _notify = __webpack_require__(327);
+
+	var _notify2 = _interopRequireDefault(_notify);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var OnOff = function (_Component) {
+	  _inherits(OnOff, _Component);
+
+	  function OnOff() {
+	    var _ref;
+
+	    _classCallCheck(this, OnOff);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_ref = OnOff.__proto__ || Object.getPrototypeOf(OnOff)).call.apply(_ref, [this].concat(args)));
+
+	    _this.state = {
+	      state: false
+	    };
+
+	    _this.handleChange = _this.handleChange.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(OnOff, [{
+	    key: 'handleChange',
+	    value: function handleChange() {
+	      var _this2 = this;
+
+	      this.context.io.run('fr:onOff', { state: !this.state.state }, function (res) {
+	        _this2.setState({ state: !_this2.state.state });
+	      });
+	    }
+	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this3 = this;
+
+	      this.context.io.run('fr:onOff', {}, function (res) {
+	        _this3.setState({ state: res });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _list.List,
+	        { selectable: true, ripple: true },
+	        _react2.default.createElement(_list.ListItem, {
+	          caption: 'Face recognition',
+	          legend: 'Activate or disable',
+	          leftIcon: 'face',
+	          rightActions: [_react2.default.createElement(_switch2.default, { key: 'face_detection', checked: this.state.state, onChange: this.handleChange })]
+	        })
+	      );
+	    }
+	  }]);
+
+	  return OnOff;
+	}(_react.Component);
+
+	OnOff.contextTypes = {
+	  io: _react2.default.PropTypes.object
+	};
+
+	exports.default = OnOff;
 
 /***/ }
 /******/ ]);
