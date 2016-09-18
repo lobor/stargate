@@ -6,7 +6,7 @@ Application for security camera on Raspberry Pi, Mac OSX
 
 ## Config
 1. Install Motion => [link](http://www.lavrsen.dk/foswiki/bin/view/Motion/WebHome) 
-2. Install [openBR](http://openbiometrics.org/)
+2. Install [node-canvas](https://github.com/Automattic/node-canvas)
 3. Rename the config files located in /config and modify if necessary
   - admin.js.dist => admin.js
   - environnement.js.dist => environnement.js
@@ -20,6 +20,5 @@ Application for security camera on Raspberry Pi, Mac OSX
 ```npm run watch:js``` => watch modification on js file and re-build
 
 ## RoadMap
-- [ ] Add motor for control webcam
 - [x] Add face recognition with [openBR](http://openbiometrics.org/) on detect menu
-- [ ] Stream audio with video
+- [ ] change face recognition because openBR is very slow
