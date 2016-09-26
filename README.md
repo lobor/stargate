@@ -6,6 +6,7 @@ Application for security camera on Raspberry Pi, Mac OSX
 
 ## Config
 1. Install Motion => [link](http://www.lavrsen.dk/foswiki/bin/view/Motion/WebHome) 
+2. Install OpenCV => ```sudo apt-get install libopencv-dev python-opencv```
 2. Install [node-canvas](https://github.com/Automattic/node-canvas)
 3. Rename the config files located in /config and modify if necessary
   - admin.js.dist => admin.js
