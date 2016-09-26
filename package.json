@@ -16,13 +16,9 @@
   "dependencies": {
     "babel": "^4.7.16",
     "body-parser": "^1.15.2",
-    "canvas": "^1.5.0",
-    "clmtrackr": "github:andyinabox/clmtrackr",
     "compression": "^1.6.2",
     "express": "^4.12.3",
     "express-session": "^1.14.0",
-    "jpeg-extract": "^1.0.4",
-    "jsdom": "^9.5.0",
     "mjpeg-proxy": "^0.2.0",
     "node-gyp": "^3.4.0",
     "socket.io": "^1.4.8",
@@ -30,6 +26,7 @@
     "worker-farm": "^1.3.1"
   },
   "devDependencies": {
+    "immutability-helper": "^2.0.0",
     "react": "^15.2.0",
     "react-dom": "^15.2.0",
     "react-router": "^2.5.2",

@@ -11,7 +11,7 @@ module.exports = {
 	module: {
 		loaders: [
 			{
-				test: /(\.js|\.jsx)$/,         // Match both .js and .jsx files
+				test: /(\.js|\.jsx)$/,
 				exclude: /node_modules/,
 				loader: "babel-loader",
 				query:
@@ -38,6 +38,5 @@ module.exports = {
 	},
 	plugins: [
 		new ExtractTextPlugin('app.css', { allChunks: true }),
-		// new webpack.HotModuleReplacementPlugin(),
 	]
 };

@@ -1,5 +1,0 @@
-
-//   ctracker.start(img)
-//
-//
-// }

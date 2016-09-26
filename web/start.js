@@ -71,6 +71,14 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 		config.webcam.forEach((cam)=>{
 			config.visio.addStream({port: cam.stream_port});
 		});
+
+		try {
+	    fs.accessSync(process.cwd() + '/visio/collections/', fs.F_OK);
+		} catch (e) {
+	    fs.mkdirSync(process.cwd() + '/visio/collections/', 0777);
+		}
+
+
 		config.visio.setPathCollection(process.cwd() + '/visio/collections/');
 		config.motion.on('start',function(){
 			config.visio.start();

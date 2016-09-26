@@ -23,8 +23,9 @@ def get_images_and_labels(path):
     for model_path in model_paths:
         image_paths = [os.path.join(model_path, f) for f in os.listdir(model_path) if not f.endswith('.sad')]
         for image_path in image_paths:
-            img = Image.open(image_path).convert('L')
-            image = np.array(img, 'uint8')
+            image = cv2.imread(image_path)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            image = np.array(image, 'uint8')
             faces = faceCascade.detectMultiScale(image)
             for (x, y, w, h) in faces:
                 images.append(image[y: y + h, x: x + w])

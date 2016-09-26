@@ -4,7 +4,7 @@ import { Width, Style, Container } from './style';
 
 class Video extends Component{
   constructor(...args){
-    super(...args)
+    super(...args);
     this.state = {
       msg:false,
       msgFR: ''
@@ -14,12 +14,13 @@ class Video extends Component{
 
   componentWillMount(){
 		this.context.io.on('fr:result', (data) => {
+      console.log(data);
       if(this.props.port === data.port){
         var name = '';
   			var score = '';
-  			if(data && data.collection){
-  				name = data.collection;
-  				score = data.score
+  			if(data && data.label){
+  				name = data.label;
+  				score = data.confidences;
   			}
 
   			this.setState({msgFR: name + ' => ' + score});
@@ -44,7 +45,7 @@ class Video extends Component{
 
   render(){
     Object.assign(Style, Width);
-    let url = '/video/cam?port=' + this.props.port
+    let url = '/video/cam?port=' + this.props.port;
     return (
       <div style={Container}>
         <img style={Style} alt={this.state.msg} src={url} onError={this.error} />
