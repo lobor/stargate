@@ -33,7 +33,7 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 	webCam.forEach((el, i) => {
 		let configJson = {};
 		try {
-			configJson = require(process.cwd() + '/config/motion/camera/cam' + i + '.js')
+			configJson = require(process.cwd() + '/config/motion/camera/cam' + i + '.js');
 		} catch (e) {
 			configJson = {
 				videodevice: el,
@@ -42,7 +42,7 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 				target_dir: process.cwd() + '/visio/detect/camera' + i
 			};
 
-			config.toolbox.writeCameraJs(configJson, i)
+			config.toolbox.writeCameraJs(configJson, i);
 		}
 
 		config.webcam.push({
@@ -58,7 +58,7 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 	try {
     fs.accessSync(process.cwd() + '/tmp/', fs.F_OK);
 	} catch (e) {
-    fs.mkdirSync(process.cwd() + '/tmp/', 0777)
+    fs.mkdirSync(process.cwd() + '/tmp/', 0777);
 	}
 
 	config
@@ -70,12 +70,12 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 
 		config.webcam.forEach((cam)=>{
 			config.visio.addStream({port: cam.stream_port});
-		})
+		});
 		config.visio.setPathCollection(process.cwd() + '/visio/collections/');
 
 		config.motion.on('start',function(){
 			// config.visio.start();
-		})
+		});
 
 		config.motion.start();
 	}

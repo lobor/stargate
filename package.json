@@ -21,6 +21,7 @@
     "express": "^4.12.3",
     "express-session": "^1.14.0",
     "jsdom": "^9.5.0",
+    "mjpeg-proxy": "^0.2.0",
     "node-gyp": "^3.4.0",
     "socket.io": "^1.4.8",
     "usage": "^0.7.1",
@@ -48,5 +49,8 @@
     "webpack": "^1.13.1",
     "react-addons-update": "^15.3.0",
     "sassify": "^1.0.0"
+  },
+  "jshintConfig": {
+    "esversion": 6
   }
 }
