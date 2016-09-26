@@ -7,7 +7,8 @@
     "start": "node web/start.js",
     "build:js": "webpack --config --optimize-minimize",
     "watch:js": "webpack --config -w",
-    "test": "node test/test.js"
+    "test": "node test/test.js",
+    "motion": "motion -c ./tmp/confcam.conf"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "compression": "^1.6.2",
     "express": "^4.12.3",
     "express-session": "^1.14.0",
+    "jpeg-extract": "^1.0.4",
     "jsdom": "^9.5.0",
     "mjpeg-proxy": "^0.2.0",
     "node-gyp": "^3.4.0",

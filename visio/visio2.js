@@ -1,6 +1,8 @@
 require('babel/register');
 var fs = require('fs');
 
+var spawn = require('child_process').spawn;
+
 
 var mjpeg2jpegs = require("./utils/mjpeg2jpeg");
 
@@ -13,68 +15,53 @@ var http = require("http");
 var Visio = require(basePath + "/visio/visio");
 
 
+
 class Visio2 extends Visio {
-	start() {
-    var workers;
-    var bitmap = fs.readFileSync(process.cwd() + '/visio/mjpeg2jpegs0.jpg');
-    // convert binary data to base64 encoded string
-    var img = new Buffer(bitmap).toString('base64');
+	train(){
+		const ls =spawn('python', [basePath + '/visio/train.py'])
 
-    workers = workerFarm(process.cwd() + '/visio/electron-app.js');
-    workers(img, (err, outp) => {
-      workerFarm.end(workers);
-      var base64Data = outp.replace(/^data:image\/png;base64,/, "");
-      fs.writeFile(process.cwd() + '/visio/result.png', base64Data, 'base64', function(err) {
-        console.log(err);
-      });
-      // if (outp) {
-      //   outp.port = stream.port;
-      //   that.emit('result', outp);
-      // } else {
-      //   that.emit('noFace', {
-      //     port: stream.port
-      //   });
-      // }
-      // onPasse = true;
-    });
+		ls.stdout.on('data', (data) => {
+		  console.log(`stdout: ${data}`);
+			this.emit('train:ok')
+		});
 
-		// var that = this;
-		// if (!this.pathCollection && !this.collections.length && !this.stream.length) {
-		// 	return;
-		// }
-		// this.isStarting = true;
-		// var workers;
-		// this.stream.forEach((stream, index) => {
-		// 	http.request({
-		// 		hostname: 'localhost',
-		// 		port: stream.port,
-		// 	}, mjpeg2jpegs((res) => {
-		// 		var onPasse = true;
-		// 		res.on("imageData", (data) => {
-		// 			if (onPasse && this.isStarting) {
-		// 				onPasse = false;
-		// 				fs.writeFile(pathTmpMjpeg2jpegs.replace('{{index}}', index), data, () => {
-						// 	workers = workerFarm(process.cwd() + '/visio/worker.js');
-						// 	workers(index, this.collections, (err, outp) => {
-						// 		workerFarm.end(workers);
-						// 		if (outp) {
-						// 			outp.port = stream.port;
-						// 			that.emit('result', outp);
-						// 		} else {
-						// 			that.emit('noFace', {
-						// 				port: stream.port
-						// 			});
-						// 		}
-						// 		onPasse = true;
-						// 	});
-						// });
-		// 			}
-		// 		});
-		// 	})).end();
-		// });
+		ls.stderr.on('data', (data) => {
+		  console.log(`stderr: ${data}`);
+		});
+
+		ls.on('close', (code) => {
+		  console.log(`child process exited with code ${code}`);
+		});
+	}
+	reco() {
+
+
+		// const ls =spawn('python', [basePath + '/visio/train.py'])
+		const ls =spawn('python', [basePath + '/visio/recognizer.py', basePath + '/tmp/mjpeg2jpegs0.jepg'])
+
+		ls.stdout.on('data', (data) => {
+		  console.log(`stdout: ${data}`);
+			this.emit('reco:ok')
+		});
+
+		ls.stderr.on('data', (data) => {
+		  console.log(`stderr: ${data}`);
+		});
+
+		ls.on('close', (code) => {
+		  console.log(`child process exited with code ${code}`);
+		});
 	}
 }
 
+var option = process.argv[2];
+
 var toto = new Visio2();
 
-toto.start();
+
+if(option === 'train'){
+toto.train();
+}
+else if (option === 'reco'){
+	toto.reco();
+}
