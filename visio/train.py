@@ -4,42 +4,45 @@
 import cv2, os
 import numpy as np
 from PIL import Image
+import json
+
+with open('./config/visio/config.json') as data_file:
+    config = json.load(data_file)
 
 
-# cascadePath = "./visio/haarcascade_profileface.xml"
-cascadePath = "./visio/haarcascade_frontalface_alt.xml"
-faceCascade = cv2.CascadeClassifier(cascadePath)
+faceCascade = cv2.CascadeClassifier(config['haar_cascade'])
 
-recognizer = cv2.createLBPHFaceRecognizer()
+recognizer = cv2.createLBPHFaceRecognizer(config['radius'], config['neighbors'], config['grid_x'], config['grid_y'], config['threshold'])
 
 images = []
 labels = []
+index = 0
 
-def get_images_and_labels(path):
-    model_paths = [os.path.join(path, f) for f in os.listdir(path) if not f.endswith('.sad')]
-    images = []
-    labels = []
-    index = 0
-    for model_path in model_paths:
-        image_paths = [os.path.join(model_path, f) for f in os.listdir(model_path) if not f.endswith('.sad')]
-        for image_path in image_paths:
-            image = cv2.imread(image_path)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            image = np.array(image, 'uint8')
-            faces = faceCascade.detectMultiScale(image)
+model_paths = [os.path.join(config['collection'], f) for f in os.listdir(config['collection']) if not f.endswith('.sad')]
+for model_path in model_paths:
+    image_paths = [os.path.join(model_path, f) for f in os.listdir(model_path) if not f.endswith('.sad')]
+    # print image_paths
+    for image_path in image_paths:
+        # print image_path
+        image = cv2.imread(image_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        image = cv2.equalizeHist(image)
+
+        image = np.array(image, 'uint8')
+        faces = faceCascade.detectMultiScale(image)
+        if len(faces):
             for (x, y, w, h) in faces:
-                images.append(image[y: y + h, x: x + w])
+                crop_image = image[y: y + h, x: x + w]
+                crop_image = cv2.Canny(crop_image,50,50)
+                images.append(crop_image)
                 labels.append(index)
-        index += 1
-    return images, labels
-
-
-images, labels = get_images_and_labels('./visio/collections')
-
+        else:
+            os.remove(image_path)
+    index += 1
 
 # Perform the tranining
 if len(images):
     recognizer.train(images, np.array(labels))
-    recognizer.save('./visio/model.xml')
+    recognizer.save(config['model'])
 else:
     print 'not face'

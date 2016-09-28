@@ -22,8 +22,8 @@ collections = sys.argv[1].split(',')
 
 
 # img = cv2.imread('./visio/collections/orphee/11731744_465483000299784_1637727013185137186_o.jpg', cv2.IMREAD_GRAYSCALE)
-img = cv2.imread('./visio/collections/lionel/lionel5.jpg')
-img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# img = cv2.imread('./visio/lunette.jpg')
+# img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 img = cv2.imread('./visio/lunette.jpg')
 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

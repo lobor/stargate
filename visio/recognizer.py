@@ -6,74 +6,48 @@ import numpy as np
 import sys
 import json
 
-cascadePath = "./visio/haarcascade_frontalface_alt.xml"
-faceCascade = cv2.CascadeClassifier(cascadePath)
+with open('./config/visio/config.json') as data_file:
+    config = json.load(data_file)
 
-# For face recognition we will the the LBPH Face Recognizer
-recognizer = cv2.createLBPHFaceRecognizer()
-
-recognizer.load('./visio/model.xml')
-# print sys.argv[1]
 url = sys.argv[1]
 collections = sys.argv[2].split(',')
-# print url
+
+faceCascade = cv2.CascadeClassifier(config['haar_cascade'])
+recognizer = cv2.createLBPHFaceRecognizer(config['radius'], config['neighbors'], config['grid_x'], config['grid_y'], config['threshold'])
+
+recognizer.load(config['model'])
+
 cap=cv2.VideoCapture(url)
-#
+
 while True:
-  ret, frame = cap.read()
-  # cv2.imshow('Video', frame)
+    ret, frame = cap.read()
+    image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    image = np.array(image, 'uint8')
+    image = cv2.equalizeHist(image)
 
-  img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    faces = faceCascade.detectMultiScale(image)
 
-  cv2.imwrite('./visio/lunette.jpg', img)
-  #
-  # img = cv2.imread('./visio/lunette.jpg', cv2.IMREAD_GRAYSCALE)
-  # cv2.imshow('Video', img)
+    if len(faces):
+        results = {}
+        for (x, y, w, h) in faces:
+            crop_image = image[y: y + h, x: x + w]
+            crop_image = cv2.Canny(crop_image,50,50)
+            nbr_predicted, conf = recognizer.predict(crop_image)
+            if nbr_predicted not in results:
+                results[nbr_predicted] = []
 
-  # second method
-  image = cv2.imread('./visio/lunette.jpg')
-  image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-  predict_image = np.array(image, 'uint8')
-  # predict_image = np.array(img, 'uint8')
+            # if conf < 50:
+            #     print 'write img'
+            #     cv2.imwrite('./visio/collections/{}/{}.jpg'.format(collections[nbr_predicted], conf), img)
 
-  faces = faceCascade.detectMultiScale(predict_image)
-  # cv2.imshow('{}'.format(len(faces)), img)
-  if len(faces):
-      results = {}
-      for (x, y, w, h) in faces:
-          nbr_predicted, conf = recognizer.predict(predict_image[y: y + h, x: x + w])
-          if nbr_predicted not in results:
-              results[nbr_predicted] = []
+            results[nbr_predicted].append(conf)
+        data = {}
+        for label, confs in results.iteritems():
+            add = 0
+            for conf in confs:
+                add += conf
+            data[collections[label]] = add / len(confs)
+        print json.dumps(data)
 
-          results[nbr_predicted].append(conf)
-      data = {}
-      for label, confs in results.iteritems():
-          add = 0
-          for conf in confs:
-              add += conf
-          data[collections[label]] = add / len(confs)
-      print json.dumps(data)
-
-  if cv2.waitKey(1) == 27:
-    exit(0)
-
-
-# For face detection we will use the Haar Cascade provided by OpenCV.
-# cascadePath = "./visio/haarcascade_profileface.xml"
-
-
-# Perform the tranining
-# recognizer.load('./visio/model.xml')
-
-# img = cv2.imread(img, cv2.IMREAD_GRAYSCALE)
-# # img = cv2.imread('./visio/lunette.jpg', cv2.IMREAD_GRAYSCALE)
-#
-# # second method
-# predict_image = np.array(img, 'uint8')
-# faces = faceCascade.detectMultiScale(predict_image)
-#
-# if len(faces):
-#     for (x, y, w, h) in faces:
-#         nbr_actual = 1
-#         nbr_predicted, conf = recognizer.predict(predict_image[y: y + h, x: x + w])
-#         print '{"label":{},"confidences":{}}'.format(nbr_predicted, conf)
+    if cv2.waitKey(1) == 27:
+        exit(0)
