@@ -6,9 +6,9 @@ var exec = require('child_process').exec;
 var motion = require('./server/utils/motion');
 var toolbox = require('./server/utils/toolbox');
 var fs = require('fs');
-var os = require('os');
 var Visio = require(process.cwd() + '/visio/visio');
 
+var ConfigApp = require(process.cwd() + '/config/config');
 var ConfigEnv = require(process.cwd() + '/config/web/environnement');
 var ConfigAdmin = require(process.cwd() + '/config/web/admin');
 var ConfigMotion = require(process.cwd() + '/config/motion/confcam');
@@ -54,7 +54,6 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 		config.motion.addCam(configJson);
 	});
 
-	// create directory tmp if not exist
 	try {
     fs.accessSync(process.cwd() + '/tmp/', fs.F_OK);
 	} catch (e) {
@@ -81,7 +80,9 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 
 		config.visio.setPathCollection(process.cwd() + '/visio/collections/');
 		config.motion.on('start',function(){
-			config.visio.start();
+			if(ConfigApp.faceRecognition){
+				config.visio.start();
+			}
 		});
 
 		config.motion.start();
@@ -92,12 +93,10 @@ exec('ls /dev/video*', (error, stdout, stderr) => {
 	});
 
 
-
-
-	// visio.start();
-
-	server
-		.set(config)
-		.loadRoutes()
-		.start();
+	if(ConfigApp.web){
+		server
+			.set(config)
+			.loadRoutes()
+			.start();
+	}
 });

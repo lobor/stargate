@@ -9,13 +9,17 @@ import json
 with open('./config/visio/config.json') as data_file:
     config = json.load(data_file)
 
+
+if False == cv2.useOptimized():
+    cv2.setUseOptimized(True)
+
 url = sys.argv[1]
 collections = sys.argv[2].split(',')
 
 faceCascade = cv2.CascadeClassifier(config['haar_cascade'])
 recognizer = cv2.createLBPHFaceRecognizer(config['radius'], config['neighbors'], config['grid_x'], config['grid_y'], config['threshold'])
 
-recognizer.load(config['model'])
+recognizer.load(config['modelFace'])
 
 cap=cv2.VideoCapture(url)
 

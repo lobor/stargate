@@ -2,6 +2,7 @@ node_modules
 visio/detect/**
 visio/model.xml
 visio/collections/**
+visio/models/**
 config/motion/camera/*.js
 config/web/admin.js
 config/web/environnement.js

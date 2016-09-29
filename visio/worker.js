@@ -4,7 +4,7 @@ var spawn = require("child_process").spawn;
 var basePath = process.cwd();
 
 module.exports = function(port, collections, callback){
-  const ls = spawn('python', ['-u', basePath + '/visio/recognizer.py', 'http://localhost:' + port + '/', collections.join(',')]);
+  const ls = spawn('python', ['-u', basePath + '/visio/face/recognizer.py', 'http://localhost:' + port + '/', collections.join(',')]);
 
   ls.stdout.on('data', (data) => {
     data = JSON.parse(data);

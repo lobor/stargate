@@ -9,6 +9,9 @@ import json
 with open('./config/visio/config.json') as data_file:
     config = json.load(data_file)
 
+if False == cv2.useOptimized():
+    cv2.setUseOptimized(True)
+
 
 faceCascade = cv2.CascadeClassifier(config['haar_cascade'])
 
@@ -18,11 +21,13 @@ images = []
 labels = []
 index = 0
 
-model_paths = [os.path.join(config['collection'], f) for f in os.listdir(config['collection']) if not f.endswith('.sad')]
+model_paths = os.listdir(config['collection'])
 for model_path in model_paths:
-    image_paths = [os.path.join(model_path, f) for f in os.listdir(model_path) if not f.endswith('.sad')]
+    model_path = config['collection'] + '/' + model_path
+    image_paths = os.listdir(model_path)
     # print image_paths
     for image_path in image_paths:
+        image_path = model_path + '/' + image_path
         # print image_path
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -43,6 +48,6 @@ for model_path in model_paths:
 # Perform the tranining
 if len(images):
     recognizer.train(images, np.array(labels))
-    recognizer.save(config['model'])
+    recognizer.save(config['modelFace'])
 else:
     print 'not face'
