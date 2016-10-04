@@ -1,7 +1,10 @@
 var fs = require('fs');
 
-
 var basePath = process.cwd();
+console.log(basePath);
+import Plugin from './../../core/plugin';
+
+
 var pathTmpMjpeg2jpegs = basePath + '/tmp/mjpeg2jpegs{{index}}.jpg';
 
 var workerFarm = require('worker-farm');
@@ -11,8 +14,9 @@ var http = require("http");
 var spawn = require('child_process').spawn;
 
 
-export default class Visio {
+export default class Visio extends Plugin {
   constructor () {
+    super();
     this.stream = [];
 		this.collections = [];
 		this.pathCollection = null;

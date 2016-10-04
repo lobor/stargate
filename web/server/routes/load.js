@@ -24,16 +24,16 @@
 module.exports = {
 	api: [
 		// API
-		require('./API/config'),
+		// require('./API/config'),
 		require('./API/user'),
-		require('./API/cpu'),
+		// require('./API/cpu'),
 		require('./API/detect'),
 		require('./API/video'),
 		require('./API/facerecognition'),
 	],
 	front: [
 		// Page
-		require('./front/video'), // video
+		// require('./front/video'), // video
 		require('./front/facerecognition/img'), // video
 
 

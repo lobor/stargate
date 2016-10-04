@@ -47,6 +47,12 @@ class Server{
 		return this;
 	}
 
+	setRoutes(routes){
+		for(let key in routes){
+			loadRoutes[key] = loadRoutes[key].concat(routes[key]);
+		}
+	}
+
 	loadSocket(socket){
 		let i = 0, j, size, sizeRoute, route, routes, dep;
 		for(i = 0, size = loadRoutes.api.length; i < size; i++){
@@ -67,7 +73,6 @@ class Server{
 
 	loadRoutes(){
 		let i = 0, j, size, sizeRoute, route, routes, dep;
-
 		for(i = 0, size = loadRoutes.front.length; i < size; i++){
 			routes = loadRoutes.front[i];
 
