@@ -1,5 +1,5 @@
 var basePath = process.cwd();
-import {Plugin} from './../../core/';
+import { Plugin, success, error, warning } from './../../core/';
 
 var cp = require('child_process');
 var fs = require('fs');
@@ -26,7 +26,7 @@ class Motion extends Plugin{
 
     which.on('close', (code) => {
       if(1 === code){
-        console.log('Sorry, this module requires Motion to be installed');
+        error('Sorry, this module requires Motion to be installed');
         this.error = true;
       }
     });

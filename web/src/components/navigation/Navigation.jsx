@@ -5,6 +5,7 @@ import AppBar from 'react-toolbox/lib/app_bar';
 import { List, ListItem } from 'react-toolbox/lib/list';
 import { IconButton } from 'react-toolbox/lib/button';
 import Drawer from 'react-toolbox/lib/drawer';
+import Link from 'react-router/Link'
 
 import Menu from './../../collections/menu';
 
@@ -14,7 +15,6 @@ class Navigation extends Component {
 	constructor(...args){
 		super(...args);
 
-		this.click = this.click.bind(this);
 		this.handleToggle = this.handleToggle.bind(this);
 		this.state = {
 			active: false,
@@ -22,12 +22,6 @@ class Navigation extends Component {
 			menu: Menu
 		}
 
-	}
-
-	click(url, label, e){
-		this.setState({title: label});
-		this.context.router.push(url);
-		this.handleToggle();
 	}
 
 	handleToggle() {
@@ -54,12 +48,14 @@ class Navigation extends Component {
 				<AppBar fixed flat>
 					<IconButton icon='menu' onClick={this.handleToggle} style={Icon} />
 					<h1>{this.state.title}</h1>
-					<Drawer active={this.state.active} onOverlayClick={this.handleToggle}>
+					<Drawer className="navigation" active={this.state.active} onOverlayClick={this.handleToggle}>
 						<List selectable ripple>
 							{
 								this.state.menu.map((item, key) => {
 									return (
-										<ListItem key={key} onClick={this.click.bind(undefined, item.href, item.label)} caption={item.label} leftIcon={item.icon} />
+										<Link to={item.href} key={key}  onClick={this.handleToggle}>
+											<ListItem key={key} caption={item.label} leftIcon={item.icon} />
+										</Link>
 									);
 								})
 							}

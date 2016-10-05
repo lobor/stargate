@@ -1,4 +1,4 @@
-import { success, error, warning } from './../utils/console';
+import { success, error, warning } from './console';
 var fs = require('fs');
 
 var pathConfig = '/config/config.js';

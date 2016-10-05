@@ -20,8 +20,10 @@ let server = new Server();
 
 // load plugins
 var plugins = {};
-fs
-	.readdirSync(basePath + '/plugins')
+var listPlugins = fs.readdirSync(basePath + '/plugins');
+var nbPassage = 0;
+
+listPlugins
 	.forEach((pluginName, index) => {
 		let plugin = require(basePath + '/plugins/' + pluginName);
 		plugin = new plugin();
@@ -29,11 +31,16 @@ fs
 			server.setRoutes(plugin.back.routes);
 		});
 
+		plugin.on('front', () => {
+			if(plugin.front.assets !== ''){
+				server.setAssets(plugin.front.assets);
+			}
+			nbPassage++;
+		});
+
 		plugin.loadConfig()
 			.loadBack()
 			.loadFront();
-
-
 	});
 
 // load dependencies of plugins
@@ -53,7 +60,10 @@ for(let key in plugins){
 
 // start server
 // let server = new Server();
-server
-// 	.set(config)
+
+if(nbPassage === listPlugins.length){
+	server
+	// 	.set(config)
 	.loadRoutes()
 	.start();
+}

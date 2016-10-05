@@ -21,7 +21,9 @@
 	<body>
 		<div id="container"></div>
 
+		<% for(var i=0; i<assets.length; i++) {%>
+			<script type="text/javascript" src=<%=assets[i]%>></script>
+		<% } %>
 
-		<script type="text/javascript" src="/assets/app.js"></script>
 	</body>
 </html>

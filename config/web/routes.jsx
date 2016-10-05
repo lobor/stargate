@@ -1,6 +1,9 @@
 import React from 'react';
-import { Router, IndexRoute, Route, browserHistory } from 'react-router';
+import { render } from 'react-dom';
+// import { Router, IndexRoute, Route, browserHistory } from 'react-router';
 
+
+import { BrowserRouter, Match, Miss, Link } from 'react-router'
 
 import App from './../../web/src/views/App';
 import Login from './../../web/src/views/login/Login';
@@ -15,6 +18,11 @@ import AddFR from './../../web/src/views/facerecognition/Add';
 
 
 export default (
+	<BrowserRouter component={App}>
+		<Match pattern="/" component={Home} />
+	</BrowserRouter>
+)
+// export default (
 	<Router history={browserHistory}>
 		<Route path="/" component={App}>
 			<IndexRoute component={Home} auth={['user']} />
@@ -33,4 +41,4 @@ export default (
 			<Route path="*" component={PageNotFound} />
 		</Route>
 	</Router>
-)
+// )

@@ -67,27 +67,8 @@
 	}
 
 	.navigation{
-		display: flex;
-		height: 100%;
-		box-sizing: border-box;
-		flex-direction: row;
-		padding-top: 0px;
-		padding-bottom: 0px;
 		a{
-			display: flex;
-			height: 100%;
-			align-items: center;
-			padding: 0 1em;
-			font-size: 1.4em;
 			text-decoration: none;
-			box-sizing: border-box;
-			&:hover{
-				background-color: #7380d4;
-			}
-			&.active{
-				border-bottom: 3px solid #ff4081;
-				padding-top: 3px;
-			}
 		}
 	}
 

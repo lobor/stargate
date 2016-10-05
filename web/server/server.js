@@ -12,26 +12,15 @@ class Server{
 
 		this.server = express();
 
+		this.server.set('view engine', 'ejs');
+
 		this.server.use(compression());
 		this.server.use(bodyParser.urlencoded({ extended: true }));
 		this.server.use(bodyParser.json());
 		this.server.use('/assets', express.static('web/assets'));
 		this.server.use('/visio', express.static('visio/detect'));
 
-		if (process.env.NODE_ENV != "development"){
-			let fs = require('fs'),
-					options = {
-						key  : fs.readFileSync('server.key'),
-						cert : fs.readFileSync('server.crt')
-					};
-			this.http = require('https').Server(options, this.server);
-		}
-		else{
-			this.http = require('http').Server(this.server);
-		}
-		this.io = require('socket.io')(this.http);
-
-		this.initSession();
+		this.assets = ['/assets/app.js'];
 	}
 
 	set(name, value){
@@ -53,6 +42,14 @@ class Server{
 		}
 	}
 
+	setAssets(assets){
+		// push asset on template
+		this.assets.push(assets);
+
+		// add assets on static file
+		this.server.use(assets, express.static(assets.substr(1)));
+	}
+
 	loadSocket(socket){
 		let i = 0, j, size, sizeRoute, route, routes, dep;
 		for(i = 0, size = loadRoutes.api.length; i < size; i++){
@@ -61,11 +58,14 @@ class Server{
 			for(j = 0, sizeRoute = routes.length, dep = {socket:socket}; j < sizeRoute; j++){
 				route = routes[j];
 
+				// search dependencies
 				if(route.dep){
 					route.dep.forEach((el) => {
 						dep[el] = this[el];
 					});
 				}
+
+				// attache socket route with dependencies
 				socket.on(route.name, route.call.bind(dep));
 			}
 		}
@@ -79,12 +79,14 @@ class Server{
 			for(j = 0, sizeRoute = routes.length, dep = {}; j < sizeRoute; j++){
 				route = routes[j];
 
+				// search dependencies
 				if(route.dep){
 					route.dep.forEach((el) => {
 						dep[el] = this[el];
 					});
 				}
 
+				// attache route with dependencies
 				this.server[route.type](route.url, route.call.bind(dep));
 			}
 		}
@@ -135,6 +137,22 @@ class Server{
 	}
 
 	start(){
+		// if (process.env.NODE_ENV != "development"){
+		// 	let fs = require('fs'),
+		// 			options = {
+		// 				key  : fs.readFileSync('server.key'),
+		// 				cert : fs.readFileSync('server.crt')
+		// 			};
+		// 	this.http = require('https').Server(options, this.server);
+		// }
+		// else{
+			this.http = require('http').Server(this.server);
+		// }
+		this.io = require('socket.io')(this.http);
+
+		this.initSession();
+
+		this.isStart = true;
 		this.http.listen(process.env.PORT || 8080, function () {
 			console.log('Server is listening...');
 		});
