@@ -10,6 +10,18 @@ var Menu = require('./../collections/menu');
 import Login from './login/Login';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {indigo500} from 'material-ui/styles/colors';
+
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: indigo500,
+  },
+  appBar: {
+    height: 50,
+  },
+});
+
 import Home from './home/Home';
 import Video from './video/Video';
 import Config from './config/Config';
@@ -84,7 +96,7 @@ class App extends React.Component {
   render() {
     return (
 			<BrowserRouter>
-				<MuiThemeProvider>
+				<MuiThemeProvider muiTheme={muiTheme}>
 					<div>
 						<Navigation navigation={this.state.navigation} />
 						<div className="wrapper">

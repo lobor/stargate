@@ -1,5 +1,6 @@
 
 require("react");
+require("material-ui");
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();

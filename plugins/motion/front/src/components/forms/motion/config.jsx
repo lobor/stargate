@@ -1,12 +1,12 @@
 // import React, { Component } from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
+// import RaisedButton from 'material-ui/RaisedButton';
 
 // import Notify from './../../commons/notify';
 // require('react');
 // import { Button } from 'react-toolbox/lib/button';
 // import Input from 'react-toolbox/lib/input';
-// import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from 'react-toolbox/lib/list';
+// import { List, ListItem, ListSubHeader, Divider, ListCheckbox } from 'react-toolbox/lib/list';
 // import Switch from 'react-toolbox/lib/switch';
 // import FontIcon from 'react-toolbox/lib/font_icon';
 // import Dropdown from 'react-toolbox/lib/dropdown';
@@ -28,19 +28,15 @@ class Config extends React.Component{
     this.setState({tabActive: index});
   }
 
-  // componentWillMount(){
-  //   this.context.io.run('config:motion', {}, (res) => {
-  //     if(res){
-  //       this.setState(res);
-  //     }
-  //     else{
-  //       this.context.router.push('/user/login');
-  //     }
-  //   });
-  // }
-
-  componentDidMount(){
-    console.log(this);
+  componentWillMount(){
+    this.context.io.run('config:motion', {}, (res) => {
+      if(res){
+        this.setState(res);
+      }
+      else{
+        this.context.router.push('/user/login');
+      }
+    });
   }
 
   handleChange(name, index, value) {
@@ -81,64 +77,60 @@ class Config extends React.Component{
   //     <div></div>
   //   );
   // }
-  render(){
-    return (
-      <RaisedButton label="Save" primary />
-    );
-  }
-
   // render(){
   //   return (
-  //     <Tabs index={this.state.tabActive} onChange={this.handleTabChange}>
-  //       <Tab label='General'>
-  //         <form method="POST" className="card__container bg-blue-light" onSubmit={this.submit.bind(this)}>
-  //           <List>
-  //             <ListDivider />
-  //             <ListItem
-  //               caption='Record video'
-  //               legend='Record on motion detection'
-  //               leftIcon='fiber_manual_record'
-  //               rightActions={[
-  //                 <Switch key="record_video" checked={this.state.record_video} onChange={this.handleChange.bind(this, 'record_video')} />
-  //               ]}
-  //             />
-  //             <ListDivider />
-  //             <ListItem
-  //               caption='Record picture'
-  //               legend='Record on motion detection'
-  //               leftIcon='fiber_manual_record'
-  //               rightActions={[
-  //                 <Switch key="record_picture" checked={this.state.record_picture} onChange={this.handleChange.bind(this, 'record_picture')} />
-  //               ]}
-  //             />
-  //             <ListDivider />
-  //           </List>
-  //           <Button type="submit" label="Save" raised primary />
-  //         </form>
-  //       </Tab>
-  //       {this.state.webcam.map((el, i) => {
-  //         let name = 'Camera ' + (i + 1)
-  //         return (
-  //           <Tab label={name} key={i + 1}>
-  //             <form method="POST" className="card__container bg-blue-light" onSubmit={this.submit.bind(this, i)}>
-  //               <List>
-  //                 <ListItem
-  //                   caption='Path where save file'
-  //                   leftIcon='folder'
-  //                   rightActions={[
-  //                     <Input type='text' key="path" label='/tmp/motion' onChange={this.handleChange.bind(this, 'target_dir', i)} value={this.state.webcam[i].target_dir} />
-  //                   ]}
-  //                 />
-  //                 <ListDivider />
-  //               </List>
-  //               <Button type="submit" label="Save" raised primary />
-  //             </form>
-  //           </Tab>
-  //         )
-  //       })}
-  //     </Tabs>
+  //     <RaisedButton label="Save" primary />
   //   );
   // }
+
+  render(){
+    return (
+      <Ui.Tabs>
+        <Ui.Tab label='General'>
+          <form method="POST" className="card__container bg-blue-light" onSubmit={this.submit.bind(this)}>
+            <Ui.List>
+              <Ui.Divider />
+              <Ui.ListItem
+                primaryText='Record video'
+                secondaryText='Record on motion detection'
+                leftIcon={<Ui.FontIcon className="fiber-manual-record" />}
+                rightToggle={<Ui.Toggle key="record_video" toggled={this.state.record_video} onToggle={this.handleChange.bind(this, 'record_video')} />}
+              />
+              <Ui.Divider />
+              <Ui.ListItem
+                primaryText='Record picture'
+                secondaryText='Record on motion detection'
+                leftIcon={<Ui.FontIcon className="fiber-manual-record" />}
+                rightToggle={<Ui.Toggle key="record_picture" toggled={this.state.record_picture} onToggle={this.handleChange.bind(this, 'record_picture')} />}
+              />
+              <Ui.Divider />
+            </Ui.List>
+            <Ui.RaisedButton type="submit" label="Save" primary />
+          </form>
+        </Ui.Tab>
+        {this.state.webcam.map((el, i) => {
+          let name = 'Camera ' + (i + 1)
+          return (
+            <Ui.Tab label={name} key={i + 1}>
+              <form method="POST" className="card__container bg-blue-light" onSubmit={this.submit.bind(this, i)}>
+                <Ui.List>
+                  <Ui.ListItem
+                    primaryText='Path where save file'
+                    leftIcon={<Ui.FontIcon className="folder" />}
+                    secondaryText={
+                      <Ui.TextField type='text' key="path" label='/tmp/motion' onChange={this.handleChange.bind(this, 'target_dir', i)} value={this.state.webcam[i].target_dir} />
+                    }
+                  />
+                  <Ui.Divider />
+                </Ui.List>
+                <Ui.RaisedButton type="submit" label="Save" primary />
+              </form>
+            </Ui.Tab>
+          )
+        })}
+      </Ui.Tabs>
+    );
+  }
 }
 
 Config.contextTypes = {
