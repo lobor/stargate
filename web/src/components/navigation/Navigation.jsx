@@ -1,17 +1,10 @@
-import React, { Component } from 'react';
-
-import Nav from 'react-toolbox/lib/navigation';
-import AppBar from 'react-toolbox/lib/app_bar';
-import { List, ListItem } from 'react-toolbox/lib/list';
-import { IconButton } from 'react-toolbox/lib/button';
-import Drawer from 'react-toolbox/lib/drawer';
 import Link from 'react-router/Link'
 
 import {Icon} from './style';
 
 import Redirect from 'react-router/Redirect'
 
-class Navigation extends Component {
+class Navigation extends React.Component {
 	constructor(...args){
 		super(...args);
 		this.handleToggle = this.handleToggle.bind(this);
@@ -42,24 +35,22 @@ class Navigation extends Component {
 
 		if(this.context.auth()){
 			rendu = (
-				<AppBar fixed flat>
-					<IconButton icon='menu' onClick={this.handleToggle} style={Icon} />
-					<h1>{this.state.title}</h1>
-					<Drawer className="navigation" active={this.state.active} onOverlayClick={this.handleToggle}>
-						<List selectable ripple>
+				<Ui.AppBar title={this.state.title} onLeftIconButtonTouchTap={this.handleToggle} style={{position:'fixed'}}>
+					<Ui.Drawer docked={false} className="navigation" open={this.state.active} onRequestChange={this.handleToggle}>
+						<Ui.List>
 							{
 								this.props.navigation.map((item, key) => {
 									return (
 										<Link to={item.href} key={key}  onClick={this.handleToggle}>
-											<ListItem key={key} caption={item.label} leftIcon={item.icon} />
+											<Ui.ListItem key={key} primaryText={item.label} leftIcon={<Ui.FontIcon className="material-icons">{item.icon}</Ui.FontIcon>} />
 										</Link>
 									);
 								})
 							}
-							<ListItem onClick={this.logout.bind(this)} caption='Log out' leftIcon='power_settings_new' />
-						</List>
-		      </Drawer>
-				</AppBar>
+							<Ui.ListItem onClick={this.logout.bind(this)} primaryText='Log out' leftIcon={<Ui.FontIcon className="material-icons">power_settings_new</Ui.FontIcon>} />
+						</Ui.List>
+		      </Ui.Drawer>
+				</Ui.AppBar>
 			);
 		}
 		else{
