@@ -7,19 +7,17 @@ import { IconButton } from 'react-toolbox/lib/button';
 import Drawer from 'react-toolbox/lib/drawer';
 import Link from 'react-router/Link'
 
-import Menu from './../../collections/menu';
-
 import {Icon} from './style';
+
+import Redirect from 'react-router/Redirect'
 
 class Navigation extends Component {
 	constructor(...args){
 		super(...args);
-
 		this.handleToggle = this.handleToggle.bind(this);
 		this.state = {
 			active: false,
 			title: 'home',
-			menu: Menu
 		}
 
 	}
@@ -32,8 +30,8 @@ class Navigation extends Component {
 		this.context.io.run('logout', {}, (response) => {
 			if(response.response){
 				this.context.auth(false);
-				console.log(this.context.router);
-				this.context.router.go('/user/login');
+				console.log(this.context.auth());
+				// this.context.router.go('/user/login');
 				// this.context.router.push('/user/login');
 			}
 		})
@@ -43,7 +41,6 @@ class Navigation extends Component {
 		var rendu = null;
 
 		if(this.context.auth()){
-
 			rendu = (
 				<AppBar fixed flat>
 					<IconButton icon='menu' onClick={this.handleToggle} style={Icon} />
@@ -51,7 +48,7 @@ class Navigation extends Component {
 					<Drawer className="navigation" active={this.state.active} onOverlayClick={this.handleToggle}>
 						<List selectable ripple>
 							{
-								this.state.menu.map((item, key) => {
+								this.props.navigation.map((item, key) => {
 									return (
 										<Link to={item.href} key={key}  onClick={this.handleToggle}>
 											<ListItem key={key} caption={item.label} leftIcon={item.icon} />
@@ -64,6 +61,9 @@ class Navigation extends Component {
 		      </Drawer>
 				</AppBar>
 			);
+		}
+		else{
+			rendu = (<Redirect to="/user/login" />);
 		}
 
     return rendu

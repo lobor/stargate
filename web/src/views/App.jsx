@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import Navigation from './../components/navigation/Navigation.jsx';
 
 import { BrowserRouter, Match, Miss, Link } from 'react-router'
 
 import { appCss } from './../style/app.scss';
+
 var Api = require("imports?this=>window!./../utils/Api")
-
-
+var Menu = require('./../collections/menu');
 import Login from './login/Login';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Home from './home/Home';
 import Video from './video/Video';
 import Config from './config/Config';
@@ -17,7 +19,7 @@ import ModelFR from './facerecognition/Model';
 import AddFR from './facerecognition/Add';
 
 
-class App extends Component {
+class App extends React.Component {
 	constructor(){
 		super();
 
@@ -25,29 +27,36 @@ class App extends Component {
 			routes: [
 				{
 					pattern: '/',
-					component: Home
+					component: Home,
+					name: 'home'
 				},
 				{
 					pattern: '/video',
-					component: Video
+					component: Video,
+					name: 'video'
 				},
 				{
 					pattern: '/config',
-					component: Config
+					component: Config,
+					name: 'config'
 				},
 				{
 					pattern: '/config/facerecognition/add',
-					component: AddFR
+					component: AddFR,
+					name: 'home'
 				},
 				{
 					pattern: '/config/facerecognition/model',
-					component: ModelFR
+					component: ModelFR,
+					name: 'home'
 				},
 				{
 					pattern: '/user/login',
-					component: Login
+					component: Login,
+					name: 'login'
 				},
-			]
+			],
+			navigation: Menu
 		}
 	}
 
@@ -61,7 +70,7 @@ class App extends Component {
 		}
     return {
       auth: (val) => {
-				if(val){
+				if(val !== undefined){
 					auth = val;
 				}
 				return auth;
@@ -75,39 +84,20 @@ class App extends Component {
   render() {
     return (
 			<BrowserRouter>
-				<div>
-					<Navigation />
-					<div className="wrapper">
-						{this.state.routes.map((route, i)=>{
-							return (<Match key={i} exactly pattern={route.pattern} component={route.component} />)
-						})}
+				<MuiThemeProvider>
+					<div>
+						<Navigation navigation={this.state.navigation} />
+						<div className="wrapper">
+							{this.state.routes.map((route, i)=>{
+								return (<Match key={i} ref={route.name} exactly pattern={route.pattern} component={route.component} />)
+							})}
+						</div>
 					</div>
-				</div>
+				</MuiThemeProvider>
 			</BrowserRouter>
 		)
   }
-  // render() {
-  //   return (
-	// 		<BrowserRouter>
-	// 			<div>
-	// 				<Navigation />
-	// 				<div className="wrapper">
-						// <Match exactly pattern="/" component={Home} />
-						// <Match pattern="/video" component={Video} />
-						// <Match pattern="/config" component={Config} />
-						// <Match pattern="/config/facerecognition/add" component={AddFR} />
-						// <Match pattern="/config/facerecognition/model" component={ModelFR} />
-						// <Match pattern="/user/login" component={Login} />
-	// 				</div>
-	// 			</div>
-	// 		</BrowserRouter>
-	// 	)
-  // }
 }
-//
-// App.contextTypes = {
-// 	router: React.PropTypes.object.isRequired,
-// };
 
 App.childContextTypes = {
 	auth: React.PropTypes.func,

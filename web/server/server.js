@@ -21,6 +21,8 @@ class Server{
 		this.server.use('/visio', express.static('visio/detect'));
 
 		this.assets = ['/assets/app.js'];
+
+
 	}
 
 	set(name, value){
@@ -95,16 +97,16 @@ class Server{
 	}
 
 	initSession(){
-		var sessionMiddleware = session({
+		this.sessionMiddleware = session({
 			secret: 'keyboard cat',
 			resave: false,
 			saveUninitialized: true,
 			cookie: { maxAge: 600000 }
 		});
-		this.server.use(sessionMiddleware);
+		this.server.use(this.sessionMiddleware);
 
-		this.io.use(function(socket, next) {
-	    sessionMiddleware(socket.request, socket.request.res, next);
+		this.io.use((socket, next) => {
+	    this.sessionMiddleware(socket.request, socket.request.res, next);
 		});
 
 		this.server.use(function (req, res, next) {
@@ -151,6 +153,8 @@ class Server{
 		this.io = require('socket.io')(this.http);
 
 		this.initSession();
+
+		this.loadRoutes();
 
 		this.isStart = true;
 		this.http.listen(process.env.PORT || 8080, function () {

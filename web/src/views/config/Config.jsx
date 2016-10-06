@@ -6,9 +6,9 @@ import Input from 'react-toolbox/lib/input';
 import {Tab, Tabs} from 'react-toolbox/lib/tabs';
 
 import FormChangePassword from './../../components/forms/user/changePassword.jsx';
-import FormMotion from './../../components/forms/motion/config.jsx';
-import OnOff from './../../components/faceRecognition/on_off.jsx';
-import ModelFR from './../../components/faceRecognition/model.jsx';
+// import FormMotion from './../../components/forms/motion/config.jsx';
+// import OnOff from './../../components/faceRecognition/on_off.jsx';
+// import ModelFR from './../../components/faceRecognition/model.jsx';
 
 class Config extends Component {
   constructor(...args){
@@ -43,22 +43,19 @@ class Config extends Component {
 
 	render() {
     return (
-      <Tabs index={this.state.tabActive} onChange={this.handleTabChange}>
-        <Tab label='Video'>
-          <FormMotion />
-        </Tab>
+      <Tabs ref="config" key="0" index={this.state.tabActive} onChange={this.handleTabChange}>
         <Tab label='Admin'>
           <FormChangePassword />
         </Tab>
-        <Tab label='Face recognition'>
-          <OnOff />
-          <ModelFR />
-        </Tab>
       </Tabs>
-
     )
 	}
 }
+
+// <Tab label='Face recognition'>
+//   <OnOff />
+//   <ModelFR />
+// </Tab>
 Config.contextTypes = {
 	io: React.PropTypes.object
 };

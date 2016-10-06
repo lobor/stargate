@@ -64,6 +64,7 @@ class Plugin {
 	loadFront() {
     load.call(this, '/front/index', (error, data) => {
       if(!error){
+				console.log(data);
         this.front = data;
       }
       this.emit('front', error);

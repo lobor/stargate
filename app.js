@@ -64,6 +64,6 @@ for(let key in plugins){
 if(nbPassage === listPlugins.length){
 	server
 	// 	.set(config)
-	.loadRoutes()
+	// .loadRoutes()
 	.start();
 }
