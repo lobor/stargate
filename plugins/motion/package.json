@@ -1,0 +1,13 @@
+{
+  "name": "stargate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mjpeg-proxy": "^0.2.0",
+    "worker-farm": "^1.3.1"
+  }
+}
