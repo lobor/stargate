@@ -5,6 +5,11 @@ module.exports = [
     "icon": "home"
   },
   {
+    "label": "Plugins",
+    "href": "/plugins",
+    "icon": "extension"
+  },
+  {
     "label": "Config",
     "href": "/config",
     "icon": "settings"

@@ -1,5 +1,4 @@
-// import React, { Component } from 'react';
-import Navigation from './../components/navigation/Navigation.jsx';
+import Navigation from 'components/navigation/Navigation.jsx';
 
 import { BrowserRouter, Match, Miss, Link } from 'react-router'
 
