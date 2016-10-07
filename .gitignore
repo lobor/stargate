@@ -11,3 +11,4 @@ npm-debug.log
 tmp/*
 plugins/*
 !plugins/motion
+plugins/**/node_modules
