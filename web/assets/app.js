@@ -38373,7 +38373,8 @@
 	              Ui.FontIcon,
 	              { className: "material-icons" },
 	              "file_download"
-	            )
+	            ),
+	            secondaryTextLines: 2
 	          });
 	        })
 	      );

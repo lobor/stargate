@@ -42,6 +42,7 @@ class Plugins extends React.Component {
               secondaryText={plugin.description}
               onClick={this.select.bind(undefined, index)}
               rightIcon={<Ui.FontIcon className="material-icons">file_download</Ui.FontIcon>}
+              secondaryTextLines={2}
             />
           )
         })}
