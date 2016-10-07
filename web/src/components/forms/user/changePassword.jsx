@@ -1,6 +1,4 @@
-
-
-import Notify from './../../commons/notify';
+import Notify from 'notify';
 
 class ChangePassword extends React.Component{
   constructor(...args){
@@ -10,8 +8,6 @@ class ChangePassword extends React.Component{
       old_password: false,
       new_password: false,
       comfirm_new_password: false,
-      msg: false,
-      open: true
     }
 
 
@@ -26,21 +22,15 @@ class ChangePassword extends React.Component{
     e.preventDefault();
     this.context.io.run('user:changePassword', this.state, (res) => {
 			if(res.response){
-        this.setState({
-          msg:  'The password has been changed'
-        })
-        this._notify.addNotify({msg: 'The password has been changed', type: 'success'});
+        this._notify.show({msg: 'The password has been changed', type: 'success'});
 			}
 			else{
-        this.setState({
-          msg:  'An error has occured'
-        })
-        this._notify.addNotify({msg: 'An error has occured', type: 'error'});
+        this._notify.show({msg: 'An error has occured', type: 'error'});
 			}
 		});
   }
 
-  change(name, value){
+  change(name, e, value){
     this.setState({[name]: value});
   }
 
@@ -48,10 +38,6 @@ class ChangePassword extends React.Component{
     return (
       <div>
         <form onSubmit={this.submit}>
-          <Ui.Snackbar
-            open={this.state.open}
-            message={this.state.message}
-          />
           <Notify ref="notification" />
           <Ui.TextField name="old_password" id="old_password" type="password" required hintText="Current password" onChange={this.change.bind(this, 'old_password')} /><br/>
           <Ui.TextField name="new_password" id="new_password" type="password" required hintText="New password" onChange={this.change.bind(this, 'new_password')} /><br/>

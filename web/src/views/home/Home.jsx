@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Cpu from './../../components/cards/cpu.jsx';
-import LastLogin from './../../components/cards/lastLogin.jsx';
+import Cpu from 'components/cards/cpu.jsx';
+import LastLogin from 'components/cards/lastLogin.jsx';
 
 class Home extends Component {
 	render() {

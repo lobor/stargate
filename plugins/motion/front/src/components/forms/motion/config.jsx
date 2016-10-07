@@ -1,17 +1,4 @@
-// import React, { Component } from 'react';
-
-// import RaisedButton from 'material-ui/RaisedButton';
-
-// import Notify from './../../commons/notify';
-// require('react');
-// import { Button } from 'react-toolbox/lib/button';
-// import Input from 'react-toolbox/lib/input';
-// import { List, ListItem, ListSubHeader, Divider, ListCheckbox } from 'react-toolbox/lib/list';
-// import Switch from 'react-toolbox/lib/switch';
-// import FontIcon from 'react-toolbox/lib/font_icon';
-// import Dropdown from 'react-toolbox/lib/dropdown';
-//
-// import {Tab, Tabs} from 'react-toolbox/lib/tabs';
+import Notify from 'notify';
 
 class Config extends React.Component{
   constructor(...args){
@@ -56,32 +43,20 @@ class Config extends React.Component{
     }
     e.preventDefault();
     this.context.io.run('config:motion:post', this.state, (res) => {
-      // if(res.response){
-      //   this._notify.addNotify({
-      //     msg: 'Has been saved',
-      //     type: 'success'
-      //   });
-      // }
-      // else{
-      //   this._notify.addNotify({
-      //     msg: 'An error has been occured',
-      //     type: 'error'
-      //   });
-      // }
+      if(res.response){
+        this._notify.show({
+          msg: 'Has been saved',
+          type: 'success'
+        });
+      }
+      else{
+        this._notify.show({
+          msg: 'An error has been occured',
+          type: 'error'
+        });
+      }
     });
 	}
-
-
-  // render(){
-  //   return (
-  //     <div></div>
-  //   );
-  // }
-  // render(){
-  //   return (
-  //     <RaisedButton label="Save" primary />
-  //   );
-  // }
 
   render(){
     return (

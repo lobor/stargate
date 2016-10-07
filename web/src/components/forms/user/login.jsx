@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-// import { Button } from 'react-toolbox/lib/button';
-// import Input from 'react-toolbox/lib/input';
-// import FontIcon from 'react-toolbox/lib/font_icon';
 
 import TextField from 'material-ui/TextField';
 import FontIcon from 'material-ui/FontIcon';
@@ -18,7 +15,6 @@ class Login extends Component{
       password: false,
       auth: false
     };
-
     this.submit = this.submit.bind(this);
 	}
 
@@ -27,9 +23,10 @@ class Login extends Component{
 	}
 
 	submit(e){
-    e.nativeEvent.preventDefault();
-    e.nativeEvent.stopPropagation();
-		this.setState({msg: false}, this.send);
+    e.preventDefault();
+    e.stopPropagation();
+		this.setState({msg: false});
+
     this.context.io.run('login', {
 			name: this.state.name,
 			password: this.state.password
@@ -60,11 +57,9 @@ class Login extends Component{
       </form>
     );
   }
-}
-// <RaisedButton type="submit" label="Login" primary />
+};
 
 Login.contextTypes = {
-	router: React.PropTypes.object.isRequired,
 	auth: React.PropTypes.func,
 	io: React.PropTypes.object
 };

@@ -9,3 +9,4 @@ config/web/environnement.js
 tmp/confcam.conf
 npm-debug.log
 tmp/*
+plugins/**/*

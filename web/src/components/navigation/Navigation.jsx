@@ -1,8 +1,9 @@
 import Link from 'react-router/Link'
 
-import {Icon} from './style';
 
 import Redirect from 'react-router/Redirect'
+
+import { Icon, Badge } from './style';
 
 class Navigation extends React.Component {
 	constructor(...args){
@@ -12,7 +13,6 @@ class Navigation extends React.Component {
 			active: false,
 			title: 'home',
 		}
-
 	}
 
 	handleToggle() {
@@ -23,9 +23,6 @@ class Navigation extends React.Component {
 		this.context.io.run('logout', {}, (response) => {
 			if(response.response){
 				this.context.auth(false);
-				console.log(this.context.auth());
-				// this.context.router.go('/user/login');
-				// this.context.router.push('/user/login');
 			}
 		})
 	}
@@ -35,7 +32,17 @@ class Navigation extends React.Component {
 
 		if(this.context.auth()){
 			rendu = (
-				<Ui.AppBar title={this.state.title} onLeftIconButtonTouchTap={this.handleToggle} style={{position:'fixed'}}>
+				<Ui.AppBar
+					title={this.state.title}
+					onLeftIconButtonTouchTap={this.handleToggle}
+					iconElementRight={
+						<Ui.Badge badgeContent={4} primary={false} style={{padding: '0'}} badgeStyle={Badge}>
+							<Ui.IconButton>
+								<Ui.FontIcon className="material-icons" color={Colors.white}>info</Ui.FontIcon>
+							</Ui.IconButton>
+						</Ui.Badge>
+					}
+					style={{position:'fixed'}}>
 					<Ui.Drawer docked={false} className="navigation" open={this.state.active} onRequestChange={this.handleToggle}>
 						<Ui.List>
 							{

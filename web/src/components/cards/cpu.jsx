@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox/lib/card';
 
-class Cpu extends Component{
+class Cpu extends React.Component{
   constructor(...args){
     super(...args);
     this.state = {
@@ -28,12 +26,12 @@ class Cpu extends Component{
 
   render(){
     return (
-      <Card>
-        <CardTitle title="CPU Usage" />
-        <CardText>
+      <Ui.Card>
+        <Ui.CardTitle title="CPU Usage" />
+        <Ui.CardText>
           {this.state.cpu}
-        </CardText>
-      </Card>
+        </Ui.CardText>
+      </Ui.Card>
     );
   }
 }

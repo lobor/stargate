@@ -6,29 +6,25 @@ import { BrowserRouter, Match, Miss, Link } from 'react-router'
 import { appCss } from './../style/app.scss';
 
 var Api = require("imports?this=>window!./../utils/Api")
-var Menu = require('./../collections/menu');
-import Login from './login/Login';
 
+var Menu = require('./../collections/menu');
+var Routes = require('./../collections/routes');
+
+
+// Theming
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {indigo500} from 'material-ui/styles/colors';
 
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: indigo500,
+    primary1Color: Colors.indigo500,
   },
   appBar: {
     height: 50,
   },
 });
+// end theming
 
-import Home from './home/Home';
-import Video from './video/Video';
-import Config from './config/Config';
-import PageNotFound from './PageNotFound';
-import Detect from './detect/Detect';
-import ModelFR from './facerecognition/Model';
-import AddFR from './facerecognition/Add';
 
 
 class App extends React.Component {
@@ -36,38 +32,7 @@ class App extends React.Component {
 		super();
 
 		this.state = {
-			routes: [
-				{
-					pattern: '/',
-					component: Home,
-					name: 'home'
-				},
-				{
-					pattern: '/video',
-					component: Video,
-					name: 'video'
-				},
-				{
-					pattern: '/config',
-					component: Config,
-					name: 'config'
-				},
-				{
-					pattern: '/config/facerecognition/add',
-					component: AddFR,
-					name: 'home'
-				},
-				{
-					pattern: '/config/facerecognition/model',
-					component: ModelFR,
-					name: 'home'
-				},
-				{
-					pattern: '/user/login',
-					component: Login,
-					name: 'login'
-				},
-			],
+			routes: Routes,
 			navigation: Menu
 		}
 	}
@@ -90,8 +55,6 @@ class App extends React.Component {
 			io: Api
     };
   }
-
-
 
   render() {
     return (

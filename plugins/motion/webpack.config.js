@@ -27,18 +27,7 @@ module.exports = {
 				test: /\.(eot|svg|ttf|woff|woff2)$/,
 				loader: 'file?name=public/fonts/[name].[ext]'
 			},
-			// {
-      //   test: /\.js$/,
-      //   loader: 'webpack-replace',
-      //   query: {
-      //     search: /React'/g,
-      //     replace: 'window.React'
-      //   }
-      // }
-		],
-		// noParse: [
-		// 	/\/react\//g
-		// ]
+		]
 	},
 	externals: {
     React: 'react'
@@ -48,7 +37,12 @@ module.exports = {
 		modulesDirectories: [
 			'node_modules',
 			path.resolve(__dirname, './node_modules')
-		]
+		],
+		alias: {
+			notify$: path.resolve('./core/components/notify.jsx'),
+			views: path.resolve(__dirname, './front/src/views/'),
+			components: path.resolve(__dirname, './front/src/components/')
+		}
 	},
 	plugins: [
 		new ExtractTextPlugin('app.css', { allChunks: true }),

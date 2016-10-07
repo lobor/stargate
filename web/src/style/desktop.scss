@@ -3,5 +3,8 @@
   .contentCard{
     display: flex;
     flex-direction: row;
+    & > div{
+      flex: 1;
+    }
   }
 }

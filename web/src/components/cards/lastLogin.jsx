@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-import { Card, CardMedia, CardTitle, CardText, CardActions } from 'react-toolbox/lib/card';
 
-class LastLogin extends Component{
+class LastLogin extends React.Component{
   constructor(...args){
     super(...args);
     this.state = {
@@ -16,16 +14,16 @@ class LastLogin extends Component{
 
   render(){
     return (
-      <Card>
-        <CardTitle title="Last Login" />
-        <CardText>
-          <ul>
+      <Ui.Card>
+        <Ui.CardTitle title="Last Login" />
+        <Ui.CardText>
+          <Ui.List>
             {this.state.date.map(function(date, i){
-              return <li key={i}>{date}</li>;
+              return <Ui.ListItem key={i} primaryText={date} />;
             })}
-          </ul>
-        </CardText>
-      </Card>
+          </Ui.List>
+        </Ui.CardText>
+      </Ui.Card>
     );
   }
 }

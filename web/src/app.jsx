@@ -1,6 +1,7 @@
 
 require("react");
 require("material-ui");
+require("material-ui/styles/colors");
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
