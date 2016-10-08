@@ -25,6 +25,7 @@ class Plugins extends React.Component {
 
   select(index, e){
     console.log(this.state.plugins[index]);
+    console.log('installation');
   }
 
 
