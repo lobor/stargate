@@ -23,6 +23,6 @@ Application for security camera on Raspberry Pi, Linux
 - Face recognition (in development)
 
 ## RoadMap
-- [] Create system plugin with auto installation 
-- [] Plugin for Face recognition
-- [] Plugin for speech recognition
+- [ ] Create system plugin with auto installation 
+- [ ] Plugin for Face recognition
+- [ ] Plugin for speech recognition
