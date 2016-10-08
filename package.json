@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install": "node install.js",
     "start": "node app.js",
     "build:js": "webpack --config --optimize-minimize",
     "watch:js": "webpack -w --config",
