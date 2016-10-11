@@ -407,7 +407,8 @@
 	      html = React.createElement(Ui.Snackbar, {
 	        open: this.state.open,
 	        message: this.state.msg,
-	        bodyStyle: _style.TypeNotify[this.state.type]
+	        bodyStyle: _style.TypeNotify[this.state.type],
+	        autoHideDuration: 4000
 	      });
 	      // }
 
