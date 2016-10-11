@@ -36,6 +36,25 @@ class App extends React.Component {
 		}
 	}
 
+  componentDidMount(){
+    Api.on('assets:add', (data)=>{
+      var script = document.createElement('script');
+      script.src = data.add[0];
+
+      document.body.appendChild(script);
+      // console.log(data);
+    });
+
+    Api.on('assets:delete', (data)=>{
+      var scripts = document.querySelectorAll('script');
+      scripts.forEach((script)=>{
+        if(script.src === window.location.origin + data.delete){
+          script.remove();
+        }
+      })
+    });
+  }
+
 	getChildContext() {
 		var auth = false;
 		if('/user/login' !== window.location.pathname){

@@ -5,12 +5,12 @@
 	font-family: 'Material Icons';
 	font-style: normal;
 	font-weight: 400;
-	src: url(/assets/font/MaterialIcons-Regular.eot); /* For IE6-8 */
+	src: url("/assets/font/MaterialIcons-Regular.eot"); /* For IE6-8 */
 	src: local('Material Icons'),
 			local('MaterialIcons-Regular'),
-			url(/assets/font/MaterialIcons-Regular.woff2) format('woff2'),
-			url(/assets/font/MaterialIcons-Regular.woff) format('woff'),
-			url(/assets/font/MaterialIcons-Regular.ttf) format('truetype');
+			url("/font/MaterialIcons-Regular.woff2") format('woff2'),
+			url("/font/MaterialIcons-Regular.woff") format('woff'),
+			url("/font/MaterialIcons-Regular.ttf") format('truetype');
 }
 :global{
 	@import './mobile.scss';
@@ -75,30 +75,6 @@
 	.wrapper{
 		padding-top: 6.4rem;
 		font-size: 1.3em;
-	}
-
-
-
-
-
-
-
-	.flex{
-		display: flex;
-	}
-
-	.flex-col{
-		@extend .flex;
-		flex-direction: column
-	}
-
-	.flex-row{
-		@extend .flex;
-		flex-direction: row
-	}
-
-	[class*="flex"].between{
-		justify-content: space-between;
 	}
 
 

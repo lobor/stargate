@@ -7,12 +7,12 @@ export default [
 		'name': 'plugins:get',
 		'call': function(data, fc){
 			var plugins = require(pathProcess + '/config/plugins/status');
-
 			fc(plugins);
 		}
 	},
 	{
 		'name': 'plugins:install',
+		'dep': ['pluginManager'],
 		'call': function(data, fc){
 			var ls = spawn('git', ['clone', data.url, data.name], {cwd: pathProcess + '/plugins'});
 			ls.stdout.on('data', (data) => {
@@ -43,9 +43,9 @@ export default [
 
 							plugins.installed.push(data.name);
 							fs.writeFileSync(pathProcess + '/config/plugins/status.js', 'module.exports = ' + JSON.stringify(plugins) + ';');
-
+							this.pluginManager.add([data.name])
 							fc({
-								success: true
+								success: true,
 							})
 						}
 					});
@@ -72,6 +72,8 @@ export default [
 					plugins.installed = plugins.installed.filter((plugin) => {
 						return plugin !== data.name;
 					})
+
+					this.pluginManager.delete(data.name)
 
 					fs.writeFileSync(pathProcess + '/config/plugins/status.js', 'module.exports = ' + JSON.stringify(plugins) + ';');
 					fc({

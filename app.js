@@ -4,7 +4,8 @@ var basePath = process.cwd(),
 		Server = require(basePath + '/web/server/server'),
 		motion = require(basePath + '/utils/motion'),
 		// toolbox = require(basePath + '/web/server/utils/toolbox'),
-		fs = require('fs');
+		fs = require('fs'),
+		ManagePlugin = require(basePath + '/core/managePlugin');
 
 
 // // Load config
@@ -18,52 +19,28 @@ Object.assign(process.env, ConfigEnv);
 // start server
 let server = new Server();
 
-// load plugins
-var plugins = {};
-var listPlugins = fs.readdirSync(basePath + '/plugins');
-var nbPassage = 0;
 
-listPlugins
-	.forEach((pluginName, index) => {
-		let plugin = require(basePath + '/plugins/' + pluginName);
-		plugin = new plugin();
-		plugin.on('back', () => {
-			server.setRoutes(plugin.back.routes);
-		});
+var pluginManager = new ManagePlugin({
+	server: server,
+	path: basePath + '/plugins/'
+});
 
-		plugin.on('front', () => {
-			if(plugin.front.assets !== ''){
-				server.setAssets(plugin.front.assets);
-			}
-			nbPassage++;
-		});
+server
+	.set({pluginManager: pluginManager})
 
-		plugin.loadConfig()
-			.loadBack()
-			.loadFront();
-	});
-
-// load dependencies of plugins
-for(let key in plugins){
-	let plugin = plugins[key],
-	 		dependencies = {};
-	for(let keyDep in plugin.props){
-		dependencies[keyDep] = plugins[plugin.props[keyDep]];
-	}
-	plugin.setDependencies(dependencies);
-}
-
-// console.log(plugins);
-
-// console.log(plugins.face.props);
-// plugins.face.setConfig({});
-
-// start server
-// let server = new Server();
-
-if(nbPassage === listPlugins.length){
+pluginManager.on('load:end', (data) => {
+	server.setRoutes(data.routes);
+	server.setAssets(data.assets);
 	server
-	// 	.set(config)
-	// .loadRoutes()
-	.start();
-}
+		.reloadRoutes()
+		.reloadFront({add: data.add, delete: data.delete});
+		// .loadRoutes()
+		// .start();
+})
+
+var listPlugins = fs.readdirSync(basePath + '/plugins');
+pluginManager.add(listPlugins);
+
+pluginManager.dependencies();
+
+server.start();
