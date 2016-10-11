@@ -15,7 +15,21 @@
     display: flex;
     flex-direction: row; }
     .contentCard > div {
-      flex: 1; } }
+      flex: 1; }
+  .rotate {
+    -webkit-animation: spin 4s linear infinite;
+    -moz-animation: spin 4s linear infinite;
+    animation: spin 4s linear infinite; }
+  @-moz-keyframes _1dUiK3iNdfW9mxDCfzkKyG {
+    100% {
+      -moz-transform: rotate(360deg); } }
+  @-webkit-keyframes _1dUiK3iNdfW9mxDCfzkKyG {
+    100% {
+      -webkit-transform: rotate(360deg); } }
+  @keyframes _1dUiK3iNdfW9mxDCfzkKyG {
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg); } } }
 
 html {
   font-size: 62.5%;

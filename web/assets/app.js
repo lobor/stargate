@@ -25945,6 +25945,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+	module.exports = {"spin":"_1dUiK3iNdfW9mxDCfzkKyG"};
 
 /***/ },
 /* 221 */
@@ -38253,7 +38254,8 @@
 	      html = React.createElement(Ui.Snackbar, {
 	        open: this.state.open,
 	        message: this.state.msg,
-	        bodyStyle: _style.TypeNotify[this.state.type]
+	        bodyStyle: _style.TypeNotify[this.state.type],
+	        autoHideDuration: 4000
 	      });
 	      // }
 
@@ -38298,7 +38300,7 @@
 /* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -38306,7 +38308,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _style = __webpack_require__(420);
+	var _notify = __webpack_require__(417);
+
+	var _notify2 = _interopRequireDefault(_notify);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38331,78 +38337,116 @@
 	  }
 
 	  _createClass(Plugins, [{
-	    key: "componentWillMount",
+	    key: 'componentWillMount',
 	    value: function componentWillMount() {
 	      var request = new XMLHttpRequest();
 	      var that = this;
 	      request.onreadystatechange = function () {
+	        var _this2 = this;
+
 	        if (this.readyState == 4 && this.status == 200) {
-	          that.setState(JSON.parse(this.response));
+	          that.context.io.run('plugins:get', {}, function (data) {
+	            var listPlugins = JSON.parse(_this2.response);
+	            listPlugins.plugins.map(function (plugin, index) {
+	              plugin.installed = false;
+	              if (-1 !== data.installed.indexOf(plugin.name)) {
+	                plugin.installed = true;
+	              }
+	              return plugin;
+	            });
+	            that.setState(listPlugins);
+	            that._notify = that.refs.notification;
+	          });
 	        }
 	      };
 	      request.open("GET", "https://raw.githubusercontent.com/lobor/stargate/update/update.json", true);
 	      request.send(null);
 	    }
 	  }, {
-	    key: "select",
-	    value: function select(index, e) {
-	      console.log(this.state.plugins[index]);
+	    key: 'select',
+	    value: function select(index, installed, e) {
+	      var _this3 = this;
+
+	      var plugins = this.state.plugins;
+	      if (false === installed) {
+	        plugins[index].installed = 'loading';
+	        this.setState({ plugins: plugins });
+
+	        this.context.io.run('plugins:install', plugins[index], function (data) {
+	          plugins[index].installed = true;
+	          _this3.setState({ plugins: plugins });
+	          _this3._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been installed', type: 'success' });
+	        });
+	      } else {
+	        plugins[index].installed = 'loading';
+	        this.setState({ plugins: plugins });
+
+	        this.context.io.run('plugins:uninstall', plugins[index], function (data) {
+	          plugins[index].installed = false;
+	          _this3.setState({ plugins: plugins });
+	          _this3._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been remove', type: 'success' });
+	        });
+	      }
 	    }
 	  }, {
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this4 = this;
 
-	      return React.createElement(
-	        Ui.List,
-	        null,
-	        React.createElement(
-	          Ui.Subheader,
+	      var html = React.createElement(Ui.CircularProgress, { size: 80, thickness: 5 });
+
+	      if (this.state.plugins.length) {
+	        html = React.createElement(
+	          Ui.List,
 	          null,
-	          "List plugins available"
-	        ),
-	        this.state.plugins.map(function (plugin, index) {
-	          var text = plugin.name + ' v' + plugin.version;
-	          // icone => delete
-	          return React.createElement(Ui.ListItem, {
-	            key: index,
-	            primaryText: text,
-	            secondaryText: plugin.description,
-	            onClick: _this2.select.bind(undefined, index),
-	            rightIcon: React.createElement(
+	          React.createElement(_notify2.default, { ref: 'notification' }),
+	          React.createElement(
+	            Ui.Subheader,
+	            null,
+	            'List plugins available'
+	          ),
+	          this.state.plugins.map(function (plugin, index) {
+	            var text = plugin.name + ' v' + plugin.version;
+	            var icon = plugin.installed ? React.createElement(
 	              Ui.FontIcon,
-	              { className: "material-icons" },
-	              "file_download"
-	            ),
-	            secondaryTextLines: 2
-	          });
-	        })
-	      );
+	              { className: 'material-icons rotate' },
+	              'delete'
+	            ) : React.createElement(
+	              Ui.FontIcon,
+	              { className: 'material-icons rotate' },
+	              'file_download'
+	            );
+
+	            if (plugin.installed === 'loading') {
+	              icon = React.createElement(Ui.CircularProgress, null);
+	            }
+
+	            return React.createElement(Ui.ListItem, {
+	              key: index,
+	              primaryText: text,
+	              secondaryText: plugin.description,
+	              onClick: _this4.select.bind(undefined, index, plugin.installed),
+	              rightIcon: icon,
+	              secondaryTextLines: 2
+	            });
+	          })
+	        );
+	      }
+	      return html;
 	    }
 	  }]);
 
 	  return Plugins;
 	}(React.Component);
 
+	Plugins.contextTypes = {
+	  io: React.PropTypes.object
+	};
+
 	exports.default = Plugins;
 
 /***/ },
-/* 420 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	exports.CardStyle = {
-	  width: '100%',
-	  maxWidth: '350px',
-	  margin: 'auto'
-	};
-
-	exports.CardTitleStyle = {
-	  "textAlign": "center"
-	};
-
-/***/ },
+/* 420 */,
 /* 421 */
 /***/ function(module, exports, __webpack_require__) {
 

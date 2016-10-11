@@ -26,6 +26,7 @@ class Notify extends React.Component{
           open={this.state.open}
           message={this.state.msg}
           bodyStyle={TypeNotify[this.state.type]}
+          autoHideDuration={4000}
         />
       );
     // }
