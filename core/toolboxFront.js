@@ -12,8 +12,17 @@ function setRoutes(routes){
   app.setState({routes: routesApp});
 }
 
+function deleteNavigation(navigation){
+  var navApp = app.state.navigation;
+  navApp = navApp.filter((nav)=>{
+    return -1 === navigation.indexOf(nav)
+  })
+  app.setState({navigation: navApp});
+}
+
 
 module.exports = {
   setNavigation: setNavigation,
-  setRoutes: setRoutes
+  setRoutes: setRoutes,
+  deleteNavigation: deleteNavigation
 }

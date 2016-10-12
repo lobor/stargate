@@ -38398,6 +38398,9 @@
 	          _this3._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been installed', type: 'success' });
 	        });
 	      } else {
+	        var event = new Event(plugins[index].name + ':delete');
+	        window.dispatchEvent(event);
+
 	        plugins[index].installed = 'loading';
 	        this.setState({ plugins: plugins });
 

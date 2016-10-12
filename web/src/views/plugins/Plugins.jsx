@@ -46,6 +46,9 @@ class Plugins extends React.Component {
       });
     }
     else{
+      var event = new Event(plugins[index].name + ':delete');
+      window.dispatchEvent(event);
+
       plugins[index].installed = 'loading';
       this.setState({plugins: plugins});
 

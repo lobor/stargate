@@ -1,5 +1,6 @@
 var spawn = require('child_process').spawn;
 var cs = require('./core/console');
+var pathProcess = process.cwd();
 
 
 
@@ -13,30 +14,37 @@ ls.on('close', (code) => {
 });
 
 
-
 // install file auth
-let cpAuth = spawn('cp', ['admin.js.dist', 'admin.js'], {cwd: process.cwd() + '/config/web/'});
+try {
+  fs.accessSync(pathProcess + '/config/web/admin.js', fs.F_OK);
+} catch (e) {
+  let cpAuth = spawn('cp', ['admin.js.dist', 'admin.js'], {cwd: pathProcess + '/config/web/'});
 
-cpAuth.stderr.on('data', (data) => {
-  cs.error('Copy environnement', data);
-});
+  cpAuth.stderr.on('data', (data) => {
+    cs.error('Copy environnement', data);
+  });
 
-cpAuth.on('close', (code) => {
-  if(code === 0){
-    cs.success('Copy Authentification');
-  }
-});
+  cpAuth.on('close', (code) => {
+    if(code === 0){
+      cs.success('Copy Authentification');
+    }
+  });
+}
 
 
 // install file environnement
-let cpEnv = spawn('cp', ['environnement.js.dist', 'environnement.js'], {cwd: process.cwd() + '/config/web/'});
+try {
+  fs.accessSync(pathProcess + '/config/web/environnement.js', fs.F_OK);
+} catch (e) {
+  let cpEnv = spawn('cp', ['environnement.js.dist', 'environnement.js'], {cwd: pathProcess + '/config/web/'});
 
-cpEnv.stderr.on('data', (data) => {
-  cs.error('Copy environnement', data);
-});
+  cpEnv.stderr.on('data', (data) => {
+    cs.error('Copy environnement', data);
+  });
 
-cpEnv.on('close', (code) => {
-  if(code === 0){
-    cs.success('Copy environnement');
-  }
-});
+  cpEnv.on('close', (code) => {
+    if(code === 0){
+      cs.success('Copy environnement');
+    }
+  });
+}

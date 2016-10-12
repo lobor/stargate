@@ -1,1 +1,1 @@
-module.exports = {"installed":[]};
+module.exports = {"installed":["face"]};
