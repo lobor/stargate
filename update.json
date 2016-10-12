@@ -5,6 +5,12 @@
       "url":"https://github.com/lobor/stargate-face",
       "version":"0.0.1",
       "description": "Face use motion for face recognition, you can train with picture of you, and it detect you"
+    },
+    {
+      "name":"motion",
+      "url":"https://github.com/lobor/stargate-face",
+      "version":"0.0.1",
+      "description": "Motion for use stream camera"
     }
   ],
   "version":"0.5.0"
