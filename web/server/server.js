@@ -88,7 +88,7 @@ class Server{
 			for(let key in route){
 				this.routes[key] = route[key].concat(this.routes[key]);
 			}
-		})
+		});
 
 	}
 
@@ -97,7 +97,7 @@ class Server{
 		// push asset on template
 		assets.forEach((asset)=>{
 			this.assets = this.assets.concat(asset);
-		})
+		});
 	}
 
 	loadAssets(){
@@ -105,7 +105,7 @@ class Server{
 			this.server.get(assets, (req, res) => {
 				res.sendFile(process.cwd() + assets);
 			});
-		})
+		});
 	}
 
 	loadSocket(){

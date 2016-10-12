@@ -9,7 +9,7 @@ class ManagePlugin{
     this.server = config.server;
     this.path = config.path;
     this.event = {};
-    this.plugins = []
+    this.plugins = [];
   }
 
   // Add plugin
@@ -25,11 +25,11 @@ class ManagePlugin{
     });
 
     plugins.forEach((plugin) => {
-      let plugin = require(this.path + plugin);
+      plugin = require(this.path + plugin);
 
   		plugin = new plugin();
   		plugin.on('back', () => {
-        routes = routes.concat(plugin.back.routes)
+        routes = routes.concat(plugin.back.routes);
   		});
 
   		plugin.on('front', () => {
@@ -41,7 +41,7 @@ class ManagePlugin{
   		});
 
   		plugin
-        .loadConfig()
+        // .loadConfig()
   			.loadBack()
   			.loadFront();
 
@@ -78,7 +78,7 @@ class ManagePlugin{
     delPlugin;
 
     this.plugins = this.plugins.filter((plugin)=>{
-      if(plugin.constructor.name.toLowerCase() === namePlugin){
+      if(plugin.props.conf.name === namePlugin){
         delPlugin = plugin.front.assets;
         return false
       }

@@ -27,32 +27,32 @@ class Plugin {
 		return this;
 	}
 
-	loadConfig() {
-    load.call(this, pathConfig, (error, data) => {
-      if(!error){
-        this.config = data;
-      }
-      this.emit('config', error);
-    });
-		return this;
-	}
+	// loadConfig() {
+  //   load.call(this, pathConfig, (error, data) => {
+  //     if(!error){
+  //       this.config = data;
+  //     }
+  //     this.emit('config', error);
+  //   });
+	// 	return this;
+	// }
 
   setConfig(conf){
     if(typeof conf === 'object'){
-      let path = pathPlugin + this.constructor.name.toLowerCase() + pathConfig;
+      let path = pathPlugin + plugin.props.conf.name + pathConfig;
       fs.writeFile(path, 'module.exports = ' + JSON.stringify(conf) + ';', 'utf8', (err) => {
         if(err){
-          error(this.constructor.name, 'Impossible to write:', path);
+          error(plugin.props.conf.name, 'Impossible to write:', path);
         }
         else{
-          success(this.constructor.name, 'Write file:', path);
+          success(plugin.props.conf.name, 'Write file:', path);
           this.config = conf;
         }
         this.emit('config', err);
       });
     }
     else{
-      error(this.constructor.name, 'the param should be an object');
+      error(plugin.props.conf.name, 'the param should be an object');
     }
   }
 
@@ -62,7 +62,7 @@ class Plugin {
       this.emit('dependencies');
     }
     else{
-      error(this.constructor.name, 'the param should be an object');
+      error(plugin.props.conf.name, 'the param should be an object');
     }
   }
 
@@ -96,7 +96,7 @@ class Plugin {
 }
 
 function load(path, cb){
-  let className = this.constructor.name;
+  let className = this.props.conf.name;
   path = pathPlugin + className.toLowerCase() + path;
   try{
     cb(undefined, require(path));

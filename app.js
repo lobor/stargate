@@ -22,7 +22,7 @@ var pluginManager = new ManagePlugin({
 
 // Set plugin manager with server like dependencies on routes
 server
-	.set({pluginManager: pluginManager})
+	.set({pluginManager: pluginManager});
 
 
 // When plugin manager has been finished to load plugins, attach routes and assets on server
