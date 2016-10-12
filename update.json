@@ -8,7 +8,7 @@
     },
     {
       "name":"motion",
-      "url":"https://github.com/lobor/stargate-face",
+      "url":"https://github.com/lobor/stargate-motion",
       "version":"0.0.1",
       "description": "Motion for use stream camera"
     }
