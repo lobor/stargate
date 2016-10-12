@@ -2,16 +2,6 @@
 Application for security camera on Raspberry Pi, Linux
 
 
-![Login](https://raw.githubusercontent.com/lobor/stargate/screenshot/login.png  "Login" =100x20)
-![Home](https://raw.githubusercontent.com/lobor/stargate/screenshot/home.png  "Home" =100x20)
-![Menu](https://raw.githubusercontent.com/lobor/stargate/screenshot/menu.png  "Menu")
-![Video](https://raw.githubusercontent.com/lobor/stargate/screenshot/video.png  "Video")
-![Config](https://raw.githubusercontent.com/lobor/stargate/screenshot/config.png  "Config")
-
-
-[Screenshot](https://github.com/lobor/stargate/tree/screenshot)
-
-
 ## Config
 1. Lunch on terminal ```npm install --production``` (```npm install``` for dev) and ```npm start```
 2. Go to http://localhost:7070
@@ -35,3 +25,11 @@ I have create a sample plugin [here](https://github.com/lobor/stargate-plugin-sa
 - [ ] Plugin for Gstreamer
 - [ ] Plugin for Face recognition
 - [ ] Plugin for speech recognition
+
+
+## Screenshot
+![Login](https://raw.githubusercontent.com/lobor/stargate/screenshot/login.png  "Login")
+![Home](https://raw.githubusercontent.com/lobor/stargate/screenshot/home.png  "Home")
+![Menu](https://raw.githubusercontent.com/lobor/stargate/screenshot/menu.png  "Menu")
+![Video](https://raw.githubusercontent.com/lobor/stargate/screenshot/video.png  "Video")
+![Config](https://raw.githubusercontent.com/lobor/stargate/screenshot/config.png  "Config")
