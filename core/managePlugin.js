@@ -25,14 +25,12 @@ class ManagePlugin{
   		plugin = new plugin();
   		plugin.on('back', () => {
         routes = routes.concat(plugin.back.routes)
-  			// this.server.setRoutes(plugin.back.routes);
   		});
 
   		plugin.on('front', () => {
   			if(plugin.front.assets !== ''){
           addPlugin.push(plugin.front.assets);
           assets = assets.concat(plugin.front.assets);
-  				// this.server.setAssets(plugin.front.assets);
   			}
   			nbPassage++;
   		});

@@ -1,6 +1,14 @@
 # stargate
 Application for security camera on Raspberry Pi, Linux
 
+
+![Login](https://raw.githubusercontent.com/lobor/stargate/screenshot/login.png  "Login" =100x20)
+![Home](https://raw.githubusercontent.com/lobor/stargate/screenshot/home.png  "Home" =100x20)
+![Menu](https://raw.githubusercontent.com/lobor/stargate/screenshot/menu.png  "Menu")
+![Video](https://raw.githubusercontent.com/lobor/stargate/screenshot/video.png  "Video")
+![Config](https://raw.githubusercontent.com/lobor/stargate/screenshot/config.png  "Config")
+
+
 [Screenshot](https://github.com/lobor/stargate/tree/screenshot)
 
 
