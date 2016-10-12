@@ -4,6 +4,7 @@ visio/model.xml
 visio/collections/**
 visio/models/**
 config/motion/camera/*.js
+config/plugins/status.js
 config/web/admin.js
 config/web/environnement.js
 tmp/confcam.conf

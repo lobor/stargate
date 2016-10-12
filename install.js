@@ -48,3 +48,21 @@ try {
     }
   });
 }
+
+
+// install file plugin
+try {
+  fs.accessSync(pathProcess + '/config/plugins/status.js', fs.F_OK);
+} catch (e) {
+  let cpEnv = spawn('cp', ['status.js.dist', 'status.js'], {cwd: pathProcess + '/config/plugins/'});
+
+  cpEnv.stderr.on('data', (data) => {
+    cs.error('Copy status', data);
+  });
+
+  cpEnv.on('close', (code) => {
+    if(code === 0){
+      cs.success('Copy status');
+    }
+  });
+}
