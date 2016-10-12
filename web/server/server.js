@@ -14,6 +14,7 @@ var express = require('express'),
 
 class Server{
 	constructor(){
+		this.data = {};
 		this.server = express();
 
 		this.server.set('view engine', 'ejs');

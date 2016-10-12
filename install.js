@@ -1,17 +1,17 @@
 var spawn = require('child_process').spawn;
+var fs = require('fs');
 var cs = require('./core/console');
 var pathProcess = process.cwd();
 
 
-
-// install first plugin
-let ls = spawn('npm', ['install'], {cwd: process.cwd() + '/plugins/motion/'});
-
-ls.on('close', (code) => {
-  if(code === 0){
-    cs.success('Motion plugin');
-  }
-});
+// // install first plugin
+// let ls = spawn('npm', ['install'], {cwd: process.cwd() + '/plugins/motion/'});
+//
+// ls.on('close', (code) => {
+//   if(code === 0){
+//     cs.success('Motion plugin');
+//   }
+// });
 
 
 // install file auth
@@ -54,15 +54,22 @@ try {
 try {
   fs.accessSync(pathProcess + '/config/plugins/status.js', fs.F_OK);
 } catch (e) {
-  let cpEnv = spawn('cp', ['status.js.dist', 'status.js'], {cwd: pathProcess + '/config/plugins/'});
+  let cpPlugins = spawn('cp', ['status.js.dist', 'status.js'], {cwd: pathProcess + '/config/plugins/'});
 
-  cpEnv.stderr.on('data', (data) => {
+  cpPlugins.stderr.on('data', (data) => {
     cs.error('Copy status', data);
   });
 
-  cpEnv.on('close', (code) => {
+  cpPlugins.on('close', (code) => {
     if(code === 0){
       cs.success('Copy status');
     }
   });
+}
+
+
+try {
+  fs.accessSync(pathProcess + '/plugins/', fs.F_OK);
+} catch (e) {
+  fs.mkdirSync(pathProcess + '/plugins/', 0777);
 }
