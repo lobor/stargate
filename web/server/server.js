@@ -1,20 +1,19 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var exec = require('child_process').exec;
-var loadRoutes = require('./routes/load');
-var compression = require('compression');
+/**
+ * Class of server web
+ */
 
-var defaultAssets = [
-	'/web/assets/app.js',
-];
+var express = require('express'),
+		bodyParser = require('body-parser'),
+		session = require('express-session'),
+		loadRoutes = require('./routes/load'),
+		compression = require('compression'),
+		defaultAssets = [
+			'/web/assets/app.js',
+		];
 
 
 class Server{
 	constructor(){
-		this.config = {};
-		this.data = {};
-
 		this.server = express();
 
 		this.server.set('view engine', 'ejs');
@@ -37,6 +36,10 @@ class Server{
 
 		this.routes = loadRoutes;
 
+		/**
+		 * test if production or developpement
+		 * If production, load HTTPS
+		 */
 		// if (process.env.NODE_ENV != "development"){
 		// 	let fs = require('fs'),
 		// 			options = {
@@ -62,6 +65,9 @@ class Server{
 		this.io.emit(nameSocket, data)
 	}
 
+	/**
+	 * Set dependencies on server
+	 */
 	set(name, value){
 		let key;
 		if('object' === typeof name && undefined === value){
@@ -101,12 +107,12 @@ class Server{
 		})
 	}
 
-	loadSocket(socket){
+	loadSocket(){
 		let i = 0, j, size, sizeRoute, route, routes, dep;
 		for(i = 0, size = this.routes.api.length; i < size; i++){
 			routes = this.routes.api[i];
 
-			for(j = 0, sizeRoute = routes.length, dep = {socket:socket}; j < sizeRoute; j++){
+			for(j = 0, sizeRoute = routes.length, dep = {socket: this.socket}; j < sizeRoute; j++){
 				route = routes[j];
 
 				// search dependencies
@@ -116,8 +122,8 @@ class Server{
 					});
 				}
 
-				// attache socket route with dependencies
-				socket.on(route.name, route.call.bind(dep));
+				// attach socket route with dependencies
+				this.socket.on(route.name, route.call.bind(dep));
 			}
 		}
 	}
@@ -137,7 +143,7 @@ class Server{
 					});
 				}
 
-				// attache route with dependencies
+				// attach route with dependencies
 				this.server[route.type](route.url, route.call.bind(dep));
 			}
 		}
@@ -146,7 +152,6 @@ class Server{
 	}
 
 	initSession(){
-
 		this.server.use(this.sessionMiddleware);
 
 		this.io.use((socket, next) => {
@@ -183,33 +188,18 @@ class Server{
 	}
 
 	reloadRoutes(){
-		// var toto = this.server._router.stack;
 		this.server._router.stack = this.server._router.stack.filter((stack, index)=>{
 			return !stack.route;
 		});
 
-
-
-
-		// this.server._router.stack = [];
-		// this.assets = defaultAssets;
 		this.initSession();
 		this.loadAssets();
 		this.loadRoutes();
-		// this.server._router.stack.forEach((stack)=>{
-		// 	console.log(stack);
-		// });
-		// console.log(this.server._router);
-		// this.server._router.stack.forEach((stack)=>{
-		// 	console.log(stack);
-		// });
 
 		return this;
 	}
 
 	start(){
-
-
 		this.initSession();
 
 		this.loadAssets();
@@ -218,17 +208,11 @@ class Server{
 		this.isStart = true;
 		this.http.listen(process.env.PORT || 8080, () => {
 			console.log('Server is listening...');
-
-
-			// this.server._router.stack.forEach((stack) => {
-			// 	if(stack.route)
-			// 	console.log(stack.route.path);
-			// })
 		});
 
 		this.io.on('connection', (socket) => {
 			this.socket = socket;
-			this.loadSocket(socket);
+			this.loadSocket();
 		});
 	}
 }

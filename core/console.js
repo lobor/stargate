@@ -1,3 +1,7 @@
+/**
+ *  adds colors alongside console.log server
+ */
+
 function consoleError(...args){
   console.log('\x1b[31m', '[ERROR]', '\x1b[0m',  ...args);
 }

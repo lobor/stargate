@@ -6,16 +6,3 @@ exports.TypeNotify = {
     backgroundColor: 'red'
   }
 }
-//
-// exports.StyleContainer = {
-//   position: 'absolute',
-//   top: 0,
-//   left: 0,
-//   width: '100%',
-//   display: 'flex',
-//   justifyContent: 'center'
-// };
-//
-// exports.StyleMsg = {
-//   padding: '10px'
-// };

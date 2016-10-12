@@ -1,3 +1,8 @@
+/**
+ * Base Class of plugins whend laod on server
+ */
+
+
 import { success, error, warning } from './console';
 var fs = require('fs');
 

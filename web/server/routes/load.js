@@ -1,35 +1,12 @@
-// module.exports = [
-// 	// API
-// 	require('./API/config'),
-// 	require('./API/user'),
-// 	require('./API/detect'),
-
-// 	// Page
-// 	require('./front/video'), // video
-
-
-
-
-
-
-
-
-
-
-
-// 	// Not modified, it's route of index
-// 	require('./front/index')
-// ];
-
 module.exports = {
 	api: [
-		// API
+		// Routes for socket API
 		require('./API/user'),
 		require('./API/plugins'),
 		// require('./API/cpu'),
 	],
 	front: [
-		// Page
+		// Route for render express Page
 
 		// Not modified, it's route of index
 		require('./front/index')

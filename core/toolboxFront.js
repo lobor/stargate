@@ -1,3 +1,7 @@
+/**
+ * Toolbox of front for add, remove navigation and routes on General app of react
+ */
+
 var app = window.App;
 
 function setNavigation(navigation){

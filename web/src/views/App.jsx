@@ -2,8 +2,10 @@ import Navigation from 'components/navigation/Navigation.jsx';
 
 import { BrowserRouter, Match, Miss, Link } from 'react-router'
 
+// Style of app
 import { appCss } from './../style/app.scss';
 
+// Socket API
 var Api = require("imports?this=>window!./../utils/Api")
 
 var Menu = require('./../collections/menu');
@@ -24,8 +26,9 @@ const muiTheme = getMuiTheme({
 });
 // end theming
 
-
-
+/**
+ * Point of entry to react application, as well as routes
+ */
 class App extends React.Component {
 	constructor(){
 		super();
@@ -37,14 +40,15 @@ class App extends React.Component {
 	}
 
   componentDidMount(){
+    // Event for add script when a plugin is installing
     Api.on('assets:add', (data)=>{
       var script = document.createElement('script');
       script.src = data.add[0];
 
       document.body.appendChild(script);
-      // console.log(data);
     });
 
+    // Event for delete script when a plugin is installing
     Api.on('assets:delete', (data)=>{
       var scripts = document.querySelectorAll('script');
       scripts.forEach((script)=>{
@@ -55,6 +59,7 @@ class App extends React.Component {
     });
   }
 
+  // Create context authentification and socket API
 	getChildContext() {
 		var auth = false;
 		if('/user/login' !== window.location.pathname){
@@ -74,6 +79,7 @@ class App extends React.Component {
     };
   }
 
+  // render App with routes and navigation
   render() {
     return (
 			<BrowserRouter>

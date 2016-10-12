@@ -1,3 +1,11 @@
+/**
+ * Old file of server web
+ * I keep it because I have several piece of code I have to use elsewhere
+**/
+
+
+
+
 require('babel/register');
 
 var Server = require('./server/server');

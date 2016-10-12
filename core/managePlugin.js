@@ -1,3 +1,7 @@
+/**
+ * Plugin Manager
+ */
+
 var basePath = process.cwd();
 
 class ManagePlugin{
@@ -8,6 +12,7 @@ class ManagePlugin{
     this.plugins = []
   }
 
+  // Add plugin
   add(plugins){
     var nbPassage = 0,
     routes = [],
@@ -44,7 +49,6 @@ class ManagePlugin{
     });
 
     if(nbPassage === plugins.length){
-      // this.server.delete
       this.emit('load:end', {routes: routes, assets: assets, add: addPlugin});
     }
   }
@@ -67,6 +71,7 @@ class ManagePlugin{
 		}
 	}
 
+  // Delete plugin
   delete(namePlugin){
     var routes = [],
     assets = [],
