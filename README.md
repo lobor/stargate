@@ -5,13 +5,8 @@ Application for security camera on Raspberry Pi, Linux
 
 
 ## Config
-1. Install Motion => [link](http://www.lavrsen.dk/foswiki/bin/view/Motion/WebHome) 
-2. Install OpenCV => ```sudo apt-get install libopencv-dev python-opencv```
-3. Rename the config files located in /config and modify if necessary
-  - admin.js.dist => admin.js
-  - environnement.js.dist => environnement.js
-4. Lunch on terminal ```npm install --production``` (```npm install``` for dev) and ```npm start```
-5. Go to http://localhost:8080
+1. Lunch on terminal ```npm install --production``` (```npm install``` for dev) and ```npm start```
+2. Go to http://localhost:7070
 
 
 ## Script
@@ -19,10 +14,16 @@ Application for security camera on Raspberry Pi, Linux
 
 ```npm run watch:js``` => watch modification on js file and re-build
 
+## Create your plugin
+I have create a sample plugin [here](https://github.com/lobor/stargate-plugin-sample) for develop your plugin. For add on store of stargate, you should pull request on branch [update](https://github.com/lobor/stargate/tree/update) of stargate
+
 ## Plugins available
-- Face recognition (in development)
+- [Face recognition](https://github.com/lobor/stargate-face) (in development) 
+- [Motion](https://github.com/lobor/stargate-motion)  (in development) 
 
 ## RoadMap
-- [ ] Create system plugin with auto installation 
+- [x] Create system plugin with auto installation 
+- [ ] Plugin for Motion
+- [ ] Plugin for Gstreamer
 - [ ] Plugin for Face recognition
 - [ ] Plugin for speech recognition
