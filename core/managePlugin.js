@@ -49,6 +49,7 @@ class ManagePlugin{
     });
 
     if(nbPassage === plugins.length){
+      this.dependencies();
       this.emit('load:end', {routes: routes, assets: assets, add: addPlugin});
     }
   }
@@ -77,18 +78,26 @@ class ManagePlugin{
     assets = [],
     delPlugin;
 
-    this.plugins = this.plugins.filter((plugin)=>{
+    this.plugins = this.plugins.map((plugin)=>{
       if(plugin.props.conf.name === namePlugin){
+        plugin.remove();
         delPlugin = plugin.front.assets;
-        return false
+        plugin = undefined;
+      }
+      else{
+        routes = routes.concat(plugin.back.routes);
+        assets = assets.concat(plugin.front.assets);
       }
 
-      routes = routes.concat(plugin.back.routes);
-      assets = assets.concat(plugin.front.assets);
 
-      return true;
+      return plugin;
     });
 
+    this.plugins = this.plugins.filter((plugin)=>{
+      return plugin;
+    });
+
+    this.dependencies();
     this.emit('load:end', {routes: routes, assets: assets, delete: delPlugin});
   }
 
@@ -96,9 +105,9 @@ class ManagePlugin{
   dependencies(){
     for(let key in this.plugins){
     	let plugin = this.plugins[key],
-    	 		dependencies = {};
-    	for(let keyDep in plugin.props){
-    		dependencies[keyDep] = this.plugins[plugin.props[keyDep]];
+    	 		dependencies = {server: this.server};
+    	for(let keyDep in plugin.props.dependencies){
+    		dependencies[keyDep] = this.plugins[plugin.props.dependencies[keyDep]];
     	}
     	plugin.setDependencies(dependencies);
     }

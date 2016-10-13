@@ -37,6 +37,10 @@ class Plugin {
 	// 	return this;
 	// }
 
+	remove(){
+		this.event = {};
+	}
+
   setConfig(conf){
     if(typeof conf === 'object'){
       let path = pathPlugin + plugin.props.conf.name + pathConfig;

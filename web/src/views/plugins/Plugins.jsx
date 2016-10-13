@@ -4,13 +4,19 @@ class Plugins extends React.Component {
   constructor(){
     super();
     this.state = {
-      plugins: []
+      plugins: [],
+      dialog: false,
+      password: false
     }
 
     this.select = this.select.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.validate = this.validate.bind(this);
+    this.cancel = this.cancel.bind(this);
+    this.handleValue = this.handleValue.bind(this);
   }
 
-  componentWillMount(){
+  checkPluginList(){
     let request = new XMLHttpRequest();
     var that = this;
     request.onreadystatechange = function() {
@@ -31,6 +37,20 @@ class Plugins extends React.Component {
     };
     request.open("GET", "https://raw.githubusercontent.com/lobor/stargate/update/update.json", true);
     request.send(null);
+  }
+
+  componentWillMount(){
+    this.checkPluginList()
+  }
+
+  componentDidMount(){
+    this.context.io.on('askSudo', () => {
+      this.setState({dialog: true});
+    });
+  }
+
+  componentWillUnmount(){
+    this.context.io.off('askSudo');
   }
 
   select(index, installed, e){
@@ -60,13 +80,63 @@ class Plugins extends React.Component {
     }
   }
 
+  handleClose(){
+    this.setState({dialog: false});
+  }
+
+  handleValue(e, value){
+    this.setState({password: value});
+  }
+
+  validate(){
+    this.context.io.run('askSudo:response', {password: this.state.password}, (data) => {
+      if(data.success){
+        this.handleClose();
+      }
+    });
+  }
+
+  cancel(){
+    this.select(this.state.plugins.length - 1, true);
+    this.handleClose();
+  }
+
 
   render() {
     let html = (<Ui.CircularProgress size={80} thickness={5} />);
 
     if(this.state.plugins.length){
+      const actions = [
+         <Ui.FlatButton
+           label="Cancel"
+           primary={true}
+           onTouchTap={this.cancel}
+         />,
+         <Ui.FlatButton
+           label="Submit"
+           primary={true}
+           keyboardFocused={true}
+           onTouchTap={this.validate}
+         />,
+       ];
+
       html = (
         <Ui.List>
+          <Ui.Dialog
+            title="Password sudo"
+            actions={actions}
+            modal={false}
+            open={this.state.dialog}
+            onRequestClose={this.handleClose}
+          >
+          <Ui.TextField
+              ref="password"
+              type="password"
+              hintText="Your passowrd"
+              floatingLabelText="Your passowrd"
+              onChange={this.handleValue}
+            />
+          </Ui.Dialog>
           <Notify ref="notification" />
           <Ui.Subheader>List plugins available</Ui.Subheader>
           {this.state.plugins.map((plugin, index) => {

@@ -15,6 +15,7 @@ var express = require('express'),
 class Server{
 	constructor(){
 		this.data = {};
+		this.event = {};
 		this.server = express();
 
 		this.server.set('view engine', 'ejs');
@@ -188,6 +189,21 @@ class Server{
 		});
 	}
 
+	on(name, cb) {
+		this.event[name] = cb;
+	}
+
+	off(name) {
+		this.event[name] = false;
+	}
+
+	emit(event, data) {
+    let nameFunction = 'on' + event.charAt(0).toUpperCase() + event.slice(1);
+		if (this.event[nameFunction]) {
+			this.event[nameFunction].call(undefined, data);
+		}
+	}
+
 	reloadRoutes(){
 		this.server._router.stack = this.server._router.stack.filter((stack, index)=>{
 			return !stack.route;
@@ -196,6 +212,8 @@ class Server{
 		this.initSession();
 		this.loadAssets();
 		this.loadRoutes();
+
+		this.emit('reloadServer');
 
 		return this;
 	}

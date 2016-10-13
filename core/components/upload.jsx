@@ -5,7 +5,7 @@ class Upload extends Component{
   constructor(...args){
     super(...args);
     this.state = {
-      images: ['toto'],
+      images: [''],
       preview: []
     }
 	}

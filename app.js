@@ -38,8 +38,8 @@ pluginManager.on('load:end', (data) => {
 // list all plugins, and send it on plugin manager
 pluginManager.add(fs.readdirSync(pluginManager.path));
 
-// attache dependencies of plugins
-pluginManager.dependencies();
+// attach dependencies of plugins
+// pluginManager.dependencies();
 
 
 // start the server web

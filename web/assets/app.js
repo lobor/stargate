@@ -54,15 +54,25 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	/**
+	 * Webpack of entry point
+	 */
+
+	// Add React on window => window.React
 	__webpack_require__(169);
+
+	// Add material-ui on window => window.Ui
 	__webpack_require__(421);
+
+	// Add material-ui-colors on window => window.Colors
 	__webpack_require__(184);
 
 	var injectTapEventPlugin = __webpack_require__(595);
 	injectTapEventPlugin();
 
+	// render app
 	if (typeof document !== "undefined") {
-		window.App = (0, _reactDom.render)(React.createElement(_App2.default, null), document.getElementById('container'));
+	  window.App = (0, _reactDom.render)(React.createElement(_App2.default, null), document.getElementById('container'));
 	}
 
 /***/ },
@@ -20863,6 +20873,10 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	// Style of app
+
+
+	// Socket API
 	var Api = __webpack_require__(364);
 
 	var Menu = __webpack_require__(365);
@@ -20881,6 +20895,9 @@
 	});
 	// end theming
 
+	/**
+	 * Point of entry to react application, as well as routes
+	 */
 
 	var App = function (_React$Component) {
 		_inherits(App, _React$Component);
@@ -20900,14 +20917,15 @@
 		_createClass(App, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
+				// Event for add script when a plugin is installing
 				Api.on('assets:add', function (data) {
 					var script = document.createElement('script');
 					script.src = data.add[0];
 
 					document.body.appendChild(script);
-					// console.log(data);
 				});
 
+				// Event for delete script when a plugin is installing
 				Api.on('assets:delete', function (data) {
 					var scripts = document.querySelectorAll('script');
 					scripts.forEach(function (script) {
@@ -20917,6 +20935,9 @@
 					});
 				});
 			}
+
+			// Create context authentification and socket API
+
 		}, {
 			key: 'getChildContext',
 			value: function getChildContext() {
@@ -20936,6 +20957,9 @@
 					io: Api
 				};
 			}
+
+			// render App with routes and navigation
+
 		}, {
 			key: 'render',
 			value: function render() {
@@ -38302,19 +38326,6 @@
 	    backgroundColor: 'red'
 	  }
 	};
-	//
-	// exports.StyleContainer = {
-	//   position: 'absolute',
-	//   top: 0,
-	//   left: 0,
-	//   width: '100%',
-	//   display: 'flex',
-	//   justifyContent: 'center'
-	// };
-	//
-	// exports.StyleMsg = {
-	//   padding: '10px'
-	// };
 
 /***/ },
 /* 419 */
@@ -38349,16 +38360,22 @@
 	    var _this = _possibleConstructorReturn(this, (Plugins.__proto__ || Object.getPrototypeOf(Plugins)).call(this));
 
 	    _this.state = {
-	      plugins: []
+	      plugins: [],
+	      dialog: false,
+	      password: false
 	    };
 
 	    _this.select = _this.select.bind(_this);
+	    _this.handleClose = _this.handleClose.bind(_this);
+	    _this.validate = _this.validate.bind(_this);
+	    _this.cancel = _this.cancel.bind(_this);
+	    _this.handleValue = _this.handleValue.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(Plugins, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
+	    key: 'checkPluginList',
+	    value: function checkPluginList() {
 	      var request = new XMLHttpRequest();
 	      var that = this;
 	      request.onreadystatechange = function () {
@@ -38383,9 +38400,28 @@
 	      request.send(null);
 	    }
 	  }, {
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.checkPluginList();
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this3 = this;
+
+	      this.context.io.on('askSudo', function () {
+	        _this3.setState({ dialog: true });
+	      });
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.context.io.off('askSudo');
+	    }
+	  }, {
 	    key: 'select',
 	    value: function select(index, installed, e) {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      var plugins = this.state.plugins;
 	      if (false === installed) {
@@ -38394,8 +38430,8 @@
 
 	        this.context.io.run('plugins:install', plugins[index], function (data) {
 	          plugins[index].installed = true;
-	          _this3.setState({ plugins: plugins });
-	          _this3._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been installed', type: 'success' });
+	          _this4.setState({ plugins: plugins });
+	          _this4._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been installed', type: 'success' });
 	        });
 	      } else {
 	        var event = new Event(plugins[index].name + ':delete');
@@ -38406,22 +38442,77 @@
 
 	        this.context.io.run('plugins:uninstall', plugins[index], function (data) {
 	          plugins[index].installed = false;
-	          _this3.setState({ plugins: plugins });
-	          _this3._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been remove', type: 'success' });
+	          _this4.setState({ plugins: plugins });
+	          _this4._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been remove', type: 'success' });
 	        });
 	      }
 	    }
 	  }, {
+	    key: 'handleClose',
+	    value: function handleClose() {
+	      this.setState({ dialog: false });
+	    }
+	  }, {
+	    key: 'handleValue',
+	    value: function handleValue(e, value) {
+	      this.setState({ password: value });
+	    }
+	  }, {
+	    key: 'validate',
+	    value: function validate() {
+	      var _this5 = this;
+
+	      this.context.io.run('askSudo:response', { password: this.state.password }, function (data) {
+	        if (data.success) {
+	          _this5.handleClose();
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'cancel',
+	    value: function cancel() {
+	      this.select(this.state.plugins.length - 1, true);
+	      this.handleClose();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
+	      var _this6 = this;
 
 	      var html = React.createElement(Ui.CircularProgress, { size: 80, thickness: 5 });
 
 	      if (this.state.plugins.length) {
+	        var actions = [React.createElement(Ui.FlatButton, {
+	          label: 'Cancel',
+	          primary: true,
+	          onTouchTap: this.cancel
+	        }), React.createElement(Ui.FlatButton, {
+	          label: 'Submit',
+	          primary: true,
+	          keyboardFocused: true,
+	          onTouchTap: this.validate
+	        })];
+
 	        html = React.createElement(
 	          Ui.List,
 	          null,
+	          React.createElement(
+	            Ui.Dialog,
+	            {
+	              title: 'Password sudo',
+	              actions: actions,
+	              modal: false,
+	              open: this.state.dialog,
+	              onRequestClose: this.handleClose
+	            },
+	            React.createElement(Ui.TextField, {
+	              ref: 'password',
+	              type: 'password',
+	              hintText: 'Your passowrd',
+	              floatingLabelText: 'Your passowrd',
+	              onChange: this.handleValue
+	            })
+	          ),
 	          React.createElement(_notify2.default, { ref: 'notification' }),
 	          React.createElement(
 	            Ui.Subheader,
@@ -38448,7 +38539,7 @@
 	              key: index,
 	              primaryText: text,
 	              secondaryText: plugin.description,
-	              onClick: _this4.select.bind(undefined, index, plugin.installed),
+	              onClick: _this6.select.bind(undefined, index, plugin.installed),
 	              rightIcon: icon,
 	              secondaryTextLines: 2
 	            });
