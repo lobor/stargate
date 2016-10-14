@@ -13,29 +13,25 @@ var pathPlugin = rootPath  + '/plugins/';
 class Plugin {
 	constructor() {
     this.event = {};
+		this.back = {};
+		this.front = {};
 
 		return this;
 	}
 
-	loadBack() {
-    load.call(this, '/back/', (error, data) => {
-      if(!error){
-        this.back = data;
-      }
-      this.emit('back', error);
-    });
-		return this;
+	load(){
+		let className = this.props.conf.name;
+	  let pathBack = pathPlugin + className.toLowerCase() + '/back/';
+	  let pathFront = pathPlugin + className.toLowerCase() + '/front/';
+	  try{
+			this.back = require(pathBack);
+			this.front = require(pathFront);
+	  }
+	  catch (e){
+	    warning(className, 'Cannot find module:', path, '\n', e, '\n');
+	  }
+		this.emit('load');
 	}
-
-	// loadConfig() {
-  //   load.call(this, pathConfig, (error, data) => {
-  //     if(!error){
-  //       this.config = data;
-  //     }
-  //     this.emit('config', error);
-  //   });
-	// 	return this;
-	// }
 
 	remove(){
 		this.event = {};
@@ -66,18 +62,12 @@ class Plugin {
       this.emit('dependencies');
     }
     else{
-      error(plugin.props.conf.name, 'the param should be an object');
+      error(this.props.conf.name, 'the param should be an object');
     }
   }
 
-	loadFront() {
-    load.call(this, '/front/index', (error, data) => {
-      if(!error){
-        this.front = data;
-      }
-      this.emit('front', error);
-    });
-		return this;
+	serverStart(){
+		this.emit('serverStart');
 	}
 
   on(name, cb) {
@@ -97,18 +87,6 @@ class Plugin {
 			this.event[event].call(undefined, data);
 		}
 	}
-}
-
-function load(path, cb){
-  let className = this.props.conf.name;
-  path = pathPlugin + className.toLowerCase() + path;
-  try{
-    cb(undefined, require(path));
-  }
-  catch (e){
-    warning(className, 'Cannot find module:', path, '\n', e, '\n');
-    cb(e);
-  }
-}
+};
 
 export default Plugin;

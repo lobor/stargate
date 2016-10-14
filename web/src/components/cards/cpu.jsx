@@ -1,19 +1,21 @@
+import Loading from 'components/loading/Loading';
+
 
 class Cpu extends React.Component{
   constructor(...args){
     super(...args);
     this.state = {
-      cpu: 0 + '%'
+      render: false,
+      info: 0 + '%'
     }
 	}
 
   componentWillMount(){
     this.context.io.run('cpu');
     this.context.io.on('cpu:change', (data) => {
-      var st = {
-        cpu: ''
-      };
-      st.cpu = Math.floor(data.cpu) + '%';
+      var st = {};
+      st.info = Math.floor(data.cpu) + '%';
+      st.render = true
       this.setState(st);
     });
   }
@@ -29,7 +31,9 @@ class Cpu extends React.Component{
       <Ui.Card>
         <Ui.CardTitle title="CPU Usage" />
         <Ui.CardText>
-          {this.state.cpu}
+          <Loading render={this.state.render}>
+            {this.state.info}
+          </Loading>
         </Ui.CardText>
       </Ui.Card>
     );

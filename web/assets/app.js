@@ -37924,7 +37924,7 @@
 
 /***/ },
 /* 413 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -37933,6 +37933,12 @@
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Loading = __webpack_require__(599);
+
+	var _Loading2 = _interopRequireDefault(_Loading);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -37955,7 +37961,8 @@
 	    var _this = _possibleConstructorReturn(this, (_ref = Cpu.__proto__ || Object.getPrototypeOf(Cpu)).call.apply(_ref, [this].concat(args)));
 
 	    _this.state = {
-	      cpu: 0 + '%'
+	      render: false,
+	      info: 0 + '%'
 	    };
 	    return _this;
 	  }
@@ -37967,10 +37974,9 @@
 
 	      this.context.io.run('cpu');
 	      this.context.io.on('cpu:change', function (data) {
-	        var st = {
-	          cpu: ''
-	        };
-	        st.cpu = Math.floor(data.cpu) + '%';
+	        var st = {};
+	        st.info = Math.floor(data.cpu) + '%';
+	        st.render = true;
 	        _this2.setState(st);
 	      });
 	    }
@@ -37990,7 +37996,11 @@
 	        React.createElement(
 	          Ui.CardText,
 	          null,
-	          this.state.cpu
+	          React.createElement(
+	            _Loading2.default,
+	            { render: this.state.render },
+	            this.state.info
+	          )
 	        )
 	      );
 	    }
@@ -38007,15 +38017,21 @@
 
 /***/ },
 /* 414 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Loading = __webpack_require__(599);
+
+	var _Loading2 = _interopRequireDefault(_Loading);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -38038,31 +38054,41 @@
 	    var _this = _possibleConstructorReturn(this, (_ref = LastLogin.__proto__ || Object.getPrototypeOf(LastLogin)).call.apply(_ref, [this].concat(args)));
 
 	    _this.state = {
-	      date: []
+	      date: [],
+	      render: false
 	    };
-
-	    _this.context.io.run('lastLogin', {}, function (data) {
-	      _this.setState({ date: data.lastLogin });
-	    });
 	    return _this;
 	  }
 
 	  _createClass(LastLogin, [{
-	    key: "render",
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+
+	      this.context.io.run('lastLogin', {}, function (data) {
+	        _this2.setState({ date: data.lastLogin, render: true });
+	      });
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
 	      return React.createElement(
 	        Ui.Card,
 	        null,
-	        React.createElement(Ui.CardTitle, { title: "Last Login" }),
+	        React.createElement(Ui.CardTitle, { title: 'Last Login' }),
 	        React.createElement(
 	          Ui.CardText,
 	          null,
 	          React.createElement(
-	            Ui.List,
-	            null,
-	            this.state.date.map(function (date, i) {
-	              return React.createElement(Ui.ListItem, { key: i, primaryText: date });
-	            })
+	            _Loading2.default,
+	            { render: this.state.render },
+	            React.createElement(
+	              Ui.List,
+	              null,
+	              this.state.date.map(function (date, i) {
+	                return React.createElement(Ui.ListItem, { key: i, primaryText: date });
+	              })
+	            )
 	          )
 	        )
 	      );
@@ -38343,6 +38369,10 @@
 
 	var _notify2 = _interopRequireDefault(_notify);
 
+	var _Loading = __webpack_require__(599);
+
+	var _Loading2 = _interopRequireDefault(_Loading);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38362,7 +38392,8 @@
 	    _this.state = {
 	      plugins: [],
 	      dialog: false,
-	      password: false
+	      password: false,
+	      render: false
 	    };
 
 	    _this.select = _this.select.bind(_this);
@@ -38391,6 +38422,8 @@
 	              }
 	              return plugin;
 	            });
+
+	            listPlugins.render = true;
 	            that.setState(listPlugins);
 	            that._notify = that.refs.notification;
 	          });
@@ -38421,31 +38454,40 @@
 	  }, {
 	    key: 'select',
 	    value: function select(index, installed, e) {
+	      var plugins = this.state.plugins;
+	      plugins[index].installed = 'loading';
+	      this.setState({ plugins: plugins });
+
+	      if (false === installed) {
+	        this.install(plugins);
+	      } else {
+	        this.uninstall(plugins);
+	      }
+	    }
+	  }, {
+	    key: 'install',
+	    value: function install(plugins) {
 	      var _this4 = this;
 
-	      var plugins = this.state.plugins;
-	      if (false === installed) {
-	        plugins[index].installed = 'loading';
-	        this.setState({ plugins: plugins });
+	      this.context.io.run('plugins:install', plugins[index], function (data) {
+	        plugins[index].installed = true;
+	        _this4.setState({ plugins: plugins });
+	        _this4._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been installed', type: 'success' });
+	      });
+	    }
+	  }, {
+	    key: 'uninstall',
+	    value: function uninstall(plugins) {
+	      var _this5 = this;
 
-	        this.context.io.run('plugins:install', plugins[index], function (data) {
-	          plugins[index].installed = true;
-	          _this4.setState({ plugins: plugins });
-	          _this4._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been installed', type: 'success' });
-	        });
-	      } else {
-	        var event = new Event(plugins[index].name + ':delete');
-	        window.dispatchEvent(event);
+	      var event = new Event(plugins[index].name + ':delete');
+	      window.dispatchEvent(event);
 
-	        plugins[index].installed = 'loading';
-	        this.setState({ plugins: plugins });
-
-	        this.context.io.run('plugins:uninstall', plugins[index], function (data) {
-	          plugins[index].installed = false;
-	          _this4.setState({ plugins: plugins });
-	          _this4._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been remove', type: 'success' });
-	        });
-	      }
+	      this.context.io.run('plugins:uninstall', plugins[index], function (data) {
+	        plugins[index].installed = false;
+	        _this5.setState({ plugins: plugins });
+	        _this5._notify.show({ msg: 'The plugin "' + plugins[index].name + '" has been remove', type: 'success' });
+	      });
 	    }
 	  }, {
 	    key: 'handleClose',
@@ -38460,11 +38502,11 @@
 	  }, {
 	    key: 'validate',
 	    value: function validate() {
-	      var _this5 = this;
+	      var _this6 = this;
 
 	      this.context.io.run('askSudo:response', { password: this.state.password }, function (data) {
 	        if (data.success) {
-	          _this5.handleClose();
+	          _this6.handleClose();
 	        }
 	      });
 	    }
@@ -38477,43 +38519,43 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this6 = this;
+	      var _this7 = this;
 
-	      var html = React.createElement(Ui.CircularProgress, { size: 80, thickness: 5 });
+	      var actions = [React.createElement(Ui.FlatButton, {
+	        label: 'Cancel',
+	        primary: true,
+	        onTouchTap: this.cancel
+	      }), React.createElement(Ui.FlatButton, {
+	        label: 'Submit',
+	        primary: true,
+	        keyboardFocused: true,
+	        onTouchTap: this.validate
+	      })];
 
-	      if (this.state.plugins.length) {
-	        var actions = [React.createElement(Ui.FlatButton, {
-	          label: 'Cancel',
-	          primary: true,
-	          onTouchTap: this.cancel
-	        }), React.createElement(Ui.FlatButton, {
-	          label: 'Submit',
-	          primary: true,
-	          keyboardFocused: true,
-	          onTouchTap: this.validate
-	        })];
-
-	        html = React.createElement(
+	      return React.createElement(
+	        _Loading2.default,
+	        { render: this.state.render },
+	        React.createElement(
+	          Ui.Dialog,
+	          {
+	            title: 'Password sudo',
+	            actions: actions,
+	            modal: false,
+	            open: this.state.dialog,
+	            onRequestClose: this.handleClose
+	          },
+	          React.createElement(Ui.TextField, {
+	            ref: 'password',
+	            type: 'password',
+	            hintText: 'Your passowrd',
+	            floatingLabelText: 'Your passowrd',
+	            onChange: this.handleValue
+	          })
+	        ),
+	        React.createElement(_notify2.default, { ref: 'notification' }),
+	        React.createElement(
 	          Ui.List,
 	          null,
-	          React.createElement(
-	            Ui.Dialog,
-	            {
-	              title: 'Password sudo',
-	              actions: actions,
-	              modal: false,
-	              open: this.state.dialog,
-	              onRequestClose: this.handleClose
-	            },
-	            React.createElement(Ui.TextField, {
-	              ref: 'password',
-	              type: 'password',
-	              hintText: 'Your passowrd',
-	              floatingLabelText: 'Your passowrd',
-	              onChange: this.handleValue
-	            })
-	          ),
-	          React.createElement(_notify2.default, { ref: 'notification' }),
 	          React.createElement(
 	            Ui.Subheader,
 	            null,
@@ -38539,14 +38581,13 @@
 	              key: index,
 	              primaryText: text,
 	              secondaryText: plugin.description,
-	              onClick: _this6.select.bind(undefined, index, plugin.installed),
+	              onClick: _this7.select.bind(undefined, index, plugin.installed),
 	              rightIcon: icon,
 	              secondaryTextLines: 2
 	            });
 	          })
-	        );
-	      }
-	      return html;
+	        )
+	      );
 	    }
 	  }]);
 
@@ -65857,6 +65898,77 @@
 
 	module.exports = TouchEventUtils;
 
+
+/***/ },
+/* 599 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _style = __webpack_require__(600);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Loading = function (_React$Component) {
+		_inherits(Loading, _React$Component);
+
+		function Loading() {
+			var _ref;
+
+			_classCallCheck(this, Loading);
+
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+
+			return _possibleConstructorReturn(this, (_ref = Loading.__proto__ || Object.getPrototypeOf(Loading)).call.apply(_ref, [this].concat(args)));
+		}
+
+		_createClass(Loading, [{
+			key: 'render',
+			value: function render() {
+				if (this.props.render) {
+					if (this.props.children.length) {
+						return React.createElement(
+							'div',
+							null,
+							this.props.children.map(function (el, i) {
+								return el;
+							})
+						);
+					} else {
+						return this.props.children;
+					}
+				}
+				return React.createElement(Ui.CircularProgress, { style: _style.style, size: 80, thickness: 5 });
+			}
+		}]);
+
+		return Loading;
+	}(React.Component);
+
+	exports.default = Loading;
+
+/***/ },
+/* 600 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports.style = {
+	  left: '50%',
+	  marginLeft: '-40px'
+	};
 
 /***/ }
 /******/ ]);

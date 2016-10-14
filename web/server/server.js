@@ -1,12 +1,10 @@
-/**
- * Class of server web
- */
-
 var express = require('express'),
 		bodyParser = require('body-parser'),
 		session = require('express-session'),
 		loadRoutes = require('./routes/load'),
 		compression = require('compression'),
+		http = require('http'),
+		socketIo = require('socket.io'),
 		defaultAssets = [
 			'/web/assets/app.js',
 		];
@@ -18,42 +16,17 @@ class Server{
 		this.event = {};
 		this.server = express();
 
-		this.server.set('view engine', 'ejs');
-
-		this.server.use(compression());
-		this.server.use(bodyParser.urlencoded({ extended: true }));
-		this.server.use(bodyParser.json());
-		this.server.use('/font', express.static('web/assets/font'));
-		this.server.use('/css', express.static('web/assets'));
-		this.server.use('/visio', express.static('visio/detect'));
-
-		this.sessionMiddleware = session({
-			secret: 'keyboard cat',
-			resave: false,
-			saveUninitialized: true,
-			cookie: { maxAge: 600000 }
-		});
+		this.http = http.Server(this.server);
+		this.io = socketIo(this.http);
 
 		this.assets = defaultAssets;
 
 		this.routes = loadRoutes;
 
-		/**
-		 * test if production or developpement
-		 * If production, load HTTPS
-		 */
-		// if (process.env.NODE_ENV != "development"){
-		// 	let fs = require('fs'),
-		// 			options = {
-		// 				key  : fs.readFileSync('server.key'),
-		// 				cert : fs.readFileSync('server.crt')
-		// 			};
-		// 	this.http = require('https').Server(options, this.server);
-		// }
-		// else{
-			this.http = require('http').Server(this.server);
-		// }
-		this.io = require('socket.io')(this.http);
+
+		this.setParamServer();
+		this.setSession();
+
 	}
 
 	reloadFront(data){
@@ -66,6 +39,7 @@ class Server{
 		}
 		this.io.emit(nameSocket, data)
 	}
+	
 
 	/**
 	 * Set dependencies on server
@@ -90,7 +64,7 @@ class Server{
 				this.routes[key] = route[key].concat(this.routes[key]);
 			}
 		});
-
+		return this;
 	}
 
 	setAssets(assets){
@@ -99,35 +73,25 @@ class Server{
 		assets.forEach((asset)=>{
 			this.assets = this.assets.concat(asset);
 		});
+		return this;
 	}
 
-	loadAssets(){
-		this.assets.forEach((assets)=>{
-			this.server.get(assets, (req, res) => {
-				res.sendFile(process.cwd() + assets);
-			});
+	setParamServer(){
+		this.server.set('view engine', 'ejs');
+
+		this.server.use(compression());
+		this.server.use(bodyParser.urlencoded({ extended: true }));
+		this.server.use(bodyParser.json());
+		this.server.use('/font', express.static('web/assets/font'));
+		this.server.use('/css', express.static('web/assets'));
+		this.server.use('/visio', express.static('visio/detect'));
+
+		this.sessionMiddleware = session({
+			secret: 'keyboard cat',
+			resave: false,
+			saveUninitialized: true,
+			cookie: { maxAge: 600000 }
 		});
-	}
-
-	loadSocket(){
-		let i = 0, j, size, sizeRoute, route, routes, dep;
-		for(i = 0, size = this.routes.api.length; i < size; i++){
-			routes = this.routes.api[i];
-
-			for(j = 0, sizeRoute = routes.length, dep = {socket: this.socket}; j < sizeRoute; j++){
-				route = routes[j];
-
-				// search dependencies
-				if(route.dep){
-					route.dep.forEach((el) => {
-						dep[el] = this[el];
-					});
-				}
-
-				// attach socket route with dependencies
-				this.socket.on(route.name, route.call.bind(dep));
-			}
-		}
 	}
 
 	loadRoutes(){
@@ -153,7 +117,28 @@ class Server{
 		return this;
 	}
 
-	initSession(){
+	loadSocket(){
+		let i = 0, j, size, sizeRoute, route, routes, dep;
+		for(i = 0, size = this.routes.api.length; i < size; i++){
+			routes = this.routes.api[i];
+
+			for(j = 0, sizeRoute = routes.length, dep = {socket: this.socket}; j < sizeRoute; j++){
+				route = routes[j];
+
+				// search dependencies
+				if(route.dep){
+					route.dep.forEach((el) => {
+						dep[el] = this[el];
+					});
+				}
+
+				// attach socket route with dependencies
+				this.socket.on(route.name, route.call.bind(dep));
+			}
+		}
+	}
+
+	setSession(){
 		this.server.use(this.sessionMiddleware);
 
 		this.io.use((socket, next) => {
@@ -189,6 +174,56 @@ class Server{
 		});
 	}
 
+	reloadRoutes(){
+		this.server._router.stack = this.server._router.stack.filter((stack, index)=>{
+			return !stack.route;
+		});
+
+		this.setSession();
+		this.loadAssets();
+		this.loadRoutes();
+
+		this.emit('reloadServer');
+
+		return this;
+	}
+
+	loadAssets(){
+		this.assets.forEach((assets)=>{
+			this.server.get(assets, (req, res) => {
+				res.sendFile(process.cwd() + assets);
+			});
+		});
+	}
+
+	start(){
+		this.loadAssets();
+		this.loadRoutes();
+
+		this.isStart = true;
+
+		this.http.listen(process.env.PORT || 8080, () => {
+			console.log('Server is listening...');
+
+			this.emit('startServer');
+		});
+
+		this.io.on('connection', (socket) => {
+			console.log('Socket is connected...');
+			this.socket = socket;
+			this.loadSocket();
+			this.emit('startSocket');
+		});
+	}
+
+
+
+
+
+
+/**
+ * System event on server
+ */
 	on(name, cb) {
 		this.event[name] = cb;
 	}
@@ -202,37 +237,6 @@ class Server{
 		if (this.event[nameFunction]) {
 			this.event[nameFunction].call(undefined, data);
 		}
-	}
-
-	reloadRoutes(){
-		this.server._router.stack = this.server._router.stack.filter((stack, index)=>{
-			return !stack.route;
-		});
-
-		this.initSession();
-		this.loadAssets();
-		this.loadRoutes();
-
-		this.emit('reloadServer');
-
-		return this;
-	}
-
-	start(){
-		this.initSession();
-
-		this.loadAssets();
-		this.loadRoutes();
-
-		this.isStart = true;
-		this.http.listen(process.env.PORT || 8080, () => {
-			console.log('Server is listening...');
-		});
-
-		this.io.on('connection', (socket) => {
-			this.socket = socket;
-			this.loadSocket();
-		});
 	}
 }
 

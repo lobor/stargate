@@ -2,6 +2,8 @@
  * Plugin Manager
  */
 
+var fs = require('fs');
+
 var basePath = process.cwd();
 
 class ManagePlugin{
@@ -10,6 +12,22 @@ class ManagePlugin{
     this.path = config.path;
     this.event = {};
     this.plugins = [];
+  }
+
+  loadPlugin(){
+    this.add(fs.readdirSync(this.path));
+  }
+
+  // load dependencies of plugins
+  dependencies(){
+    for(let key in this.plugins){
+    	let plugin = this.plugins[key],
+    	 		dependencies = {server: this.server};
+    	for(let keyDep in plugin.props.dependencies){
+    		dependencies[keyDep] = this.plugins[plugin.props.dependencies[keyDep]];
+    	}
+    	plugin.setDependencies(dependencies);
+    }
   }
 
   // Add plugin
@@ -27,50 +45,24 @@ class ManagePlugin{
     plugins.forEach((plugin) => {
       plugin = require(this.path + plugin);
 
-  		plugin = new plugin();
-  		plugin.on('back', () => {
-        routes = routes.concat(plugin.back.routes);
-  		});
+      plugin = new plugin();
 
-  		plugin.on('front', () => {
-  			if(plugin.front.assets !== ''){
-          addPlugin.push(plugin.front.assets);
-          assets = assets.concat(plugin.front.assets);
-  			}
-  			nbPassage++;
-  		});
+      plugin.setDependencies({
+        server: this.server
+      });
 
-  		plugin
-        // .loadConfig()
-  			.loadBack()
-  			.loadFront();
+      plugin
+        .load();
+
+      routes = routes.concat(plugin.back.routes);
+      assets = assets.concat(plugin.front.assets);
 
       this.plugins.push(plugin);
     });
 
-    if(nbPassage === plugins.length){
-      this.dependencies();
-      this.emit('load:end', {routes: routes, assets: assets, add: addPlugin});
-    }
+    // this.dependencies();
+    this.emit('load:end', {routes: routes, assets: assets, add: addPlugin});
   }
-
-  on(name, cb) {
-		this.event[name] = cb;
-	}
-
-	off(name) {
-		this.event[name] = false;
-	}
-
-	emit(event, data) {
-    let nameFunction = 'on' + event.charAt(0).toUpperCase() + event.slice(1);
-    if(typeof this[nameFunction] === 'function'){
-      this[nameFunction](data);
-    }
-		if (this.event[event]) {
-			this.event[event].call(undefined, data);
-		}
-	}
 
   // Delete plugin
   delete(namePlugin){
@@ -101,18 +93,32 @@ class ManagePlugin{
     this.emit('load:end', {routes: routes, assets: assets, delete: delPlugin});
   }
 
-  // load dependencies of plugins
-  dependencies(){
-    for(let key in this.plugins){
-    	let plugin = this.plugins[key],
-    	 		dependencies = {server: this.server};
-    	for(let keyDep in plugin.props.dependencies){
-    		dependencies[keyDep] = this.plugins[plugin.props.dependencies[keyDep]];
-    	}
-    	plugin.setDependencies(dependencies);
+
+
+  /**
+   * Event system
+   */
+  on(name, cb) {
+    this.event[name] = cb;
+  }
+
+  off(name) {
+    this.event[name] = false;
+  }
+
+  emit(event, data) {
+    let nameFunction = 'on' + event.charAt(0).toUpperCase() + event.slice(1);
+    if(typeof this[nameFunction] === 'function'){
+      this[nameFunction](data);
+    }
+    if (this.event[event]) {
+    	this.event[event].call(undefined, data);
     }
   }
 }
+
+
+
 
 
 export default ManagePlugin;

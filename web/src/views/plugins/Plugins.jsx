@@ -1,4 +1,5 @@
 import Notify from 'notify';
+import Loading from 'components/loading/Loading';
 
 class Plugins extends React.Component {
   constructor(){
@@ -6,7 +7,8 @@ class Plugins extends React.Component {
     this.state = {
       plugins: [],
       dialog: false,
-      password: false
+      password: false,
+      render: false
     }
 
     this.select = this.select.bind(this);
@@ -30,6 +32,8 @@ class Plugins extends React.Component {
             }
             return plugin;
           })
+
+          listPlugins.render = true;
           that.setState(listPlugins);
           that._notify = that.refs.notification;
         });
@@ -55,29 +59,34 @@ class Plugins extends React.Component {
 
   select(index, installed, e){
     let plugins = this.state.plugins;
-    if(false === installed){
-      plugins[index].installed = 'loading';
-      this.setState({plugins: plugins});
+    plugins[index].installed = 'loading';
+    this.setState({plugins: plugins});
 
-      this.context.io.run('plugins:install', plugins[index], (data) => {
-        plugins[index].installed = true
-        this.setState({plugins: plugins});
-        this._notify.show({msg: 'The plugin "' + plugins[index].name + '" has been installed', type: 'success'});
-      });
+    if(false === installed){
+      this.install(plugins)
     }
     else{
-      var event = new Event(plugins[index].name + ':delete');
-      window.dispatchEvent(event);
-
-      plugins[index].installed = 'loading';
-      this.setState({plugins: plugins});
-
-      this.context.io.run('plugins:uninstall', plugins[index], (data) => {
-        plugins[index].installed = false
-        this.setState({plugins: plugins});
-        this._notify.show({msg: 'The plugin "' + plugins[index].name + '" has been remove', type: 'success'});
-      });
+      this.uninstall(plugins)
     }
+  }
+
+  install(plugins){
+    this.context.io.run('plugins:install', plugins[index], (data) => {
+      plugins[index].installed = true
+      this.setState({plugins: plugins});
+      this._notify.show({msg: 'The plugin "' + plugins[index].name + '" has been installed', type: 'success'});
+    });
+  }
+
+  uninstall(plugins){
+    var event = new Event(plugins[index].name + ':delete');
+    window.dispatchEvent(event);
+
+    this.context.io.run('plugins:uninstall', plugins[index], (data) => {
+      plugins[index].installed = false
+      this.setState({plugins: plugins});
+      this._notify.show({msg: 'The plugin "' + plugins[index].name + '" has been remove', type: 'success'});
+    });
   }
 
   handleClose(){
@@ -101,43 +110,41 @@ class Plugins extends React.Component {
     this.handleClose();
   }
 
+  render(){
+    const actions = [
+       <Ui.FlatButton
+         label="Cancel"
+         primary={true}
+         onTouchTap={this.cancel}
+       />,
+       <Ui.FlatButton
+         label="Submit"
+         primary={true}
+         keyboardFocused={true}
+         onTouchTap={this.validate}
+       />,
+     ];
 
-  render() {
-    let html = (<Ui.CircularProgress size={80} thickness={5} />);
 
-    if(this.state.plugins.length){
-      const actions = [
-         <Ui.FlatButton
-           label="Cancel"
-           primary={true}
-           onTouchTap={this.cancel}
-         />,
-         <Ui.FlatButton
-           label="Submit"
-           primary={true}
-           keyboardFocused={true}
-           onTouchTap={this.validate}
-         />,
-       ];
-
-      html = (
+    return (
+      <Loading render={this.state.render}>
+        <Ui.Dialog
+          title="Password sudo"
+          actions={actions}
+          modal={false}
+          open={this.state.dialog}
+          onRequestClose={this.handleClose}
+        >
+        <Ui.TextField
+            ref="password"
+            type="password"
+            hintText="Your passowrd"
+            floatingLabelText="Your passowrd"
+            onChange={this.handleValue}
+          />
+        </Ui.Dialog>
+        <Notify ref="notification" />
         <Ui.List>
-          <Ui.Dialog
-            title="Password sudo"
-            actions={actions}
-            modal={false}
-            open={this.state.dialog}
-            onRequestClose={this.handleClose}
-          >
-          <Ui.TextField
-              ref="password"
-              type="password"
-              hintText="Your passowrd"
-              floatingLabelText="Your passowrd"
-              onChange={this.handleValue}
-            />
-          </Ui.Dialog>
-          <Notify ref="notification" />
           <Ui.Subheader>List plugins available</Ui.Subheader>
           {this.state.plugins.map((plugin, index) => {
             let text = plugin.name + ' v' + plugin.version;
@@ -159,9 +166,8 @@ class Plugins extends React.Component {
             )
           })}
         </Ui.List>
-      );
-    }
-    return html
+      </Loading>
+    );
   }
 }
 
