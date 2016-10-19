@@ -25,7 +25,7 @@ class Plugin {
 	  let pathFront = pathPlugin + className.toLowerCase() + '/front/';
 	  try{
 			this.back = require(pathBack);
-
+			console.log(3);
 			this.loadDependencies();
 	  }
 	  catch (e){
@@ -47,13 +47,13 @@ class Plugin {
 				let dep = {};
 				// search dependencies
 				if(route.depPlugin){
-					route.depPlugin.forEach((el, indexDep) => {
+					route.depPlugin.forEach((el) => {
 						dep[el] = this[el];
 					});
 				}
 
 				// attach route with dependencies
-				this.back.routes.api[indexRouteApi][indexRoute].depPlugin = dep;
+				route.dependencies = dep;
 			});
     });
 	}

@@ -132,8 +132,8 @@ class Server{
 					});
 				}
 
-				if(route.depPlugin){
-					Object.assign(dep, route.depPlugin)
+				if(route.dependencies){
+					Object.assign(dep, route.dependencies)
 				}
 				// attach socket route with dependencies
 				this.socket.on(route.name, route.call.bind(dep));

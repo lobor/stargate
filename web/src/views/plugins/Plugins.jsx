@@ -63,29 +63,32 @@ class Plugins extends React.Component {
     this.setState({plugins: plugins});
 
     if(false === installed){
-      this.install(plugins)
+      this.install(plugins, index)
     }
     else{
-      this.uninstall(plugins)
+      this.uninstall(plugins, index)
     }
   }
 
-  install(plugins){
-    this.context.io.run('plugins:install', plugins[index], (data) => {
-      plugins[index].installed = true
+  install(plugins, index){
+    let plugin = plugins[index];
+
+    this.context.io.run('plugins:install', plugin, (data) => {
+      plugin.installed = true
       this.setState({plugins: plugins});
-      this._notify.show({msg: 'The plugin "' + plugins[index].name + '" has been installed', type: 'success'});
+      this._notify.show({msg: 'The plugin "' + plugin.name + '" has been installed', type: 'success'});
     });
   }
 
-  uninstall(plugins){
-    var event = new Event(plugins[index].name + ':delete');
+  uninstall(plugins, index){
+    let plugin = plugins[index];
+    var event = new Event(plugin.name + ':delete');
     window.dispatchEvent(event);
 
-    this.context.io.run('plugins:uninstall', plugins[index], (data) => {
-      plugins[index].installed = false
+    this.context.io.run('plugins:uninstall', plugin, (data) => {
+      plugin.installed = false
       this.setState({plugins: plugins});
-      this._notify.show({msg: 'The plugin "' + plugins[index].name + '" has been remove', type: 'success'});
+      this._notify.show({msg: 'The plugin "' + plugin.name + '" has been remove', type: 'success'});
     });
   }
 

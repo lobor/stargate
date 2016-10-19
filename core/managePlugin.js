@@ -57,6 +57,7 @@ class ManagePlugin{
       routes = routes.concat(plugin.back.routes);
       assets = assets.concat(plugin.front.assets);
 
+      addPlugin.push(plugin.front.assets);
       this.plugins.push(plugin);
     });
 

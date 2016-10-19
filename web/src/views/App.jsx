@@ -88,7 +88,7 @@ class App extends React.Component {
 						<Navigation navigation={this.state.navigation} />
 						<div className="wrapper">
 							{this.state.routes.map((route, i)=>{
-								return (<Match key={i} ref={route.name} exactly pattern={route.pattern} component={route.component} />)
+								return (<Match key={i} exactly pattern={route.pattern} component={route.component} />)
 							})}
 						</div>
 					</div>

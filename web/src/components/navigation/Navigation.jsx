@@ -15,8 +15,13 @@ class Navigation extends React.Component {
 		}
 	}
 
-	handleToggle() {
+	handleToggle(r,d,e) {
+		// if(e){
+		// 	e.preventDefault();
+		// 	e.stopPropagation();
+		// }
     this.setState({active: !this.state.active});
+		// return true;
   };
 
 	logout(){
@@ -70,7 +75,6 @@ class Navigation extends React.Component {
 }
 
 Navigation.contextTypes = {
-	router: React.PropTypes.object.isRequired,
 	auth: React.PropTypes.func,
 	io: React.PropTypes.object
 };
