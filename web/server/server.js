@@ -39,7 +39,7 @@ class Server{
 		}
 		this.io.emit(nameSocket, data)
 	}
-	
+
 
 	/**
 	 * Set dependencies on server
@@ -132,6 +132,9 @@ class Server{
 					});
 				}
 
+				if(route.depPlugin){
+					Object.assign(dep, route.depPlugin)
+				}
 				// attach socket route with dependencies
 				this.socket.on(route.name, route.call.bind(dep));
 			}

@@ -25,12 +25,37 @@ class Plugin {
 	  let pathFront = pathPlugin + className.toLowerCase() + '/front/';
 	  try{
 			this.back = require(pathBack);
+
+			this.loadDependencies();
+	  }
+	  catch (e){
+	    warning(className, 'Cannot find module:', pathBack, '\n', e, '\n');
+	  }
+
+	  try{
 			this.front = require(pathFront);
 	  }
 	  catch (e){
-	    warning(className, 'Cannot find module:', path, '\n', e, '\n');
+	    warning(className, 'Cannot find module:', pathFront, '\n', e, '\n');
 	  }
 		this.emit('load');
+	}
+
+	loadDependencies(){
+		this.back.routes.api.forEach((apiRoute, indexRouteApi) => {
+			apiRoute.forEach((route, indexRoute) => {
+				let dep = {};
+				// search dependencies
+				if(route.depPlugin){
+					route.depPlugin.forEach((el, indexDep) => {
+						dep[el] = this[el];
+					});
+				}
+
+				// attach route with dependencies
+				this.back.routes.api[indexRouteApi][indexRoute].depPlugin = dep;
+			});
+    });
 	}
 
 	remove(){

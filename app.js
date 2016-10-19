@@ -18,14 +18,18 @@ let server = new Server();
 
 
 // Set plugin manager with server like dependencies on routes
+pluginManager = new ManagePlugin({
+	server: server,
+	path: basePath + '/plugins/'
+});
 server
 	.set({pluginManager: pluginManager});
 
 server.on('onStartServer', ()=>{
-	pluginManager = new ManagePlugin({
-		server: server,
-		path: basePath + '/plugins/'
-	});
+	// pluginManager = new ManagePlugin({
+	// 	server: server,
+	// 	path: basePath + '/plugins/'
+	// });
 
 	pluginManager.on('load:end', (data) => {
 		server
