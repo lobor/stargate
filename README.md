@@ -17,11 +17,11 @@ I have create a sample plugin [here](https://github.com/lobor/stargate-plugin-sa
 
 ## Plugins available
 - [Face recognition](https://github.com/lobor/stargate-face) (in development) 
-- [Motion](https://github.com/lobor/stargate-motion)  (in development) 
+- [Motion](https://github.com/lobor/stargate-motion)
 
 ## RoadMap
 - [x] Create system plugin with auto installation 
-- [ ] Plugin for Motion
+- [x] Plugin for Motion
 - [ ] Plugin for Gstreamer
 - [ ] Plugin for Face recognition
 - [ ] Plugin for speech recognition
