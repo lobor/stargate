@@ -9,7 +9,7 @@
     {
       "name":"motion",
       "url":"https://github.com/lobor/stargate-motion",
-      "version":"0.0.1",
+      "version":"1.0.0",
       "description": "Motion for use stream camera"
     }
   ],
