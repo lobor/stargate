@@ -11,3 +11,4 @@ tmp/confcam.conf
 npm-debug.log
 tmp/*
 plugins/*
+babel.json

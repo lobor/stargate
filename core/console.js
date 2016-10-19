@@ -14,6 +14,11 @@ function consoleSuccess(...args){
   console.log('\x1b[32m', '[SUCCESS]', '\x1b[0m', ...args);
 }
 
+function consoleInfo(...args){
+  console.log('\x1b[34m', '[INFO]', '\x1b[0m', ...args);
+}
+
 module.exports.error = consoleError;
 module.exports.warning = consoleWarning;
 module.exports.success = consoleSuccess;
+module.exports.info = consoleInfo;

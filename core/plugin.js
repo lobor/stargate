@@ -25,7 +25,6 @@ class Plugin {
 	  let pathFront = pathPlugin + className.toLowerCase() + '/front/';
 	  try{
 			this.back = require(pathBack);
-			console.log(3);
 			this.loadDependencies();
 	  }
 	  catch (e){
