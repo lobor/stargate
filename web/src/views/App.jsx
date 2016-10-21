@@ -35,7 +35,8 @@ class App extends React.Component {
 
 		this.state = {
 			routes: Routes,
-			navigation: Menu
+			navigation: Menu,
+      config: {}
 		}
 	}
 

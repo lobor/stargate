@@ -1,5 +1,6 @@
 import Notify from 'notify';
 import Loading from 'components/loading/Loading';
+import { Link, Redirect } from 'react-router';
 
 class Plugins extends React.Component {
   constructor(){
@@ -8,7 +9,8 @@ class Plugins extends React.Component {
       plugins: [],
       dialog: false,
       password: false,
-      render: false
+      render: false,
+      redirect: false
     }
 
     this.select = this.select.bind(this);
@@ -16,6 +18,7 @@ class Plugins extends React.Component {
     this.validate = this.validate.bind(this);
     this.cancel = this.cancel.bind(this);
     this.handleValue = this.handleValue.bind(this);
+    this.goTo = this.goTo.bind(this);
   }
 
   checkPluginList(){
@@ -31,7 +34,7 @@ class Plugins extends React.Component {
               plugin.installed = true;
             }
             return plugin;
-          })
+          });
 
           listPlugins.render = true;
           that.setState(listPlugins);
@@ -74,7 +77,7 @@ class Plugins extends React.Component {
     let plugin = plugins[index];
 
     this.context.io.run('plugins:install', plugin, (data) => {
-      plugin.installed = true
+      plugin.installed = true;
       this.setState({plugins: plugins});
       this._notify.show({msg: 'The plugin "' + plugin.name + '" has been installed', type: 'success'});
     });
@@ -113,7 +116,17 @@ class Plugins extends React.Component {
     this.handleClose();
   }
 
+  goTo(name){
+    this.setState({ redirect: '/config/' + name })
+  }
+
   render(){
+    if(this.state.redirect){
+      return (
+        <Redirect to={this.state.redirect}/>
+      )
+    }
+
     const actions = [
        <Ui.FlatButton
          label="Cancel"
@@ -127,7 +140,6 @@ class Plugins extends React.Component {
          onTouchTap={this.validate}
        />,
      ];
-
 
     return (
       <Loading render={this.state.render}>
@@ -151,18 +163,48 @@ class Plugins extends React.Component {
           <Ui.Subheader>List plugins available</Ui.Subheader>
           {this.state.plugins.map((plugin, index) => {
             let text = plugin.name + ' v' + plugin.version;
-            let icon = (plugin.installed) ? (<Ui.FontIcon className="material-icons rotate">delete</Ui.FontIcon>) : (<Ui.FontIcon className="material-icons rotate">file_download</Ui.FontIcon>);
+            let icon;
+
+            if(true === plugin.installed){
+              const iconButtonElement = (
+                <Ui.IconButton touch={true}>
+                  <Ui.FontIcon className="material-icons">more_vert</Ui.FontIcon>
+                </Ui.IconButton>
+              );
+
+              icon = (
+                <Ui.IconMenu iconButtonElement={iconButtonElement} targetOrigin={{horizontal: 'right', vertical: 'top'}}>
+                  <Ui.MenuItem
+                    onClick={this.goTo.bind(undefined, plugin.name)}
+                    leftIcon={<Ui.FontIcon className="material-icons">settings</Ui.FontIcon>}
+                    primaryText="Settings"
+                    />
+
+                  <Ui.MenuItem
+                    primaryText="Remove"
+                    leftIcon={<Ui.FontIcon className="material-icons">delete</Ui.FontIcon>}
+                    onClick={this.select.bind(undefined, index, plugin.installed)}
+                    />
+                </Ui.IconMenu>
+              );
+            }
+            else if (false === plugin.installed){
+              icon = (
+                <Ui.FontIcon className="material-icons" onClick={this.select.bind(undefined, index, plugin.installed)}>file_download</Ui.FontIcon>
+              );
+            }
 
             if(plugin.installed === 'loading'){
               icon = (<Ui.CircularProgress />);
             }
+
+            // console.log(icon);
 
             return (
               <Ui.ListItem
                 key={index}
                 primaryText={text}
                 secondaryText={plugin.description}
-                onClick={this.select.bind(undefined, index, plugin.installed)}
                 rightIcon={icon}
                 secondaryTextLines={2}
               />
