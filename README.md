@@ -1,4 +1,4 @@
-# stargate
+# stargate (node 6.9.1)
 Application for security camera on Raspberry Pi, Linux
 
 
