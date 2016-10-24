@@ -30,13 +30,11 @@ class Plugin {
 
 		  cpConf.on('close', (code) => {
 		    if(code === 0){
+					this.props.conf = require(pathPlugin + pluginName + pathConfig);
 		      success('Copy config');
 		    }
 		  });
 		}
-
-		this.props.conf = require(pathPlugin + pluginName + pathConfig);
-
 
 		return this;
 	}

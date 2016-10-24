@@ -173,7 +173,7 @@ class Plugins extends React.Component {
               );
 
               icon = (
-                <Ui.IconMenu iconButtonElement={iconButtonElement} targetOrigin={{horizontal: 'right', vertical: 'top'}}>
+                <Ui.IconMenu iconButtonElement={iconButtonElement} targetOrigin={{horizontal: 'right', vertical: 'top'}} style={{right: '15px'}}>
                   <Ui.MenuItem
                     onClick={this.goTo.bind(undefined, plugin.name)}
                     leftIcon={<Ui.FontIcon className="material-icons">settings</Ui.FontIcon>}

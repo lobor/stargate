@@ -38922,7 +38922,7 @@
 
 	              icon = React.createElement(
 	                Ui.IconMenu,
-	                { iconButtonElement: iconButtonElement, targetOrigin: { horizontal: 'right', vertical: 'top' } },
+	                { iconButtonElement: iconButtonElement, targetOrigin: { horizontal: 'right', vertical: 'top' }, style: { right: '15px' } },
 	                React.createElement(Ui.MenuItem, {
 	                  onClick: _this7.goTo.bind(undefined, plugin.name),
 	                  leftIcon: React.createElement(
