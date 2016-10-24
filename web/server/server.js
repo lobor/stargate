@@ -228,7 +228,10 @@ class Server{
  * System event on server
  */
 	on(name, cb) {
-		this.event[name] = cb;
+		if(!this.event[name]){
+			this.event[name] = [];
+		}
+		this.event[name].push(cb);
 	}
 
 	off(name) {
@@ -237,8 +240,11 @@ class Server{
 
 	emit(event, data) {
     let nameFunction = 'on' + event.charAt(0).toUpperCase() + event.slice(1);
-		if (this.event[nameFunction]) {
-			this.event[nameFunction].call(undefined, data);
+		if (this.event[nameFunction] && this.event[nameFunction].length) {
+			this.event[nameFunction].forEach((cb) => {
+				cb.call(undefined, data)
+			})
+			// this.event[nameFunction].call(undefined, data);
 		}
 	}
 }
