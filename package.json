@@ -6,6 +6,8 @@
   "scripts": {
     "install": "node install.js",
     "start": "node app.js",
+    "server-dev": "nodemon app.js",
+    "start-dev": "npm-run-all --parallel server-dev watch:js",
     "build:js": "webpack --config --optimize-minimize",
     "watch:js": "webpack -w --config",
     "test": "node test/test.js",
@@ -38,6 +40,8 @@
     "imports-loader": "^0.6.5",
     "jsx-loader": "^0.13.2",
     "material-ui": "^0.16.0",
+    "nodemon": "^1.11.0",
+    "npm-run-all": "^3.1.1",
     "react": "^15.3.2",
     "react-addons-update": "^15.3.0",
     "react-dom": "^15.2.0",

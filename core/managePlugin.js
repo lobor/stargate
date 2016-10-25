@@ -12,6 +12,8 @@ class ManagePlugin{
     this.path = config.path;
     this.event = {};
     this.plugins = [];
+
+    this.pointPlugin = {};
   }
 
   loadPlugin(){
@@ -24,7 +26,7 @@ class ManagePlugin{
     	let plugin = this.plugins[key],
     	 		dependencies = {server: this.server};
     	for(let keyDep in plugin.props.dependencies){
-    		dependencies[keyDep] = this.plugins[plugin.props.dependencies[keyDep]];
+        dependencies[plugin.props.dependencies[keyDep]] = this.plugins[this.pointPlugin[plugin.props.conf.name]];
     	}
     	plugin.setDependencies(dependencies);
     }
@@ -59,9 +61,10 @@ class ManagePlugin{
 
       addPlugin.push(plugin.front.assets);
       this.plugins.push(plugin);
+      this.pointPlugin[plugin.props.conf.name] = this.plugins.length;
     });
 
-    // this.dependencies();
+    this.dependencies();
     this.emit('load:end', {routes: routes, assets: assets, add: addPlugin});
   }
 

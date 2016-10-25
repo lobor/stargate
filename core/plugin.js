@@ -45,7 +45,6 @@ class Plugin {
 	  let pathFront = pathPlugin + className.toLowerCase() + '/front/';
 	  try{
 			this.back = require(pathBack);
-
 			this.back.routes.api[0].push({
 				name: className + ':config',
 				depPlugin: [],
