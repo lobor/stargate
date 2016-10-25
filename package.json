@@ -45,6 +45,7 @@
     "react": "^15.3.2",
     "react-addons-update": "^15.3.0",
     "react-dom": "^15.2.0",
+    "react-localization": "0.0.7",
     "react-router": "^4.0.0-alpha.5",
     "react-tap-event-plugin": "^1.0.0",
     "react-toolbox": "^1.0.2",

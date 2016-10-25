@@ -29,7 +29,8 @@ module.exports = {
 			},
 			{ test: require.resolve("react"), loader: "expose?React" },
 			{ test: require.resolve("material-ui"), loader: "expose?Ui" },
-			{ test: require.resolve("material-ui/styles/colors"), loader: "expose?Colors" }
+			{ test: require.resolve("material-ui/styles/colors"), loader: "expose?Colors" },
+			// { test: require.resolve("languages"), loader: "expose?Lang" }
 		]
 	},
 	resolve: {
@@ -39,9 +40,10 @@ module.exports = {
 			path.resolve(__dirname, './node_modules')
 		],
 		alias: {
-			notify$: path.resolve('./core/components/notify.jsx'),
+			notify: path.resolve('./core/components/notify.jsx'),
 			views: path.resolve('./web/src/views/'),
-			components: path.resolve('./web/src/components/')
+			components: path.resolve('./web/src/components/'),
+			languages: path.resolve('./web/src/languages/languages'),
 		}
 	},
 	plugins: [

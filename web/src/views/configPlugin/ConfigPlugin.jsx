@@ -80,7 +80,7 @@ class ConfigPlugin extends React.Component {
 							return (component)
 						})}
 					</div>
-					<Ui.RaisedButton type="submit" label="Save" primary={true} fullWidth={true} />
+					<Ui.RaisedButton type="submit" label={Lang.save} primary={true} fullWidth={true} />
 				</form>
 			</Loading>
     )

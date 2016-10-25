@@ -129,12 +129,12 @@ class Plugins extends React.Component {
 
     const actions = [
        <Ui.FlatButton
-         label="Cancel"
+         label={Lang.cancel}
          primary={true}
          onTouchTap={this.cancel}
        />,
        <Ui.FlatButton
-         label="Submit"
+         label={Lang.submit}
          primary={true}
          keyboardFocused={true}
          onTouchTap={this.validate}
@@ -144,7 +144,7 @@ class Plugins extends React.Component {
     return (
       <Loading render={this.state.render}>
         <Ui.Dialog
-          title="Password sudo"
+          title={Lang.passwordSudo}
           actions={actions}
           modal={false}
           open={this.state.dialog}
@@ -153,14 +153,14 @@ class Plugins extends React.Component {
         <Ui.TextField
             ref="password"
             type="password"
-            hintText="Your passowrd"
-            floatingLabelText="Your passowrd"
+            hintText={Lang.yourPassword}
+            floatingLabelText={Lang.yourPassword}
             onChange={this.handleValue}
           />
         </Ui.Dialog>
         <Notify ref="notification" />
         <Ui.List>
-          <Ui.Subheader>List plugins available</Ui.Subheader>
+          <Ui.Subheader>{Lang.listPluginsAvailable}</Ui.Subheader>
           {this.state.plugins.map((plugin, index) => {
             let text = plugin.name + ' v' + plugin.version;
             let icon;
@@ -177,11 +177,11 @@ class Plugins extends React.Component {
                   <Ui.MenuItem
                     onClick={this.goTo.bind(undefined, plugin.name)}
                     leftIcon={<Ui.FontIcon className="material-icons">settings</Ui.FontIcon>}
-                    primaryText="Settings"
+                    primaryText={Lang.settings}
                     />
 
                   <Ui.MenuItem
-                    primaryText="Remove"
+                    primaryText={Lang.remove}
                     leftIcon={<Ui.FontIcon className="material-icons">delete</Ui.FontIcon>}
                     onClick={this.select.bind(undefined, index, plugin.installed)}
                     />

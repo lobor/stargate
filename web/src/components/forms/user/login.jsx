@@ -46,12 +46,12 @@ class Login extends Component{
       <form className="card__container bg-blue-light" onSubmit={this.submit}>
         <div  className="card__body">
           <TextField name="name" id="name" type="text" required hintText="Name" onChange={this.change.bind(this, 'name')} /><br/>
-          <TextField name="password" id="password" required type="password" hintText="Password"  onChange={this.change.bind(this, 'password')} /><br/>
+          <TextField name="password" id="password" required type="password" hintText={Lang.password}  onChange={this.change.bind(this, 'password')} /><br/>
           <div className="error" style={(this.state.msg) ? {} : {'display': 'none'}} >
             <FontIcon className='error' />
             {this.state.msg}
           </div>
-          <RaisedButton type="submit" label="Login" primary />
+          <RaisedButton type="submit" label={Lang.login} primary />
           {this.state.auth ? (<Redirect to="/" />) : ''}
         </div>
       </form>

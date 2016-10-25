@@ -1,16 +1,16 @@
 module.exports = [
   {
-    "label": "Home",
+    "label": 'home',
     "href": "/",
     "icon": "home"
   },
   {
-    "label": "Plugins",
+    "label": 'plugins',
     "href": "/plugins",
     "icon": "extension"
   },
   {
-    "label": "Config",
+    "label": 'settings',
     "href": "/config",
     "icon": "settings"
   }

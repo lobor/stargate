@@ -4,7 +4,13 @@
 
 var app = window.App;
 
-function setNavigation(navigation){
+function setNavigation(navigation, name){
+  if(name){
+    navigation = navigation.map((el)=>{
+      el.plugin = name;
+      return el;
+    });
+  }
   var navApp = app.state.navigation;
   navApp = navApp.concat(navigation);
   app.setState({navigation: navApp});

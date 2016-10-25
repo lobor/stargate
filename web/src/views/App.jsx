@@ -12,6 +12,7 @@ var Menu = require('./../collections/menu');
 var Routes = require('./../collections/routes');
 
 
+
 // Theming
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -25,6 +26,8 @@ const muiTheme = getMuiTheme({
   },
 });
 // end theming
+
+
 
 /**
  * Point of entry to react application, as well as routes

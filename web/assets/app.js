@@ -67,7 +67,10 @@
 	// Add material-ui-colors on window => window.Colors
 	__webpack_require__(184);
 
-	var injectTapEventPlugin = __webpack_require__(596);
+	// Add lang on window => window.Lang
+	__webpack_require__(596);
+
+	var injectTapEventPlugin = __webpack_require__(600);
 	injectTapEventPlugin();
 
 	// render app
@@ -20895,6 +20898,7 @@
 	});
 	// end theming
 
+
 	/**
 	 * Point of entry to react application, as well as routes
 	 */
@@ -21052,12 +21056,7 @@
 		_createClass(Navigation, [{
 			key: 'handleToggle',
 			value: function handleToggle(r, d, e) {
-				// if(e){
-				// 	e.preventDefault();
-				// 	e.stopPropagation();
-				// }
 				this.setState({ active: !this.state.active });
-				// return true;
 			}
 		}, {
 			key: 'logout',
@@ -21076,7 +21075,6 @@
 				var _this3 = this;
 
 				var rendu = null;
-
 				if (this.context.auth()) {
 					rendu = React.createElement(
 						Ui.AppBar,
@@ -21104,17 +21102,24 @@
 								Ui.List,
 								null,
 								this.props.navigation.map(function (item, key) {
+									var tradLabel = item.plugin ? Lang[item.plugin][item.label] : Lang[item.label];
+
+									if (!tradLabel) {
+										console.error('UNTRANSLATED =>', item.label);
+										tradLabel = item.label;
+									}
+
 									return React.createElement(
 										_Link2.default,
 										{ to: item.href, key: key, onClick: _this3.handleToggle },
-										React.createElement(Ui.ListItem, { key: key, primaryText: item.label, leftIcon: React.createElement(
+										React.createElement(Ui.ListItem, { key: key, primaryText: tradLabel, leftIcon: React.createElement(
 												Ui.FontIcon,
 												{ className: 'material-icons' },
 												item.icon
 											) })
 									);
 								}),
-								React.createElement(Ui.ListItem, { onClick: this.logout.bind(this), primaryText: 'Log out', leftIcon: React.createElement(
+								React.createElement(Ui.ListItem, { onClick: this.logout.bind(this), primaryText: Lang.logOut, leftIcon: React.createElement(
 										Ui.FontIcon,
 										{ className: 'material-icons' },
 										'power_settings_new'
@@ -32970,15 +32975,15 @@
 	"use strict";
 
 	module.exports = [{
-	  "label": "Home",
+	  "label": 'home',
 	  "href": "/",
 	  "icon": "home"
 	}, {
-	  "label": "Plugins",
+	  "label": 'plugins',
 	  "href": "/plugins",
 	  "icon": "extension"
 	}, {
-	  "label": "Config",
+	  "label": 'settings',
 	  "href": "/config",
 	  "icon": "settings"
 	}];
@@ -33079,7 +33084,7 @@
 					Ui.Card,
 					{ style: _style.CardStyle },
 					React.createElement(Ui.CardTitle, {
-						title: 'Login',
+						title: Lang.login,
 						style: _style.CardTitleStyle
 					}),
 					React.createElement(
@@ -33199,7 +33204,7 @@
 	          { className: 'card__body' },
 	          _react2.default.createElement(_TextField2.default, { name: 'name', id: 'name', type: 'text', required: true, hintText: 'Name', onChange: this.change.bind(this, 'name') }),
 	          _react2.default.createElement('br', null),
-	          _react2.default.createElement(_TextField2.default, { name: 'password', id: 'password', required: true, type: 'password', hintText: 'Password', onChange: this.change.bind(this, 'password') }),
+	          _react2.default.createElement(_TextField2.default, { name: 'password', id: 'password', required: true, type: 'password', hintText: Lang.password, onChange: this.change.bind(this, 'password') }),
 	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
 	            'div',
@@ -33207,7 +33212,7 @@
 	            _react2.default.createElement(_FontIcon2.default, { className: 'error' }),
 	            this.state.msg
 	          ),
-	          _react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: 'Login', primary: true }),
+	          _react2.default.createElement(_RaisedButton2.default, { type: 'submit', label: Lang.login, primary: true }),
 	          this.state.auth ? _react2.default.createElement(_Redirect2.default, { to: '/' }) : ''
 	        )
 	      );
@@ -38100,7 +38105,7 @@
 	      return React.createElement(
 	        Ui.Card,
 	        null,
-	        React.createElement(Ui.CardTitle, { title: 'CPU Usage' }),
+	        React.createElement(Ui.CardTitle, { title: Lang.cpuUsage }),
 	        React.createElement(
 	          Ui.CardText,
 	          null,
@@ -38162,7 +38167,7 @@
 			key: 'render',
 			value: function render() {
 				if (this.props.render) {
-					if (this.props.children.length) {
+					if (this.props.children.length && Array.isArray(this.props.children)) {
 						return React.createElement(
 							'div',
 							null,
@@ -38171,7 +38176,11 @@
 							})
 						);
 					} else {
-						return this.props.children;
+						return React.createElement(
+							'div',
+							null,
+							this.props.children
+						);
 					}
 				}
 				return React.createElement(Ui.CircularProgress, { style: _style.style, size: 80, thickness: 5 });
@@ -38254,7 +38263,7 @@
 	      return React.createElement(
 	        Ui.Card,
 	        null,
-	        React.createElement(Ui.CardTitle, { title: 'Last Login' }),
+	        React.createElement(Ui.CardTitle, { title: Lang.lastLogin }),
 	        React.createElement(
 	          Ui.CardText,
 	          null,
@@ -38399,9 +38408,9 @@
 	      e.preventDefault();
 	      this.context.io.run('user:changePassword', this.state, function (res) {
 	        if (res.response) {
-	          _this2._notify.show({ msg: 'The password has been changed', type: 'success' });
+	          _this2._notify.show({ msg: Lang.successChangePassword, type: 'success' });
 	        } else {
-	          _this2._notify.show({ msg: 'An error has occured', type: 'error' });
+	          _this2._notify.show({ msg: Lang.errorOccured, type: 'error' });
 	        }
 	      });
 	    }
@@ -38420,18 +38429,18 @@
 	          'form',
 	          { onSubmit: this.submit },
 	          React.createElement(_notify2.default, { ref: 'notification' }),
-	          React.createElement(Ui.TextField, { name: 'old_password', id: 'old_password', type: 'password', required: true, hintText: 'Current password', onChange: this.change.bind(this, 'old_password') }),
+	          React.createElement(Ui.TextField, { name: 'old_password', id: 'old_password', type: 'password', required: true, hintText: Lang.currentPassword, onChange: this.change.bind(this, 'old_password') }),
 	          React.createElement('br', null),
-	          React.createElement(Ui.TextField, { name: 'new_password', id: 'new_password', type: 'password', required: true, hintText: 'New password', onChange: this.change.bind(this, 'new_password') }),
+	          React.createElement(Ui.TextField, { name: 'new_password', id: 'new_password', type: 'password', required: true, hintText: Lang.newPassword, onChange: this.change.bind(this, 'new_password') }),
 	          React.createElement('br', null),
-	          React.createElement(Ui.TextField, { name: 'confirm_new_password', id: 'comfirm_new_password', type: 'password', required: true, hintText: 'Comfirm new password', onChange: this.change.bind(this, 'confirm_new_password') }),
+	          React.createElement(Ui.TextField, { name: 'confirm_new_password', id: 'comfirm_new_password', type: 'password', required: true, hintText: Lang.confirmPassword, onChange: this.change.bind(this, 'confirm_new_password') }),
 	          React.createElement('br', null),
 	          React.createElement(
 	            'div',
 	            { style: this.state.msg ? {} : { 'display': 'none' } },
 	            this.state.msg
 	          ),
-	          React.createElement(Ui.RaisedButton, { type: 'submit', label: 'Validate', primary: true })
+	          React.createElement(Ui.RaisedButton, { type: 'submit', label: Lang.change, primary: true })
 	        )
 	      );
 	    }
@@ -38666,7 +38675,7 @@
 								return component;
 							})
 						),
-						React.createElement(Ui.RaisedButton, { type: 'submit', label: 'Save', primary: true, fullWidth: true })
+						React.createElement(Ui.RaisedButton, { type: 'submit', label: Lang.save, primary: true, fullWidth: true })
 					)
 				);
 			}
@@ -38887,11 +38896,11 @@
 	      }
 
 	      var actions = [React.createElement(Ui.FlatButton, {
-	        label: 'Cancel',
+	        label: Lang.cancel,
 	        primary: true,
 	        onTouchTap: this.cancel
 	      }), React.createElement(Ui.FlatButton, {
-	        label: 'Submit',
+	        label: Lang.submit,
 	        primary: true,
 	        keyboardFocused: true,
 	        onTouchTap: this.validate
@@ -38903,7 +38912,7 @@
 	        React.createElement(
 	          Ui.Dialog,
 	          {
-	            title: 'Password sudo',
+	            title: Lang.passwordSudo,
 	            actions: actions,
 	            modal: false,
 	            open: this.state.dialog,
@@ -38912,8 +38921,8 @@
 	          React.createElement(Ui.TextField, {
 	            ref: 'password',
 	            type: 'password',
-	            hintText: 'Your passowrd',
-	            floatingLabelText: 'Your passowrd',
+	            hintText: Lang.yourPassword,
+	            floatingLabelText: Lang.yourPassword,
 	            onChange: this.handleValue
 	          })
 	        ),
@@ -38924,7 +38933,7 @@
 	          React.createElement(
 	            Ui.Subheader,
 	            null,
-	            'List plugins available'
+	            Lang.listPluginsAvailable
 	          ),
 	          this.state.plugins.map(function (plugin, index) {
 	            var text = plugin.name + ' v' + plugin.version;
@@ -38951,10 +38960,10 @@
 	                    { className: 'material-icons' },
 	                    'settings'
 	                  ),
-	                  primaryText: 'Settings'
+	                  primaryText: Lang.settings
 	                }),
 	                React.createElement(Ui.MenuItem, {
-	                  primaryText: 'Remove',
+	                  primaryText: Lang.remove,
 	                  leftIcon: React.createElement(
 	                    Ui.FontIcon,
 	                    { className: 'material-icons' },
@@ -66083,8 +66092,92 @@
 /* 596 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*** IMPORTS FROM imports-loader ***/
+	(function() {
+
+	'use strict';
+
+	var _reactLocalization = __webpack_require__(604);
+
+	var _reactLocalization2 = _interopRequireDefault(_reactLocalization);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var strings = new _reactLocalization2.default({
+	  en: __webpack_require__(598),
+	  fr: __webpack_require__(599)
+	});
+	// strings.setLanguage('en');
+	window.Lang = strings;
+	}.call(window));
+
+/***/ },
+/* 597 */,
+/* 598 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = {
+	  login: "Sign Up",
+	  successChangePassword: "The password has been changed",
+	  errorOccured: "An error has occured",
+	  password: "Password",
+	  currentPassword: "Current password",
+	  newPassword: "New password",
+	  confirmPassword: "Comfirm new password",
+	  change: "Change",
+	  cpuUsage: "CPU Usage",
+	  lastLogin: "Last login",
+	  logOut: 'Log out',
+	  save: 'Save',
+	  cancel: 'cancel',
+	  submit: 'Submit',
+	  passwordSudo: "Password sudo",
+	  yourPassword: "Your passowrd",
+	  settings: "Settings",
+	  remove: "Remove",
+	  home: "Home",
+	  plugins: "Plugins",
+	  listPluginsAvailable: "List plugins available"
+	};
+
+/***/ },
+/* 599 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	module.exports = {
+	  login: "Se connecter",
+	  successChangePassword: "Le mot de passe a bien été changé",
+	  errorOccured: "Une erreur est apparue",
+	  password: "Mot de passe",
+	  currentPassword: "Mot de passe actuel",
+	  newPassword: "Nouveau mot de passe",
+	  confirmPassword: "Comfirmez le nouveau mot de passe",
+	  change: "Changer",
+	  cpuUsage: "Utilisation du CPU",
+	  lastLogin: "Dernière connexion",
+	  logOut: 'Se déconnecter',
+	  save: 'Enregistrer',
+	  cancel: 'Annuler',
+	  submit: 'Valider',
+	  passwordSudo: "Mot de passe système",
+	  yourPassword: "Votre mot de passe",
+	  settings: "Paramètres",
+	  remove: "Desinstaller",
+	  home: "Accueil",
+	  plugins: "Plugins",
+	  listPluginsAvailable: "Plugins disponible"
+	};
+
+/***/ },
+/* 600 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(process) {var invariant = __webpack_require__(7);
-	var defaultClickRejectionStrategy = __webpack_require__(597);
+	var defaultClickRejectionStrategy = __webpack_require__(601);
 
 	var alreadyInjected = false;
 
@@ -66106,14 +66199,14 @@
 	  alreadyInjected = true;
 
 	  __webpack_require__(14).injection.injectEventPluginsByName({
-	    'TapEventPlugin':       __webpack_require__(598)(shouldRejectClick)
+	    'TapEventPlugin':       __webpack_require__(602)(shouldRejectClick)
 	  });
 	};
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 597 */
+/* 601 */
 /***/ function(module, exports) {
 
 	module.exports = function(lastTouchEvent, clickTimestamp) {
@@ -66124,7 +66217,7 @@
 
 
 /***/ },
-/* 598 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -66152,7 +66245,7 @@
 	var EventPluginUtils = __webpack_require__(16);
 	var EventPropagators = __webpack_require__(13);
 	var SyntheticUIEvent = __webpack_require__(54);
-	var TouchEventUtils = __webpack_require__(599);
+	var TouchEventUtils = __webpack_require__(603);
 	var ViewportMetrics = __webpack_require__(55);
 
 	var keyOf = __webpack_require__(30);
@@ -66300,7 +66393,7 @@
 
 
 /***/ },
-/* 599 */
+/* 603 */
 /***/ function(module, exports) {
 
 	/**
@@ -66346,6 +66439,173 @@
 
 	module.exports = TouchEventUtils;
 
+
+/***/ },
+/* 604 */
+/***/ function(module, exports) {
+
+	
+	'use strict';
+	/**
+	 * Simple module to localize the React interface using the same syntax
+	 * used in the ReactNativeLocalization module
+	 * (https://github.com/stefalda/ReactNativeLocalization)
+	 *
+	 * Originally developed by Stefano Falda (stefano.falda@gmail.com)
+	 *
+	 * It uses a call to the Navigator/Browser object to get the current interface language,
+	 * then display the correct language strings or the default language (the first
+	 * one if a match is not found).
+	 *
+	 * How to use:
+	 * Check the instructions at:
+	 * https://github.com/stefalda/react-localization
+	 */
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var LocalizedStrings = function () {
+	  _createClass(LocalizedStrings, [{
+	    key: '_getBestMatchingLanguage',
+	    value: function _getBestMatchingLanguage(language, props) {
+	      //If an object with the passed language key exists return it
+	      if (props[language]) return language;
+	      //if the string is composed try to find a match with only the first language identifiers (en-US --> en)
+	      var idx = language.indexOf("-");
+	      if (idx >= 0) {
+	        language = language.substring(0, idx);
+	        if (props[language]) return language;
+	      }
+	      //Return the default language (the first coded)
+	      return Object.keys(props)[0];
+	    }
+	  }]);
+
+	  function LocalizedStrings(props) {
+	    _classCallCheck(this, LocalizedStrings);
+
+	    var interfaceLanguage = navigator.languages && typeof navigator.languages !== 'undefined' && navigator.languages[0] && typeof navigator.languages[0] !== 'undefined' ? navigator.languages[0] : navigator.language && typeof navigator.language !== 'undefined' ? navigator.language : navigator.userLanguage && typeof navigator.userLanguage !== 'undefined' ? navigator.userLanguage : 'en-US';
+	    //Store locally the passed strings
+	    this.props = props;
+	    //Set language to its default value (the interface)
+	    this.setLanguage(interfaceLanguage);
+	  }
+
+	  _createClass(LocalizedStrings, [{
+	    key: 'addTrad',
+	    value: function addTrad(obj) {
+	      if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && !Array.isArray(obj)) {
+	        for (var key in obj) {
+	          if (this.props[key]) {
+	            Object.assign(this.props[key], obj[key]);
+	          } else {
+	            this.props[key] = obj[key];
+	          }
+	        }
+	        this.setLanguage(this.getLanguage());
+	      } else {
+	        console.error('Is not an json format', obj);
+	      }
+	    }
+
+	    //Can be used from ouside the class to force a particular language
+	    //indipendently from the interface one
+
+	  }, {
+	    key: 'setLanguage',
+	    value: function setLanguage(language) {
+	      //Check if exists a translation for the current language or if the default
+	      //should be used
+	      var bestLanguage = this._getBestMatchingLanguage(language, this.props);
+	      this.language = bestLanguage;
+	      //Associate the language object to the this object
+	      if (this.props[bestLanguage]) {
+	        //console.log("There are strings for the language:"+language);
+	        var localizedStrings = Object.assign(this.props[Object.keys(this.props)[0]], this.props[this.language]);
+	        for (var key in localizedStrings) {
+	          //console.log("Checking property:"+key);
+	          if (localizedStrings.hasOwnProperty(key)) {
+	            //console.log("Associating property:"+key);
+	            this[key] = localizedStrings[key];
+	          }
+	        }
+	      }
+	    }
+
+	    //The current language displayed (could differ from the interface language
+	    // if it has been forced manually and a matching translation has been found)
+
+	  }, {
+	    key: 'getLanguage',
+	    value: function getLanguage() {
+	      return this.language;
+	    }
+
+	    //The current interface language (could differ from the language displayed)
+
+	  }, {
+	    key: 'getInterfaceLanguage',
+	    value: function getInterfaceLanguage() {
+	      return interfaceLanguage;
+	    }
+
+	    //Return an array containing the available languages passed as props in the constructor
+
+	  }, {
+	    key: 'getAvailableLanguages',
+	    value: function getAvailableLanguages() {
+	      if (!this.availableLanguages) {
+	        this.availableLanguages = [];
+	        for (var language in this.props) {
+	          this.availableLanguages.push(language);
+	        }
+	      }
+	      return this.availableLanguages;
+	    }
+
+	    //Format the passed string replacing the numbered placeholders
+	    //i.e. I'd like some {0} and {1}, or just {0}
+	    //Use example:
+	    //  strings.formatString(strings.question, strings.bread, strings.butter)
+
+	  }, {
+	    key: 'formatString',
+	    value: function formatString(str) {
+	      var res = str;
+
+	      for (var _len = arguments.length, values = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	        values[_key - 1] = arguments[_key];
+	      }
+
+	      for (var i = 0; i < values.length; i++) {
+	        res = this._replaceAll("{" + i + "}", values[i], res);
+	      }
+	      return res;
+	    }
+
+	    //Replace all occorrencies of a string in another using RegExp
+
+	  }, {
+	    key: '_replaceAll',
+	    value: function _replaceAll(find, replace, str) {
+	      //Escape find
+	      find = find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+	      return str.replace(new RegExp(find, 'g'), replace);
+	    }
+	  }]);
+
+	  return LocalizedStrings;
+	}();
+
+	exports.default = LocalizedStrings;
 
 /***/ }
 /******/ ]);

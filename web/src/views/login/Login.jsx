@@ -8,7 +8,7 @@ class Login extends React.Component {
     return (
 			<Ui.Card style={CardStyle}>
 				<Ui.CardTitle
-					title="Login"
+					title={Lang.login}
 					style={CardTitleStyle}
 				/>
 				<Ui.CardText>

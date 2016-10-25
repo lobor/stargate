@@ -12,6 +12,10 @@ require("material-ui");
 // Add material-ui-colors on window => window.Colors
 require("material-ui/styles/colors");
 
+// Add lang on window => window.Lang
+require("imports?this=>window!languages");
+
+
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 

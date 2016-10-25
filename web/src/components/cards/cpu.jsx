@@ -29,7 +29,7 @@ class Cpu extends React.Component{
   render(){
     return (
       <Ui.Card>
-        <Ui.CardTitle title="CPU Usage" />
+        <Ui.CardTitle title={Lang.cpuUsage} />
         <Ui.CardText>
           <Loading render={this.state.render}>
             {this.state.info}

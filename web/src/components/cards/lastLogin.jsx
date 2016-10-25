@@ -19,7 +19,7 @@ class LastLogin extends React.Component{
   render(){
     return (
       <Ui.Card>
-        <Ui.CardTitle title="Last Login" />
+        <Ui.CardTitle title={Lang.lastLogin} />
         <Ui.CardText>
           <Loading render={this.state.render}>
             <Ui.List>

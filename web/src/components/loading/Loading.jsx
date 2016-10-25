@@ -7,7 +7,7 @@ class Loading extends React.Component {
 
 	render() {
     if(this.props.render){
-			if(this.props.children.length){
+			if(this.props.children.length && Array.isArray(this.props.children)){
 				return (
 					<div>
 						{this.props.children.map((el, i)=>{
@@ -17,7 +17,7 @@ class Loading extends React.Component {
 				);
 			}
 			else{
-				return this.props.children;
+				return (<div>{this.props.children}</div>);
 			}
     }
     return (

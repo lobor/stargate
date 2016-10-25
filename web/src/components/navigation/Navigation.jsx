@@ -16,12 +16,7 @@ class Navigation extends React.Component {
 	}
 
 	handleToggle(r,d,e) {
-		// if(e){
-		// 	e.preventDefault();
-		// 	e.stopPropagation();
-		// }
     this.setState({active: !this.state.active});
-		// return true;
   };
 
 	logout(){
@@ -34,7 +29,6 @@ class Navigation extends React.Component {
 
 	render() {
 		var rendu = null;
-
 		if(this.context.auth()){
 			rendu = (
 				<Ui.AppBar
@@ -52,14 +46,21 @@ class Navigation extends React.Component {
 						<Ui.List>
 							{
 								this.props.navigation.map((item, key) => {
+									let tradLabel = (item.plugin) ? Lang[item.plugin][item.label] : Lang[item.label];
+
+									if(!tradLabel){
+										console.error('UNTRANSLATED =>', item.label);
+										tradLabel = item.label;
+									}
+
 									return (
 										<Link to={item.href} key={key}  onClick={this.handleToggle}>
-											<Ui.ListItem key={key} primaryText={item.label} leftIcon={<Ui.FontIcon className="material-icons">{item.icon}</Ui.FontIcon>} />
+											<Ui.ListItem key={key} primaryText={tradLabel} leftIcon={<Ui.FontIcon className="material-icons">{item.icon}</Ui.FontIcon>} />
 										</Link>
 									);
 								})
 							}
-							<Ui.ListItem onClick={this.logout.bind(this)} primaryText='Log out' leftIcon={<Ui.FontIcon className="material-icons">power_settings_new</Ui.FontIcon>} />
+							<Ui.ListItem onClick={this.logout.bind(this)} primaryText={Lang.logOut} leftIcon={<Ui.FontIcon className="material-icons">power_settings_new</Ui.FontIcon>} />
 						</Ui.List>
 		      </Ui.Drawer>
 				</Ui.AppBar>

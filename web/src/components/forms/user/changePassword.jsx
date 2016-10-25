@@ -22,10 +22,10 @@ class ChangePassword extends React.Component{
     e.preventDefault();
     this.context.io.run('user:changePassword', this.state, (res) => {
 			if(res.response){
-        this._notify.show({msg: 'The password has been changed', type: 'success'});
+        this._notify.show({msg: Lang.successChangePassword, type: 'success'});
 			}
 			else{
-        this._notify.show({msg: 'An error has occured', type: 'error'});
+        this._notify.show({msg: Lang.errorOccured, type: 'error'});
 			}
 		});
   }
@@ -39,13 +39,13 @@ class ChangePassword extends React.Component{
       <div>
         <form onSubmit={this.submit}>
           <Notify ref="notification" />
-          <Ui.TextField name="old_password" id="old_password" type="password" required hintText="Current password" onChange={this.change.bind(this, 'old_password')} /><br/>
-          <Ui.TextField name="new_password" id="new_password" type="password" required hintText="New password" onChange={this.change.bind(this, 'new_password')} /><br/>
-          <Ui.TextField name="confirm_new_password" id="comfirm_new_password" type="password" required hintText="Comfirm new password" onChange={this.change.bind(this, 'confirm_new_password')} /><br/>
+          <Ui.TextField name="old_password" id="old_password" type="password" required hintText={Lang.currentPassword} onChange={this.change.bind(this, 'old_password')} /><br/>
+          <Ui.TextField name="new_password" id="new_password" type="password" required hintText={Lang.newPassword} onChange={this.change.bind(this, 'new_password')} /><br/>
+          <Ui.TextField name="confirm_new_password" id="comfirm_new_password" type="password" required hintText={Lang.confirmPassword} onChange={this.change.bind(this, 'confirm_new_password')} /><br/>
           <div style={(this.state.msg) ? {} : {'display': 'none'}} >
             {this.state.msg}
           </div>
-          <Ui.RaisedButton type="submit" label="Validate" primary />
+          <Ui.RaisedButton type="submit" label={Lang.change} primary />
         </form>
       </div>
     )

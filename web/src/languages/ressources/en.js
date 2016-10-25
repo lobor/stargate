@@ -1,0 +1,23 @@
+module.exports = {
+  login: "Sign Up",
+  successChangePassword: "The password has been changed",
+  errorOccured: "An error has occured",
+  password: "Password",
+  currentPassword: "Current password",
+  newPassword: "New password",
+  confirmPassword: "Comfirm new password",
+  change: "Change",
+  cpuUsage: "CPU Usage",
+  lastLogin: "Last login",
+  logOut: 'Log out',
+  save: 'Save',
+  cancel: 'cancel',
+  submit: 'Submit',
+  passwordSudo: "Password sudo",
+  yourPassword: "Your passowrd",
+  settings: "Settings",
+  remove: "Remove",
+  home: "Home",
+  plugins: "Plugins",
+  listPluginsAvailable: "List plugins available"
+};
