@@ -27,7 +27,7 @@ export default [
 	},
 	{
 		'name': 'lastLogin',
-		'dep': ['data'],
+		'require': ['data'],
 		'call': function(data, fc){
 			var date, hour, minutes, day, month, arrayDate = [];
 
@@ -47,7 +47,7 @@ export default [
 	},
 	{
 		'name': 'login',
-		'dep': ['data'],
+		'require': ['data'],
 		'call': function(data, fc){
 			if(data.name == ConfigAdmin.user && data.password == ConfigAdmin.password){
 		    var sess = this.socket.request.session;

@@ -12,7 +12,7 @@ export default [
 	},
 	{
 		'name': 'plugins:install',
-		'dep': ['pluginManager'],
+		'require': ['pluginManager'],
 		'call': function(data, fc){
 			var ls = spawn('git', ['clone', data.url, data.name], {cwd: pathProcess + '/plugins'});
 			ls.stdout.on('data', (data) => {

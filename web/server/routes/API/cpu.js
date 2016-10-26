@@ -4,6 +4,7 @@ var cpu = false;
 export default [
 	{
 		'name': 'cpu',
+		'require': ['socket'],
 		'call': function(data, fc){
       let socket = this.socket;
       cpu = setInterval(function(){

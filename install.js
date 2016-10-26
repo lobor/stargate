@@ -73,3 +73,12 @@ try {
 } catch (e) {
   fs.mkdirSync(pathProcess + '/plugins/', 0777);
 }
+
+
+
+
+try {
+  fs.accessSync(pathProcess + '/tmp/', fs.F_OK);
+} catch (e) {
+  fs.mkdirSync(pathProcess + '/tmp/', 0777);
+}

@@ -2,46 +2,61 @@ require('babel/register');
 
 var basePath = process.cwd(),
 		Server = require(basePath + '/web/server/server'),
-		ManagePlugin = require(basePath + '/core/managePlugin'),
-		pluginManager;
+		ManagePlugin = require(basePath + '/core/manager/pluginsManager'),
+		pluginManager, server;
 
+var fs = require('fs');
 
 // Load config
 var ConfigEnv = require(basePath + '/config/web/environnement');
 Object.assign(process.env, ConfigEnv);
 
+// Server.start();
 
-// Create instance of server
-let server = new Server();
-
-// The manager plugin is instancing, with several config, like the server for attach it, and the path of plugins
+// update file list plugins
 
 
-// Set plugin manager with server like dependencies on routes
-pluginManager = new ManagePlugin({
-	server: server,
-	path: basePath + '/plugins/'
-});
-server
-	.set({pluginManager: pluginManager});
-
-server.on('onStartServer', ()=>{
-	// pluginManager = new ManagePlugin({
-	// 	server: server,
-	// 	path: basePath + '/plugins/'
-	// });
-
-	pluginManager.on('load:end', (data) => {
-		server
-			.setRoutes(data.routes)
-			.setAssets(data.assets)
-			.reloadRoutes()
-			.reloadFront({add: data.add, delete: data.delete});
-	});
-
-	pluginManager.loadPlugin();
-});
 
 
-// start the server web
+
+pluginManager = new ManagePlugin({pathProcess: basePath});
+pluginManager
+	.updateDB()
+	.loadPlugins('/plugins');
+
+
+server = new Server();
+
+
+// load plugin routes
+for(let pluginName in pluginManager.plugins){
+	let plugin = pluginManager.plugins[pluginName];
+	server.on('socketLoad', ()=>{
+		for(let routeSocket of plugin.routes.api[0]){
+			server.addRouteSocket(routeSocket);
+		}
+	})
+
+	for(let route of plugin.routes.front[0]){
+		server.addRoute(route);
+	}
+
+	server.assets.push(plugin.assets);
+	// server.addRoute({
+	// 	type: 'get',
+	// 	url: plugin.assets,
+	// 	call: (req, res) => {
+	// 		res.sendFile(process.cwd() + plugin.assets);
+	// 	}
+	// })
+}
+
+
+
 server.start();
+
+
+
+
+
+// let routesSocket = pluginManager.getRoutesSocket();

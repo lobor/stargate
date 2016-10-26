@@ -13,11 +13,16 @@ var pathPlugin = rootPath  + '/plugins/';
 class Plugin {
 	constructor() {
     this.event = {};
-		this.back = {};
-		this.front = {};
 
 		// Check if config file is in tmp directory, if not create it
 		let pluginName = this.props.conf.name.toLowerCase();
+
+		try {
+		  fs.accessSync(pathPlugin + pluginName + '/tmp', fs.F_OK);
+		} catch (e) {
+			fs.mkdirSync(pathPlugin + pluginName + '/tmp', '0777');
+		}
+
 		try {
 		  fs.accessSync(pathPlugin + pluginName + pathConfig, fs.F_OK);
 		} catch (e) {
@@ -25,7 +30,7 @@ class Plugin {
 		  let cpConf = spawn('cp', [pathPlugin + pluginName + '/config/config.js', pathPlugin + pluginName + pathConfig]);
 
 		  cpConf.stderr.on('data', (data) => {
-		    error('Copy config', data);
+		    error('Copy config', data.toString('utf-8'));
 		  });
 
 		  cpConf.on('close', (code) => {
@@ -44,8 +49,8 @@ class Plugin {
 	  let pathBack = pathPlugin + className.toLowerCase() + '/back/';
 	  let pathFront = pathPlugin + className.toLowerCase() + '/front/';
 	  try{
-			this.back = require(pathBack);
-			this.back.routes.api[0].push({
+			Object.assign(this, require(pathBack))
+			this.routes.api[0].push({
 				name: className + ':config',
 				depPlugin: [],
 				call: (data, fc) => {
@@ -53,7 +58,7 @@ class Plugin {
 				}
 			});
 
-			this.back.routes.api[0].push({
+			this.routes.api[0].push({
 				name: className + ':config:post',
 				depPlugin: [],
 				call: (data, fc) => {
@@ -64,24 +69,24 @@ class Plugin {
 				}
 			});
 
-			this.loadDependencies();
+			// this.loadDependencies();
 	  }
 	  catch (e){
 	    warning(className, 'Cannot find module:', pathBack, '\n', e, '\n');
 	  }
 
 	  try{
-			this.front = require(pathFront);
+			Object.assign(this, require(pathFront))
 	  }
 	  catch (e){
 	    warning(className, 'Cannot find module:', pathFront, '\n', e, '\n');
 	  }
 
-		this.emit('load');
+		// this.emit('load');
 	}
 
 	loadDependencies(){
-		this.back.routes.api.forEach((apiRoute, indexRouteApi) => {
+		this.routes.api.forEach((apiRoute, indexRouteApi) => {
 			apiRoute.forEach((route, indexRoute) => {
 				let dep = {};
 				// search dependencies

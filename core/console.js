@@ -3,19 +3,35 @@
  */
 
 function consoleError(...args){
-  console.log('\x1b[31m', '[ERROR]', '\x1b[0m',  ...args);
+  let arg = '';
+  if('development' === process.env.NODE_ENV){
+    arg = args;
+  }
+  console.log('\x1b[31m', '[ERROR]', '\x1b[0m', arg);
 }
 
 function consoleWarning(...args){
-  console.log('\x1b[33m', '[WARNING]', '\x1b[0m',  ...args);
+  let arg = '';
+  if('development' === process.env.NODE_ENV){
+    arg = args;
+  }
+  console.log('\x1b[33m', '[WARNING]', '\x1b[0m', arg);
 }
 
 function consoleSuccess(...args){
-  console.log('\x1b[32m', '[SUCCESS]', '\x1b[0m', ...args);
+  let arg = '';
+  if('development' === process.env.NODE_ENV){
+    arg = args;
+  }
+  console.log('\x1b[32m', '[SUCCESS]', '\x1b[0m',arg);
 }
 
 function consoleInfo(...args){
-  console.log('\x1b[34m', '[INFO]', '\x1b[0m', ...args);
+  let arg = '';
+  if('development' === process.env.NODE_ENV){
+    arg = args;
+  }
+  console.log('\x1b[34m', '[INFO]', '\x1b[0m',arg);
 }
 
 module.exports.error = consoleError;
