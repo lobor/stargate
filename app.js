@@ -11,12 +11,6 @@ var fs = require('fs');
 var ConfigEnv = require(basePath + '/config/web/environnement');
 Object.assign(process.env, ConfigEnv);
 
-// Server.start();
-
-// update file list plugins
-
-
-
 
 
 pluginManager = new ManagePlugin({pathProcess: basePath});
@@ -27,36 +21,53 @@ pluginManager
 
 server = new Server();
 
-
 // load plugin routes
-for(let pluginName in pluginManager.plugins){
-	let plugin = pluginManager.plugins[pluginName];
-	server.on('socketLoad', ()=>{
-		for(let routeSocket of plugin.routes.api[0]){
-			server.addRouteSocket(routeSocket);
-		}
-	})
-
-	for(let route of plugin.routes.front[0]){
-		server.addRoute(route);
-	}
-
-	server.assets.push(plugin.assets);
-	// server.addRoute({
-	// 	type: 'get',
-	// 	url: plugin.assets,
-	// 	call: (req, res) => {
-	// 		res.sendFile(process.cwd() + plugin.assets);
-	// 	}
-	// })
-}
+loadRouteOnServer(pluginManager.plugins);
 
 
+pluginManager.on('addPlugin', (pluginName) => {
+	let plugin = pluginManager.getPlugin(pluginName);
+	server.io.emit('assets:add', plugin.assets)
 
+
+	server.stop();
+	loadRouteOnServer(pluginManager.plugins);
+
+	server.start();
+});
+
+pluginManager.on('deletePlugin', (assets) => {
+	server.io.emit('assets:delete', assets)
+
+
+	server.stop();
+	loadRouteOnServer(pluginManager.plugins);
+
+	server.start();
+})
+
+
+server.set({pluginManager: pluginManager})
 server.start();
 
 
+function loadRouteOnServer(plugins){
+	for(let pluginName in plugins){
+		let plugin = plugins[pluginName];
+		server.on('socketLoad', ()=>{
+			for(let routeSocket of plugin.routes.api){
+				server.addRouteSocket(routeSocket);
+			}
+		})
 
+		for(let route of plugin.routes.front){
+			server.addRoute(route);
+		}
+
+		if(-1 === server.assets.indexOf(plugin.assets))
+			server.assets.push(plugin.assets);
+	}
+}
 
 
 // let routesSocket = pluginManager.getRoutesSocket();

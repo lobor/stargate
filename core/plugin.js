@@ -41,16 +41,26 @@ class Plugin {
 		  });
 		}
 
+		// Hack because node is launch on sudo
+		spawn('chmod', ['0777', pathPlugin + pluginName + '/front/assets/' + pluginName + '.js']);
+
 		return this;
 	}
 
+	/**
+	 * Load file on plugin system, back routes and front routes
+	 */
 	load(){
 		let className = this.props.conf.name;
 	  let pathBack = pathPlugin + className.toLowerCase() + '/back/';
 	  let pathFront = pathPlugin + className.toLowerCase() + '/front/';
+
+		// Load back route and set route of config menu
 	  try{
 			Object.assign(this, require(pathBack))
-			this.routes.api[0].push({
+
+			// create route get config
+			this.routes.api.push({
 				name: className + ':config',
 				depPlugin: [],
 				call: (data, fc) => {
@@ -58,7 +68,8 @@ class Plugin {
 				}
 			});
 
-			this.routes.api[0].push({
+			// create route post config
+			this.routes.api.push({
 				name: className + ':config:post',
 				depPlugin: [],
 				call: (data, fc) => {
@@ -68,8 +79,6 @@ class Plugin {
 					fc(this.props.conf);
 				}
 			});
-
-			// this.loadDependencies();
 	  }
 	  catch (e){
 	    warning(className, 'Cannot find module:', pathBack, '\n', e, '\n');
@@ -82,25 +91,27 @@ class Plugin {
 	    warning(className, 'Cannot find module:', pathFront, '\n', e, '\n');
 	  }
 
-		// this.emit('load');
+
+		// Emit load event
+		this.emit('load');
 	}
 
-	loadDependencies(){
-		this.routes.api.forEach((apiRoute, indexRouteApi) => {
-			apiRoute.forEach((route, indexRoute) => {
-				let dep = {};
-				// search dependencies
-				if(route.depPlugin && route.depPlugin.length){
-					route.depPlugin.forEach((el) => {
-						dep[el] = this[el];
-					});
-				}
-
-				// attach route with dependencies
-				route.dependencies = dep;
-			});
-    });
-	}
+	// loadDependencies(){
+	// 	this.routes.api.forEach((apiRoute, indexRouteApi) => {
+	// 		apiRoute.forEach((route, indexRoute) => {
+	// 			let dep = {};
+	// 			// search dependencies
+	// 			if(route.depPlugin && route.depPlugin.length){
+	// 				route.depPlugin.forEach((el) => {
+	// 					dep[el] = this[el];
+	// 				});
+	// 			}
+	//
+	// 			// attach route with dependencies
+	// 			route.dependencies = dep;
+	// 		});
+  //   });
+	// }
 
 	remove(){
 		this.event = {};

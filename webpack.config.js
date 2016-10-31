@@ -48,5 +48,15 @@ module.exports = {
 	},
 	plugins: [
 		new ExtractTextPlugin('app.css', { allChunks: true }),
+		// new webpack.DefinePlugin({
+    //   'process.env':{
+    //     'NODE_ENV': JSON.stringify('production')
+    //   }
+    // }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress:{
+    //     warnings: true
+    //   }
+    // })
 	]
 };

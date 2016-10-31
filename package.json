@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "install": "node install.js",
-    "start": "node app.js",
+    "start": "npm run build:js && node app.js",
+    "server": "node app.js",
     "server-dev": "nodemon app.js",
     "start-dev": "npm-run-all --parallel server-dev watch:js",
-    "build:js": "webpack --config --optimize-minimize",
+    "build:js": "webpack --optimize-minimize --config",
     "watch:js": "webpack -w --config",
     "test": "node test/test.js",
     "motion": "motion -c ./tmp/confcam.conf"
@@ -45,7 +46,6 @@
     "react": "^15.3.2",
     "react-addons-update": "^15.3.0",
     "react-dom": "^15.2.0",
-    "react-localization": "0.0.7",
     "react-router": "^4.0.0-alpha.5",
     "react-tap-event-plugin": "^1.0.0",
     "react-toolbox": "^1.0.2",
@@ -55,8 +55,7 @@
     "stylus": "^0.54.5",
     "uglify-js": "^2.7.0",
     "watchify": "^3.7.0",
-    "webpack": "^1.13.1",
-    "webpack-replace": "^1.0.0"
+    "webpack": "^1.13.1"
   },
   "jshintConfig": {
     "esversion": 6

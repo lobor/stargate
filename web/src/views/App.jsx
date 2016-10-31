@@ -45,18 +45,18 @@ class App extends React.Component {
 
   componentDidMount(){
     // Event for add script when a plugin is installing
-    Api.on('assets:add', (data)=>{
+    Api.on('assets:add', (assets)=>{
       var script = document.createElement('script');
-      script.src = data.add[0];
+      script.src = assets;
 
       document.body.appendChild(script);
     });
 
     // Event for delete script when a plugin is installing
-    Api.on('assets:delete', (data)=>{
+    Api.on('assets:delete', (assets)=>{
       var scripts = document.querySelectorAll('script');
       scripts.forEach((script)=>{
-        if(script.src === window.location.origin + data.delete){
+        if(script.src === window.location.origin + assets){
           script.remove();
         }
       })

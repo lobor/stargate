@@ -32,6 +32,23 @@ export default class Server{
 		this.io = socketIo(this.http);
 	}
 
+
+	/**
+	 * Set dependencies on server
+	 */
+	set(name, value){
+		let key;
+		if('object' === typeof name && undefined === value){
+			for(key in name){
+				this[key] = name[key];
+			}
+		}
+		else{
+			this[name] = value;
+		}
+		return this;
+	}
+
 	addRoute(route){
 		route = this.setDependencies(route);
 		this.server[route.type](route.url, route.call);
@@ -110,7 +127,10 @@ export default class Server{
 	}
 
 	stop(){
-
+		this.http.close();
+		this.server._router.stack = this.server._router.stack.filter((stack, index)=>{
+			return !stack.route;
+		});
 	}
 
 	update(){
@@ -119,26 +139,26 @@ export default class Server{
 
 
 
-	/**
-	 * System event on server
-	 */
-		on(name, cb) {
-			if(!this.event[name]){
-				this.event[name] = [];
-			}
-			this.event[name].push(cb);
+/**
+ * System event on server
+ */
+	on(name, cb) {
+		if(!this.event[name]){
+			this.event[name] = [];
 		}
+		this.event[name].push(cb);
+	}
 
-		off(name) {
-			this.event[name] = false;
-		}
+	off(name) {
+		this.event[name] = false;
+	}
 
-		emit(event, data) {
-			if (this.event[event] && this.event[event].length) {
-				this.event[event].forEach((cb) => {
-					cb.call(undefined, data)
-				})
-				// this.event[nameFunction].call(undefined, data);
-			}
+	emit(event, data) {
+		if (this.event[event] && this.event[event].length) {
+			this.event[event].forEach((cb) => {
+				cb.call(undefined, data)
+			})
+			// this.event[nameFunction].call(undefined, data);
 		}
+	}
 }

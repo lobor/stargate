@@ -19,5 +19,10 @@ module.exports = {
   remove: "Desinstaller",
   home: "Accueil",
   plugins: "Plugins",
-  listPluginsAvailable: "Plugins disponible"
+  listPluginsAvailable: "Plugins disponible",
+  pluginInstallSuccess: 'Le plugin "{0}" a été installé',
+  pluginInstallRemove: 'Le plugin "{0}" a été supprimé',
+  seeDetails: 'Voir le detail',
+  errors: 'Erreurs',
+  close: 'Fermer'
 };

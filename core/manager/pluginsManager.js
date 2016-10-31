@@ -8,9 +8,15 @@ export default class PluginsManager{
     this.config = config || {};
     this.dbPlugins = {};
 
+    this.event = {};
+
     this.plugins = {};
 
     return this;
+  }
+
+  getPlugin(name){
+    return this.plugins[name];
   }
 
   updateDB(){
@@ -47,19 +53,43 @@ export default class PluginsManager{
 
     plugin.load();
 
+    if(plugin.install){
+      plugin.install();
+    }
+
     this.plugins[plugin.props.conf.name] = plugin;
-    // console.log(plugin.props.conf.name);
-    // info(plugin)
-    // this.
   }
 
   installPlugin(){
 
   }
 
-  deletePlugin(){
-
+  delete(name){
+    delete this.plugins[name];
   }
+
+  /**
+   * System event on server
+   */
+	on(name, cb) {
+		if(!this.event[name]){
+			this.event[name] = [];
+		}
+		this.event[name].push(cb);
+	}
+
+	off(name) {
+		this.event[name] = false;
+	}
+
+	emit(event, data) {
+		if (this.event[event] && this.event[event].length) {
+			this.event[event].forEach((cb) => {
+				cb.call(undefined, data)
+			})
+			// this.event[nameFunction].call(undefined, data);
+		}
+	}
 }
 
 function getFileUpdatePlugin(cb){

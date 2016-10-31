@@ -10,7 +10,8 @@ class Plugins extends React.Component {
       dialog: false,
       password: false,
       render: false,
-      redirect: false
+      redirect: false,
+      error: false
     }
 
     this.select = this.select.bind(this);
@@ -22,28 +23,10 @@ class Plugins extends React.Component {
   }
 
   checkPluginList(){
-    let request = new XMLHttpRequest();
-    var that = this;
-    request.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        that.context.io.run('plugins:get', {}, (data) => {
-          let listPlugins = JSON.parse(this.response);
-          listPlugins.plugins.map((plugin, index) => {
-            plugin.installed = false;
-            if(-1 !== data.installed.indexOf(plugin.name)){
-              plugin.installed = true;
-            }
-            return plugin;
-          });
-
-          listPlugins.render = true;
-          that.setState(listPlugins);
-          that._notify = that.refs.notification;
-        });
-      }
-    };
-    request.open("GET", "https://raw.githubusercontent.com/lobor/stargate/update/update.json", true);
-    request.send(null);
+    this.context.io.run('plugins:get', {}, (data) => {
+      this.setState({ plugins: data, render: true });
+      this._notify = this.refs.notification;
+    });
   }
 
   componentWillMount(){
@@ -61,6 +44,7 @@ class Plugins extends React.Component {
   }
 
   select(index, installed, e){
+    console.log(3);
     let plugins = this.state.plugins;
     plugins[index].installed = 'loading';
     this.setState({plugins: plugins});
@@ -77,9 +61,15 @@ class Plugins extends React.Component {
     let plugin = plugins[index];
 
     this.context.io.run('plugins:install', plugin, (data) => {
-      plugin.installed = true;
+      plugin.installed = data.success;
       this.setState({plugins: plugins});
-      this._notify.show({msg: 'The plugin "' + plugin.name + '" has been installed', type: 'success'});
+      let optionsNoty = (data.success)
+        ?
+          {msg: Lang.formatString(Lang.pluginInstallSuccess, plugin.name), type: 'success'}
+        :
+          {msg: Lang.formatString(Lang.pluginInstallError, plugin.name), error: data.error, type: 'error'};
+
+      this._notify.show(optionsNoty);
     });
   }
 
@@ -91,7 +81,7 @@ class Plugins extends React.Component {
     this.context.io.run('plugins:uninstall', plugin, (data) => {
       plugin.installed = false
       this.setState({plugins: plugins});
-      this._notify.show({msg: 'The plugin "' + plugin.name + '" has been remove', type: 'success'});
+      this._notify.show({msg: Lang.formatString(Lang.pluginInstallRemove, plugin.name), type: 'success'});
     });
   }
 
@@ -122,91 +112,53 @@ class Plugins extends React.Component {
 
   render(){
     if(this.state.redirect){
-      return (
-        <Redirect to={this.state.redirect}/>
-      )
+      return ( <Redirect to={this.state.redirect}/> )
     }
 
-    const actions = [
-       <Ui.FlatButton
-         label={Lang.cancel}
-         primary={true}
-         onTouchTap={this.cancel}
-       />,
-       <Ui.FlatButton
-         label={Lang.submit}
-         primary={true}
-         keyboardFocused={true}
-         onTouchTap={this.validate}
-       />,
-     ];
 
     return (
       <Loading render={this.state.render}>
         <Ui.Dialog
           title={Lang.passwordSudo}
-          actions={actions}
-          modal={false}
-          open={this.state.dialog}
-          onRequestClose={this.handleClose}
+          actions={[
+            <Ui.FlatButton label={Lang.cancel} primary={true} onTouchTap={this.cancel} />,
+            <Ui.FlatButton label={Lang.submit} primary={true} keyboardFocused={true} onTouchTap={this.validate} />,
+          ]}
+          modal={false} open={this.state.dialog} onRequestClose={this.handleClose}
         >
-        <Ui.TextField
-            ref="password"
-            type="password"
-            hintText={Lang.yourPassword}
-            floatingLabelText={Lang.yourPassword}
-            onChange={this.handleValue}
-          />
+          <Ui.TextField ref="password" type="password" hintText={Lang.yourPassword} floatingLabelText={Lang.yourPassword} onChange={this.handleValue} />
         </Ui.Dialog>
         <Notify ref="notification" />
         <Ui.List>
-          <Ui.Subheader>{Lang.listPluginsAvailable}</Ui.Subheader>
+          <Ui.Subheader>
+            {Lang.listPluginsAvailable}
+          </Ui.Subheader>
           {this.state.plugins.map((plugin, index) => {
-            let text = plugin.name + ' v' + plugin.version;
-            let icon;
+            let icon = ( <Ui.FontIcon className="material-icons" onClick={ this.select.bind(undefined, index, plugin.installed) }>file_download</Ui.FontIcon> );
 
             if(true === plugin.installed){
-              const iconButtonElement = (
-                <Ui.IconButton touch={true}>
-                  <Ui.FontIcon className="material-icons">more_vert</Ui.FontIcon>
-                </Ui.IconButton>
-              );
-
               icon = (
-                <Ui.IconMenu iconButtonElement={iconButtonElement} targetOrigin={{horizontal: 'right', vertical: 'top'}} style={{right: '15px'}}>
-                  <Ui.MenuItem
-                    onClick={this.goTo.bind(undefined, plugin.name)}
-                    leftIcon={<Ui.FontIcon className="material-icons">settings</Ui.FontIcon>}
-                    primaryText={Lang.settings}
-                    />
-
-                  <Ui.MenuItem
-                    primaryText={Lang.remove}
-                    leftIcon={<Ui.FontIcon className="material-icons">delete</Ui.FontIcon>}
-                    onClick={this.select.bind(undefined, index, plugin.installed)}
-                    />
+                <Ui.IconMenu
+                  iconButtonElement={<Ui.IconButton touch={true}><Ui.FontIcon className="material-icons">more_vert</Ui.FontIcon></Ui.IconButton>}
+                  targetOrigin={ {horizontal: 'right', vertical: 'top'} }
+                  style={ {right: '15px'} }
+                >
+                    <Ui.MenuItem onClick={this.goTo.bind(undefined, plugin.name)} leftIcon={ <Ui.FontIcon className="material-icons">settings</Ui.FontIcon> } primaryText={Lang.settings} />
+                    <Ui.MenuItem primaryText={Lang.remove} leftIcon={ <Ui.FontIcon className="material-icons">delete</Ui.FontIcon> } onClick={ this.select.bind(undefined, index, plugin.installed) } />
                 </Ui.IconMenu>
               );
             }
-            else if (false === plugin.installed){
-              icon = (
-                <Ui.FontIcon className="material-icons" onClick={this.select.bind(undefined, index, plugin.installed)}>file_download</Ui.FontIcon>
-              );
+            else if(plugin.installed === 'loading'){
+              icon = ( <Ui.CircularProgress /> );
             }
-
-            if(plugin.installed === 'loading'){
-              icon = (<Ui.CircularProgress />);
-            }
-
-            // console.log(icon);
 
             return (
               <Ui.ListItem
-                key={index}
-                primaryText={text}
-                secondaryText={plugin.description}
-                rightIcon={icon}
-                secondaryTextLines={2}
+                key={ index }
+                primaryText={plugin.name + ' v' + plugin.version}
+                secondaryText={ plugin.description }
+                rightIcon={ icon }
+                secondaryTextLines={ 2 }
               />
             )
           })}
