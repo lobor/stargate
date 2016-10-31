@@ -49,17 +49,27 @@ export default class Server{
 		return this;
 	}
 
+	/**
+	 * Add route
+	 */
 	addRoute(route){
 		route = this.setDependencies(route);
 		this.server[route.type](route.url, route.call);
 	}
 
+	/**
+	 * Add socket route
+	 */
 	addRouteSocket(route){
 		let copyRoute = Object.assign({}, route);
 		copyRoute = this.setDependencies(copyRoute);
 		this.socket.on(copyRoute.name, copyRoute.call);
 	}
 
+
+	/**
+	 * Create route for assets
+	 */
 	routesAssets(){
 		this.assets.forEach((assets)=>{
 			this.addRoute({
@@ -72,6 +82,10 @@ export default class Server{
 		});
 	}
 
+
+	/**
+	 * Set dependencies of routes
+	 */
 	setDependencies(route){
 		let dep = {};
 		if(route.require){
@@ -79,6 +93,11 @@ export default class Server{
 				dep[el] = this[el];
 			});
 		}
+
+		if(route.dependencies){
+			dep = route.dependencies;
+		}
+
 		route.call = route.call.bind(dep);
 		return route;
 	}
@@ -119,6 +138,10 @@ export default class Server{
 		return this;
 	}
 
+
+	/**
+	 * Load routes front and socket of server
+	 */
 	loadRoutesServer(){
 		this.routesAssets();
 		this.loadRoutes();

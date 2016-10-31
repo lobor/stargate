@@ -93,25 +93,24 @@ class Plugin {
 
 
 		// Emit load event
+		this.loadDependencies();
 		this.emit('load');
 	}
 
-	// loadDependencies(){
-	// 	this.routes.api.forEach((apiRoute, indexRouteApi) => {
-	// 		apiRoute.forEach((route, indexRoute) => {
-	// 			let dep = {};
-	// 			// search dependencies
-	// 			if(route.depPlugin && route.depPlugin.length){
-	// 				route.depPlugin.forEach((el) => {
-	// 					dep[el] = this[el];
-	// 				});
-	// 			}
-	//
-	// 			// attach route with dependencies
-	// 			route.dependencies = dep;
-	// 		});
-  //   });
-	// }
+	loadDependencies(){
+		this.routes.api.forEach((route, indexRoute) => {
+			let dep = {};
+			// search dependencies
+			if(route.depPlugin && route.depPlugin.length){
+				route.depPlugin.forEach((el) => {
+					dep[el] = this[el];
+				});
+			}
+
+			// attach route with dependencies
+			route.dependencies = dep;
+    });
+	}
 
 	remove(){
 		this.event = {};
