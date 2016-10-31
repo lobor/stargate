@@ -3,8 +3,11 @@ Application for security camera on Raspberry Pi, Linux
 
 
 ## Config
-1. Lunch on terminal ```npm install --production``` (```npm install``` for dev) and ```npm start```
+1. Lunch on terminal ```npm install --production``` (```npm install``` for dev) and ```sudo npm start```
 2. Go to http://localhost:7070
+
+## Why launch in sudo
+For several plugins, one ```apt-get install``` should be launch, and it's more simple to give root access on app on start that when running it.
 
 
 ## Script
