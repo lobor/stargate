@@ -76,9 +76,11 @@ export default [
 						return plugin !== data.name;
 					})
 
-					;
-					this.pluginManager.emit('deletePlugin', this.pluginManager.getPlugin(data.name).assets);
-					this.pluginManager.delete(data.name);
+					let assets = this.pluginManager.plugins[data.name].assets;
+
+					delete this.pluginManager.plugins[data.name];
+					// this.pluginManager.delete(data.name);
+					this.pluginManager.emit('deletePlugin', assets);
 
 					fs.writeFileSync(pathProcess + '/config/plugins/status.js', 'module.exports = ' + JSON.stringify(plugins) + ';');
 					fc({

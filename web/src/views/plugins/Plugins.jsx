@@ -33,18 +33,7 @@ class Plugins extends React.Component {
     this.checkPluginList()
   }
 
-  componentDidMount(){
-    this.context.io.on('askSudo', () => {
-      this.setState({dialog: true});
-    });
-  }
-
-  componentWillUnmount(){
-    this.context.io.off('askSudo');
-  }
-
   select(index, installed, e){
-    console.log(3);
     let plugins = this.state.plugins;
     plugins[index].installed = 'loading';
     this.setState({plugins: plugins});

@@ -60,14 +60,6 @@ export default class Server{
 		this.socket.on(copyRoute.name, copyRoute.call);
 	}
 
-	removeRoutes(){
-
-	}
-
-	removeRoutesSocket(){
-
-	}
-
 	routesAssets(){
 		this.assets.forEach((assets)=>{
 			this.addRoute({
@@ -91,6 +83,10 @@ export default class Server{
 		return route;
 	}
 
+
+	/**
+	 * Load route of app stargate
+	 */
 	loadRoutes(){
 		for(let routesName in this.routes){
 			for(let route of this.routes[routesName]){
@@ -100,6 +96,19 @@ export default class Server{
 		return this;
 	}
 
+	/**
+	 * Remove assets
+	 */
+	removeAssets(assetToDelete){
+		this.assets = this.assets.filter((asset)=>{
+			return asset !== assetToDelete;
+		});
+	}
+
+
+	/**
+	 * Load socket route of app stargate
+	 */
 	loadRoutesSocket(){
 		for(let routesName in this.routesSocket){
 			for(let route of this.routesSocket[routesName]){
@@ -110,9 +119,17 @@ export default class Server{
 		return this;
 	}
 
-	start(){
+	loadRoutesServer(){
 		this.routesAssets();
 		this.loadRoutes();
+	}
+
+
+	/**
+	 * start server web and socket
+	 */
+	start(){
+		this.loadRoutesServer();
 
 		this.http.listen(process.env.PORT || 8080, () => {
 			console.log('Server is listening...');
@@ -126,15 +143,16 @@ export default class Server{
 		});
 	}
 
+
+	/**
+	 * Stop server web
+	 * Clear routes
+	 */
 	stop(){
-		this.http.close();
+		// this.http.close();
 		this.server._router.stack = this.server._router.stack.filter((stack, index)=>{
 			return !stack.route;
 		});
-	}
-
-	update(){
-
 	}
 
 

@@ -13,7 +13,12 @@ class Notify extends React.Component{
     }
 
     this.handleErrors = this.handleErrors.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
 	}
+
+  handleRequestClose(){
+    this.setState({ open: false, msg: false });
+  }
 
 
   show(option){
@@ -50,6 +55,7 @@ class Notify extends React.Component{
           open={this.state.open}
           message={this.state.msg}
           bodyStyle={TypeNotify[this.state.type]}
+          onRequestClose={this.handleRequestClose}
           {...param}
         />
       </div>
