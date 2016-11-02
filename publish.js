@@ -29,22 +29,51 @@ mocha.run(function(failures){
   });
 
   if(0 === failures){
-    const ls = spawn('git', ['push', 'https://lobor@github.com/lobor/stargate.git']);
+    console.log('Compile js file');
+    let git = spawn('npm', ['run', 'build:js']);
 
-    ls.stdout.on('data', (data) => {
+    git.stdout.on('data', (data) => {
       console.log(`${data}`);
     });
 
-    ls.stderr.on('data', (data) => {
+    git.stderr.on('data', (data) => {
       console.log(`${data}`);
     });
 
-    ls.on('close', (code) => {
+    git.on('close', (code) => {
       if(0 === code){
-        process.exit();
+        console.log('Commit file');
+        let git = spawn('git', ['commit', '-a', '-m', '"Commit via publish file, after test and min js file"']);
+
+        git.stdout.on('data', (data) => {
+          console.log(`${data}`);
+        });
+
+        git.stderr.on('data', (data) => {
+          console.log(`${data}`);
+        });
+
+        git.on('close', (code) => {
+          if(0 === code){
+            console.log('Push');
+            let git = spawn('git', ['push', 'https://lobor@github.com/lobor/stargate.git']);
+
+            git.stdout.on('data', (data) => {
+              console.log(`${data}`);
+            });
+
+            git.stderr.on('data', (data) => {
+              console.log(`${data}`);
+            });
+
+            git.on('close', (code) => {
+              if(0 === code){
+                process.exit();
+              }
+            });
+          }
+        });
       }
-      // console.log(`child process exited with code ${code}`);
     });
-    // process.exit();
   }
 });

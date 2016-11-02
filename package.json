@@ -12,7 +12,6 @@
     "build:js": "webpack --optimize-minimize --config",
     "watch:js": "webpack -w --config",
     "test": "NODE_ENV=test mocha test -R spec --recursive",
-    "motion": "motion -c ./tmp/confcam.conf",
     "publish": "NODE_ENV=test node ./publish.js"
   },
   "keywords": [],
