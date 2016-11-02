@@ -2,6 +2,7 @@ require('babel/register');
 
 var test = require('unit.js');
 var request = require('supertest');
+var ConfigAdmin = require(process.cwd() + '/config/web/admin');
 
 
 
@@ -19,15 +20,16 @@ describe('Server', function(){
     server.http.close();
   });
 
-  it('responds to /', function testSlash(done) {
+  it('responds to /user/login', function testSlash(done) {
     request(server.server)
-      .get('/')
+      .get('/user/login')
       .expect(200, done);
   });
 
   it('Connection and disconnect socket', function(done){
     client = io.connect('http://localhost:8080', {transports: ['websocket']});
-    client.once('connect', function() {
+    client.on('connect', function(socket) {
+      console.log(socket);
       client.disconnect();
     });
 

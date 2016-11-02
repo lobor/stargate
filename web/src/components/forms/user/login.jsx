@@ -4,7 +4,7 @@ import TextField from 'material-ui/TextField';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import Redirect from 'react-router/Redirect'
+import Redirect from 'react-router/Redirect';
 
 class Login extends Component{
   constructor(...args){
@@ -31,6 +31,7 @@ class Login extends Component{
 			name: this.state.name,
 			password: this.state.password
 		}, (response) => {
+      console.log(response);
 			if(response.response){
 				this.context.auth(true);
         this.setState({auth: true})

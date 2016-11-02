@@ -32,6 +32,49 @@ export default class Server{
 
 		this.http = http.Server(this.server);
 		this.io = socketIo.listen(this.http);
+
+
+		this.sessionMiddleware = session({
+			secret: 'keyboard cat',
+			resave: false,
+			saveUninitialized: true,
+			cookie: { maxAge: 600000 }
+		});
+
+		this.server.use(this.sessionMiddleware);
+
+		this.io.use((socket, next) => {
+	    this.sessionMiddleware(socket.request, socket.request.res, next);
+		});
+
+
+		this.server.use((req, res, next) => {
+			let sess = req.session;
+
+			if ((sess.views && '/user/login' !== req.originalUrl) || (!sess.views && '/user/login' === req.originalUrl) || -1 !== this.assets.indexOf(req.originalUrl)) {
+				next();
+			}
+			else if(sess.views && '/user/login' === req.originalUrl){
+				res.redirect('/');
+			}
+			else {
+				sess.views = false;
+				if(req.xhr || req.headers.accept.indexOf('json') > -1){
+					res
+						.status(401)
+						.json({
+							"response":false,
+							"errors": {
+								"message": "You should be connected for to have access",
+								"redirect":"/user/login"
+							}
+						});
+				}
+				else{
+					res.redirect('/user/login');
+				}
+			}
+		});
 	}
 
 
@@ -162,9 +205,16 @@ export default class Server{
 
 		this.io.on('connection', (socket) => {
 			info('Socket is connected...');
+
 			this.socket = socket;
-			this.emit('socketLoad');
-			this.loadRoutesSocket();
+
+			if(socket.request.session.views){
+				this.emit('socketLoad');
+				this.loadRoutesSocket();
+			}
+			else{
+				this.socket.on('login', require('./login').bind(this));
+			}
 		});
 	}
 
