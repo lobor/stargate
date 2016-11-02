@@ -11,8 +11,9 @@
     "start-dev": "npm-run-all --parallel server-dev watch:js",
     "build:js": "webpack --optimize-minimize --config",
     "watch:js": "webpack -w --config",
-    "test": "node test/test.js",
-    "motion": "motion -c ./tmp/confcam.conf"
+    "test": "NODE_ENV=test mocha test -R spec --recursive",
+    "motion": "motion -c ./tmp/confcam.conf",
+    "publish": "NODE_ENV=test node ./publish.js"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +42,7 @@
     "imports-loader": "^0.6.5",
     "jsx-loader": "^0.13.2",
     "material-ui": "^0.16.0",
+    "mocha": "^3.1.2",
     "nodemon": "^1.11.0",
     "npm-run-all": "^3.1.1",
     "react": "^15.3.2",
@@ -53,7 +55,9 @@
     "sassify": "^1.0.0",
     "style-loader": "^0.13.1",
     "stylus": "^0.54.5",
+    "supertest": "^2.0.1",
     "uglify-js": "^2.7.0",
+    "unit.js": "^2.0.0",
     "watchify": "^3.7.0",
     "webpack": "^1.13.1"
   },

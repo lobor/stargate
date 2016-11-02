@@ -1,6 +1,8 @@
 import routesSocket from "./routes/API";
 import routesFront from "./routes/front";
 
+import { info } from "./../../core/console";
+
 var express = require('express'),
 		bodyParser = require('body-parser'),
 		session = require('express-session'),
@@ -29,7 +31,7 @@ export default class Server{
 		this.server.use('/css', express.static('web/assets'));
 
 		this.http = http.Server(this.server);
-		this.io = socketIo(this.http);
+		this.io = socketIo.listen(this.http);
 	}
 
 
@@ -155,11 +157,11 @@ export default class Server{
 		this.loadRoutesServer();
 
 		this.http.listen(process.env.PORT || 8080, () => {
-			console.log('Server is listening...');
+			info('Server is listening...');
 		});
 
 		this.io.on('connection', (socket) => {
-			console.log('Socket is connected...');
+			info('Socket is connected...');
 			this.socket = socket;
 			this.emit('socketLoad');
 			this.loadRoutesSocket();

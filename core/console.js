@@ -7,7 +7,7 @@ function consoleError(...args){
   if('development' === process.env.NODE_ENV){
     arg = args;
   }
-  console.log('\x1b[31m', '[ERROR]', '\x1b[0m', arg);
+  cs('\x1b[31m', '[ERROR]', '\x1b[0m', arg);
 }
 
 function consoleWarning(...args){
@@ -15,7 +15,7 @@ function consoleWarning(...args){
   if('development' === process.env.NODE_ENV){
     arg = args;
   }
-  console.log('\x1b[33m', '[WARNING]', '\x1b[0m', arg);
+  cs('\x1b[33m', '[WARNING]', '\x1b[0m', arg);
 }
 
 function consoleSuccess(...args){
@@ -23,7 +23,8 @@ function consoleSuccess(...args){
   if('development' === process.env.NODE_ENV){
     arg = args;
   }
-  console.log('\x1b[32m', '[SUCCESS]', '\x1b[0m',arg);
+
+  cs('\x1b[32m', '[SUCCESS]', '\x1b[0m',arg);
 }
 
 function consoleInfo(...args){
@@ -31,7 +32,14 @@ function consoleInfo(...args){
   if('development' === process.env.NODE_ENV){
     arg = args;
   }
-  console.log('\x1b[34m', '[INFO]', '\x1b[0m',arg);
+
+  cs('\x1b[34m', '[INFO]', '\x1b[0m', arg);
+}
+
+function cs(...args){
+  if('test' !== process.env.NODE_ENV){
+    console.log(...args);
+  }
 }
 
 module.exports.error = consoleError;
