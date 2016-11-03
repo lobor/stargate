@@ -1,89 +1,82 @@
 require('babel/register');
+
 var test = require('unit.js');
 var request = require('supertest');
+var pluginManager = require('./../modules/pluginManager');
+var server = require('./../modules/server');
+
+var socket = require('./../modules/socketClient');
+const assert = require('assert');
 
 
+describe('pluginManager', function() {
+	before(function(done) {
+		server.create();
+		pluginManager.create();
+    server.set({pluginManager: pluginManager.getPluginManager()})
+		socket.connect();
 
-describe('pluginManager', function(){
-  var pluginManager, server, client;
+		socket.on('connect', function() {
+			socket.login(function(success) {
+				if (success) {
+					done();
+				} else {
+					done(new Error('Login failed'));
+				}
+			});
+		});
 
-  before(function (done) {
-    var basePath = process.cwd();
-    pluginManager = require('./../core/manager/pluginsManager');
+		socket.on('connect_error', function() {
+			done(new Error('Not connected'));
+		})
+	});
 
-    pluginManager = new pluginManager({pathProcess: basePath});
+	after(function() {
+		server.close();
+	});
 
-    server = require('./../web/server/server');
-    server = new server();
-    server.set({pluginManager: pluginManager})
-    server.start();
+	it('get file update plugins', function testSlash(done) {
+		pluginManager.updateDb();
+		done();
+	});
 
-    var io = require('socket.io-client');
-    client = io.connect('http://localhost:8080', {transports: ['websocket']});
-    // client.on('connect', function(socket) {
-    //   client.emit('login', {
-  	// 		name: 'user',
-  	// 		password: 'password'
-  	// 	}, (response) => {
-  	// 		if(response.response){
-  	// 			done();
-  	// 		}
-  	// 		else{
-  				done();
-  	// 		}
-  	// 	});
-    // });
-    //
-    // client.on('connect_error', function() {
-    //   done(new Error('Not connected'));
-    // })
-  });
+	it('load plugins', function testSlash(done) {
+		pluginManager.loadPlugins();
+		done();
+	});
 
-  after(function () {
-    server.http.close();
-  });
+	describe('install / uninstall plugin', function() {
+		it('Install', function(done) {
+      this.timeout(0)
+			socket.emit('plugins:install', {
+				"name": "sample",
+				"url": "https://github.com/lobor/stargate-plugin-sample",
+				"version": "1.0.0",
+				"description": "Sample plugin"
+			}, function(data) {
+				if (data.success) {
+					done()
+				} else {
+					done(new Error('Install failed'))
+				}
+			});
+		});
 
-  it('get file update plugins', function testSlash(done) {
-    pluginManager
-    	.updateDB();
-    done();
-  });
-
-  it('load plugins', function testSlash(done) {
-    pluginManager
-    	.loadPlugins('/plugins');
-    done();
-  });
-
-  // it('Install plugin', function(done){
-  //   client.emit('plugins:install', {
-  //     "name":"sample",
-  //     "url":"https://github.com/lobor/stargate-plugin-sample",
-  //     "version":"1.0.0",
-  //     "description": "Sample plugin"
-  //   }, function(data) {
-  //     if(data.success){
-  //       done();
-  //     }
-  //     else{
-  //       done(new Error('Install failed'))
-  //     }
-  //   });
-  // });
-  //
-  // it('Uninstall plugin', function(done){
-  //   client.emit('plugins:uninstall', {
-  //     "name":"sample",
-  //     "url":"https://github.com/lobor/stargate-plugin-sample",
-  //     "version":"1.0.0",
-  //     "description": "Sample plugin"
-  //   }, function(data) {
-  //     if(data.success){
-  //       done();
-  //     }
-  //     else{
-  //       done(new Error('Uninstall failed'))
-  //     }
-  //   });
-  // })
+    it('Uninstall', function(done){
+      this.timeout(0)
+  	  socket.emit('plugins:uninstall', {
+  	    "name":"sample",
+  	    "url":"https://github.com/lobor/stargate-plugin-sample",
+  	    "version":"1.0.0",
+  	    "description": "Sample plugin"
+  	  }, function(data) {
+  	    if(data.success){
+  	      done();
+  	    }
+  	    else{
+  	      done(new Error('Uninstall failed'))
+  	    }
+  	  });
+  	})
+	});
 });

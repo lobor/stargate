@@ -44,7 +44,7 @@ export default class Server{
 		this.server.use(this.sessionMiddleware);
 
 		this.io.use((socket, next) => {
-	    this.sessionMiddleware(socket.request, socket.request.res, next);
+	    this.sessionMiddleware(socket.request, socket.request.res || {}, next);
 		});
 
 

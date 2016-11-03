@@ -11,7 +11,7 @@
     "start-dev": "npm-run-all --parallel server-dev watch:js",
     "build:js": "webpack --optimize-minimize --config",
     "watch:js": "webpack -w --config",
-    "test": "NODE_ENV=test mocha test -R spec --recursive",
+    "test": "NODE_ENV=test mocha test/test -R spec --recursive",
     "publish": "NODE_ENV=test node ./publish.js"
   },
   "keywords": [],
@@ -49,7 +49,6 @@
     "react-dom": "^15.2.0",
     "react-router": "^4.0.0-alpha.5",
     "react-tap-event-plugin": "^1.0.0",
-    "react-toolbox": "^1.0.2",
     "sass-loader": "^4.0.0",
     "sassify": "^1.0.0",
     "style-loader": "^0.13.1",

@@ -6,7 +6,7 @@ var Mocha = require('mocha'),
 // Instantiate a Mocha instance.
 var mocha = new Mocha();
 
-var testDir = './test'
+var testDir = './test/test'
 
 // Add each .js file to the mocha instance
 fs

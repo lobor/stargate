@@ -29,7 +29,7 @@ export default class PluginsManager{
 
     getFileUpdatePlugin((data) => {
       if(flagState){
-        fs.writeFileSync(that.config.pathProcess + '/tmp/update.json', data)
+        fs.writeFileSync(this.config.pathProcess + '/tmp/update.json', data)
       }
 
       let update = require(this.config.pathProcess + '/tmp/update.json');
