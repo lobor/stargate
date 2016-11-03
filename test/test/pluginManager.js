@@ -1,12 +1,9 @@
 require('babel/register');
 
-var test = require('unit.js');
-var request = require('supertest');
 var pluginManager = require('./../modules/pluginManager');
 var server = require('./../modules/server');
 
 var socket = require('./../modules/socketClient');
-const assert = require('assert');
 
 
 describe('pluginManager', function() {

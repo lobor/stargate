@@ -1,6 +1,5 @@
 require('babel/register');
 
-var test = require('unit.js');
 var request = require('supertest');
 var server = require('./../modules/server');
 var socket = require('./../modules/socketClient');

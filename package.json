@@ -55,7 +55,6 @@
     "stylus": "^0.54.5",
     "supertest": "^2.0.1",
     "uglify-js": "^2.7.0",
-    "unit.js": "^2.0.0",
     "watchify": "^3.7.0",
     "webpack": "^1.13.1"
   },
