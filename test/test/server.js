@@ -10,7 +10,7 @@ describe('Server', function(){
     server.create();
     socket.connect();
 
-    socket.on('connect', function(socket) {
+    socket.on('connect', function() {
       done();
     });
 

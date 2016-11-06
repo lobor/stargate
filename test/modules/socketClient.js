@@ -9,6 +9,9 @@ module.exports = {
   on: function(event, cb){
     client.on(event, cb);
   },
+  off: function(event){
+    client.off(event);
+  },
   emit: function(name, data, cb){
     client.emit(name, data, cb);
   },
