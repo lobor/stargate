@@ -104,6 +104,22 @@ class Table{
     return false;
   }
 
+  last(nb){
+    let result = this.list();
+    return result.slice(result.length - nb, result.length);
+  }
+
+  /**
+   * Find only one correspondance
+   */
+  findOne(param){
+    let result = this.find(param);
+    if(result.length === 1){
+      return result[0];
+    }
+    return false;
+  }
+
   /**
    * return all table
    */
@@ -122,7 +138,7 @@ class Table{
     let results = [];
 
     // change json format on regexp format
-    let paramString = JSON.stringify(sortObject(param)).replace('{', '(').replace('}', ')').replace('","', '").("');
+    let paramString = JSON.stringify(sortObject(param)).replace('{', '(').replace('}', ')').replace('","', '").+("');
     for(let key in this.datas){
       let item = this.datas[key];
       let itemString = JSON.stringify(item);
@@ -167,7 +183,9 @@ class Table{
    */
   push(data){
     // check id for increment
-    let id = parseInt(Object.keys(this.datas)[Object.keys(this.datas).length - 1], 10) + 1
+    let id = (Object.keys(this.datas).length)
+      ? parseInt(Object.keys(this.datas)[Object.keys(this.datas).length - 1], 10) + 1
+      : 1;
 
     // set data
     this.datas[id] = data;

@@ -2,6 +2,7 @@ import routesSocket from "./routes/API";
 import routesFront from "./routes/front";
 
 import { info } from "./../../core/console";
+import db from "./../../core/db";
 
 var express = require('express'),
 		bodyParser = require('body-parser'),
@@ -15,7 +16,7 @@ var express = require('express'),
 export default class Server{
 	constructor(){
 		this.event = {};
-		this.data = {};
+		this.db = db(process.cwd() + '/db');
 		this.routes = routesFront,
 		this.routesSocket = routesSocket;
 		this.assets = [
@@ -51,14 +52,14 @@ export default class Server{
 		this.server.use((req, res, next) => {
 			let sess = req.session;
 
-			if ((sess.views && '/user/login' !== req.originalUrl) || (!sess.views && '/user/login' === req.originalUrl) || -1 !== this.assets.indexOf(req.originalUrl)) {
+			if ((sess.user && '/user/login' !== req.originalUrl) || (!sess.user && '/user/login' === req.originalUrl) || -1 !== this.assets.indexOf(req.originalUrl)) {
 				next();
 			}
-			else if(sess.views && '/user/login' === req.originalUrl){
+			else if(sess.user && '/user/login' === req.originalUrl){
 				res.redirect('/');
 			}
 			else {
-				sess.views = false;
+				sess.user = false;
 				if(req.xhr || req.headers.accept.indexOf('json') > -1){
 					res
 						.status(401)
@@ -108,7 +109,16 @@ export default class Server{
 	addRouteSocket(route){
 		let copyRoute = Object.assign({}, route);
 		copyRoute = this.setDependencies(copyRoute);
-		this.socket.on(copyRoute.name, copyRoute.call);
+		this.socket.on(copyRoute.name, (data, fc) => {
+			if(this.socket.request.session.user){
+				copyRoute.call(data, fc);
+			}
+			else{
+				fc({
+					error: 403
+				})
+			}
+		});
 	}
 
 
@@ -208,7 +218,7 @@ export default class Server{
 
 			this.socket = socket;
 
-			if(socket.request.session.views){
+			if(socket.request.session.user){
 				this.emit('socketLoad');
 				this.loadRoutesSocket();
 			}

@@ -20,49 +20,49 @@ pluginManager
 
 
 server = new Server();
-
+server.loadRoutesServer();
 // load plugin routes
-loadRouteOnServer(pluginManager.plugins);
-
-
-/**
- * add plugin
- */
-pluginManager.on('addPlugin', (pluginName) => {
-	// Get plugin
-	let plugin = pluginManager.getPlugin(pluginName);
-
-	// send to front asset to add
-	server.io.emit('assets:add', plugin.assets)
-
-	// stop server for add routes of plugins
-	server.stop();
-	loadRouteOnServer(pluginManager.plugins);
-
-	// reload routes server
-	server.loadRoutesServer();
-});
-
-
-
-/**
- * Delete plugins
- */
-pluginManager.on('deletePlugin', (assets) => {
-
-	// send to front the asset to delete
-	server.io.emit('assets:delete', assets)
-
-	// stop server for add routes
-	server.stop();
-	loadRouteOnServer(pluginManager.plugins);
-
-	// delete assets
-	server.removeAssets(assets);
-
-	// reload routes server
-	server.loadRoutesServer();
-})
+// loadRouteOnServer(pluginManager.plugins);
+//
+//
+// /**
+//  * add plugin
+//  */
+// pluginManager.on('addPlugin', (pluginName) => {
+// 	// Get plugin
+// 	let plugin = pluginManager.getPlugin(pluginName);
+//
+// 	// send to front asset to add
+// 	server.io.emit('assets:add', plugin.assets)
+//
+// 	// stop server for add routes of plugins
+// 	server.stop();
+// 	loadRouteOnServer(pluginManager.plugins);
+//
+// 	// reload routes server
+// 	server.loadRoutesServer();
+// });
+//
+//
+//
+// /**
+//  * Delete plugins
+//  */
+// pluginManager.on('deletePlugin', (assets) => {
+//
+// 	// send to front the asset to delete
+// 	server.io.emit('assets:delete', assets)
+//
+// 	// stop server for add routes
+// 	server.stop();
+// 	loadRouteOnServer(pluginManager.plugins);
+//
+// 	// delete assets
+// 	server.removeAssets(assets);
+//
+// 	// reload routes server
+// 	server.loadRoutesServer();
+// })
 
 
 server.set({pluginManager: pluginManager})

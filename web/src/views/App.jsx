@@ -67,11 +67,12 @@ class App extends React.Component {
 	getChildContext() {
 		var auth = false;
 		if('/user/login' !== window.location.pathname){
-			auth = true;
+      auth = true;
 		}
 		else if('/user/login' === window.location.pathname){
 			auth = false;
 		}
+
     return {
       auth: (val) => {
 				if(val !== undefined){
@@ -89,10 +90,10 @@ class App extends React.Component {
 			<BrowserRouter>
 				<MuiThemeProvider muiTheme={muiTheme}>
 					<div>
-						<Navigation navigation={this.state.navigation} />
+						<Navigation ref="navigation" navigation={this.state.navigation} />
 						<div className="wrapper">
 							{this.state.routes.map((route, i)=>{
-								return (<Match key={i} exactly pattern={route.pattern} component={route.component} />)
+								return (<Match key={i} exactly={route.exactly} pattern={route.pattern} component={route.component} />)
 							})}
 						</div>
 					</div>

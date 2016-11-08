@@ -13,6 +13,7 @@ class Login extends Component{
       msg: false,
       name: false,
       password: false,
+      remember: false,
       auth: false
     };
     this.submit = this.submit.bind(this);
@@ -29,11 +30,12 @@ class Login extends Component{
 
     this.context.io.run('login', {
 			name: this.state.name,
-			password: this.state.password
+			password: this.state.password,
+			remember: this.state.remember
 		}, (response) => {
-      console.log(response);
-			if(response.response){
+			if(response.success){
 				this.context.auth(true);
+        localStorage.setItem('user', JSON.stringify(response.data));
         this.setState({auth: true})
 			}
 			else{
@@ -47,7 +49,12 @@ class Login extends Component{
       <form className="card__container bg-blue-light" onSubmit={this.submit}>
         <div  className="card__body">
           <TextField name="name" id="name" type="text" required hintText="Name" onChange={this.change.bind(this, 'name')} /><br/>
-          <TextField name="password" id="password" required type="password" hintText={Lang.password}  onChange={this.change.bind(this, 'password')} /><br/>
+          <TextField name="password" id="password" required type="password" hintText={Lang.password} onChange={this.change.bind(this, 'password')} /><br/>
+          <Ui.Checkbox
+            label={Lang.rememberMe}
+            name="remember"
+            onCheck={this.change.bind(this, 'remember')}
+          />
           <div className="error" style={(this.state.msg) ? {} : {'display': 'none'}} >
             <FontIcon className='error' />
             {this.state.msg}

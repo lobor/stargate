@@ -24,7 +24,7 @@ class LastLogin extends React.Component{
           <Loading render={this.state.render}>
             <Ui.List>
               {this.state.date.map(function(date, i){
-                return <Ui.ListItem key={i} primaryText={date} />;
+                return <Ui.ListItem key={i} primaryText={date.user} secondaryText={date.date} />;
               })}
             </Ui.List>
           </Loading>

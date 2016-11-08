@@ -1,7 +1,5 @@
-import Link from 'react-router/Link'
-
-
-import Redirect from 'react-router/Redirect'
+import Link from 'react-router/Link';
+import Redirect from 'react-router/Redirect';
 
 import { Icon, Badge } from './style';
 
@@ -12,6 +10,7 @@ class Navigation extends React.Component {
 		this.state = {
 			active: false,
 			title: 'home',
+			redirect: false
 		}
 	}
 
@@ -22,6 +21,7 @@ class Navigation extends React.Component {
 	logout(){
 		this.context.io.run('logout', {}, (response) => {
 			if(response.response){
+				this.setState({redirect: false});
 				this.context.auth(false);
 			}
 		})

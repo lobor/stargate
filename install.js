@@ -75,6 +75,34 @@ try {
 }
 
 
+try {
+  fs.accessSync(pathProcess + '/db/', fs.F_OK);
+} catch (e) {
+  fs.mkdirSync(pathProcess + '/db/', 0777);
+  let db = require(pathProcess + '/core/db')(pathProcess + '/db/');
+  let users = db.use('Users');
+  if(!users.list().length){
+    users.push({
+      username: 'admin',
+      role: 1,
+      password: 'password'
+    });
+    users.save();
+  }
+
+  let roles = db.use('Roles');
+  if(!roles.list().length){
+    roles.push({
+      name: "Administrator"
+    });
+    roles.push({
+      name: "User"
+    });
+    roles.save();
+  }
+}
+
+
 
 
 try {

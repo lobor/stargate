@@ -24,5 +24,6 @@ module.exports = {
   pluginInstallRemove: 'Le plugin "{0}" a été supprimé',
   seeDetails: 'Voir le detail',
   errors: 'Erreurs',
-  close: 'Fermer'
+  close: 'Fermer',
+  rememberMe: 'Se souvenir'
 };

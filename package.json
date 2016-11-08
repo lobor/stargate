@@ -7,7 +7,7 @@
     "install": "node install.js",
     "start": "npm run build:js && node app.js",
     "server": "node app.js",
-    "server-dev": "nodemon app.js",
+    "server-dev": "nodemon --ignore db/ --ignore web/assets/ app.js",
     "start-dev": "npm-run-all --parallel server-dev watch:js",
     "build:js": "webpack --optimize-minimize --config",
     "watch:js": "webpack -w --config",
@@ -20,11 +20,11 @@
   "dependencies": {
     "babel": "^4.7.16",
     "body-parser": "^1.15.2",
+    "node-gyp": "^3.4.0",
     "compression": "^1.6.2",
     "ejs": "^2.5.2",
     "express": "^4.12.3",
     "express-session": "^1.14.0",
-    "node-gyp": "^3.4.0",
     "socket.io": "^1.4.8",
     "usage": "^0.7.1"
   },

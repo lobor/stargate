@@ -25,5 +25,6 @@ module.exports = {
   pluginInstallError: 'An error has occured during installation of "{0}"',
   seeDetails: 'See details',
   errors: 'Errors',
-  close: 'Close'
+  close: 'Close',
+  rememberMe: 'Remember me'
 };

@@ -96,7 +96,7 @@ class Plugins extends React.Component {
   }
 
   goTo(name){
-    this.setState({ redirect: '/config/' + name })
+    this.setState({ redirect: '/plugins/config/' + name })
   }
 
   render(){

@@ -1,6 +1,8 @@
 var http = require('http'),
     url = require('url'),
-    fs = require('fs');
+    fs = require('fs'),
+    mime = require('./mime/mime'),
+    gzip = require('./compression');
 
 var server, routes, middlewares = [];
 
@@ -20,8 +22,8 @@ class Server {
     this.res = null;
   }
 
-  static static(){
-
+  getServer(){
+    return this.server;
   }
 
   /**
@@ -108,8 +110,6 @@ function checkRoutes(req, res, page){
     }
     else{
       let thisString = new RegExp(page, 'i');
-      console.log(page);
-      console.log(Object.keys(routes[req.method]));
       let find;
 
       // search if roue exist on regexp
@@ -134,7 +134,6 @@ function checkRoutes(req, res, page){
   else{
     render404(res);
   }
-  res.end();
 }
 
 /**
@@ -143,7 +142,8 @@ function checkRoutes(req, res, page){
  */
 function render404(res){
   res.writeHead(404, {"Content-Type": "text/plain"});
-  res.write("NOT FOUND");
+  // res.write("NOT FOUND");
+  res.end("NOT FOUND");
 }
 
 /**
@@ -153,6 +153,8 @@ function render404(res){
 function render(route, req, res){
   res.sendJSON = sendJSON(res);
   res.sendFile = sendFile(res);
+  // res.sendJsFile = sendJsFile(res);
+  // res.sendCssFile = sendCssFile(res);
   route.call(undefined, req, res)
 }
 
@@ -180,8 +182,11 @@ function template(template, params) {
     argsClass.push(param);
     argsFunction.push(params[param]);
   }
-
-  return new FunctionCustom(argsClass, "return `" + template + "`;").call(undefined, argsFunction);
+  if(argsFunction.length){
+    let tpl = new FunctionCustom(argsClass, "return `" + template + "`;");
+    return tpl.compile(argsFunction);
+  }
+  return template;
 }
 
 
@@ -190,20 +195,29 @@ function template(template, params) {
  */
 class FunctionCustom extends Function{
   constructor(...args){
-    super(...args);
+    this.tpl = super(...args);
+  }
+
+  compile(...args){
+    return this.tpl.apply(this, ...args);
   }
 }
-
 
 /**
  * Get file, transpile to es6 template and replace var
  * @param  {object} res Response
  */
 function sendFile(res){
-  return function(pathFile, params){
+  return function(pathFile, params, zip){
     let html = fs.readFileSync(pathFile);
 
-    res.writeHead(200, {"Content-Type": "text/plain"});
-    res.write(template(html, params));
+    gzip(template(html, params), function(err, data){
+      res.writeHead(200, {
+        "Content-Type": mime.lookup(pathFile),
+        'Content-Encoding': 'gzip'
+      });
+      res.write(data);
+      res.end();
+    });
   }
 }

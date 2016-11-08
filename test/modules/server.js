@@ -1,4 +1,4 @@
-var ConfigAdmin = require(process.cwd() + '/config/web/admin');
+var db = require(process.cwd() + '/core/db');
 var Server = require('./../../web/server/server');
 var server;
 

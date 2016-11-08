@@ -9,26 +9,31 @@ module.exports = [
   {
     pattern: '/',
     component: Home,
-    name: 'home'
+    name: 'home',
+    exactly: true
+  },
+  {
+    pattern: '/plugins/config/:plugin',
+    component: ConfigPlugin,
+    name: 'config_plugin',
+    exactly: true
   },
   {
     pattern: '/config',
     component: Config,
-    name: 'config'
-  },
-  {
-    pattern: '/config/:plugin',
-    component: ConfigPlugin,
-    name: 'config_plugin'
+    name: 'config',
+    exactly: false
   },
   {
     pattern: '/plugins',
     component: Plugins,
-    name: 'plugins'
+    name: 'plugins',
+    exactly: true
   },
   {
     pattern: '/user/login',
     component: Login,
-    name: 'login'
+    name: 'login',
+    exactly: true
   },
 ];

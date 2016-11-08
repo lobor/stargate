@@ -25,7 +25,7 @@ module.exports = {
 			},
 			{
 				test: /\.(eot|svg|ttf|woff|woff2)$/,
-				loader: 'file?name=public/fonts/[name].[ext]'
+				loader: 'file?name=public/font/[name].[ext]'
 			},
 			{ test: require.resolve("react"), loader: "expose?React" },
 			{ test: require.resolve("material-ui"), loader: "expose?Ui" },

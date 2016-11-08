@@ -1,5 +1,6 @@
 var io = require('socket.io-client');
 var ConfigAdmin = require(process.cwd() + '/config/web/admin');
+var db = require(process.cwd() + '/core/db')(process.cwd() + '/db');
 var client;
 
 module.exports = {
@@ -19,11 +20,12 @@ module.exports = {
     client.disconnect();
   },
   login: function(cb){
+    let admin = db.use('Users').findOne({username: "admin"});
     client.emit('login', {
-			name: ConfigAdmin.user,
-			password: ConfigAdmin.password
+			name: admin.username,
+			password: admin.password
 		}, function(data){
-      if(data.response){
+      if(data.success){
         cb(true);
 			}
 			else{

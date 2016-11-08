@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<meta name="description" content="Shut !">
     <meta name="author" content="Lobor">
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
@@ -14,16 +15,17 @@
 
 		<title>Shut !</title>
 
-		<link href="/css/app.css" type="text/css" rel="stylesheet" />
+		${assets.css.map((asset)=>{
+			return `<link href=${asset} type="text/css" rel="stylesheet" />`;
+		})}
     <script src="/socket.io/socket.io.js"></script>
 
 	</head>
 	<body>
 		<div id="container"></div>
 
-		<% for(var i=0; i<assets.length; i++) {%>
-			<script type="text/javascript" src=<%=assets[i]%>></script>
-		<% } %>
-
+		${assets.js.map((asset)=>{
+			return `<script type="text/javascript" src=${asset}></script>`;
+		})}
 	</body>
 </html>

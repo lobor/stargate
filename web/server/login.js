@@ -1,25 +1,27 @@
 var ConfigAdmin = require(process.cwd() + '/config/web/admin');
 
 module.exports = function(data, fc){
-  if(data.name == ConfigAdmin.user && data.password == ConfigAdmin.password){
+  let Users = this.db.use('Users');
+  let user = Users.findOne({ username: data.name, password: data.password  });
+  if(user){
     var sess = this.socket.request.session;
-    sess.views = true;
+    sess.user = user;
     sess.save();
 
-    if('[object Array]' !== Object.prototype.toString.call(this.data.LastLogin)){
-      this.data.LastLogin = [];
-    }
+    let lastLogin = this.db.use('lastLogin');
 
-    if(5 === this.data.LastLogin.length){
-      this.data.LastLogin.shift();
-    }
+    lastLogin.push({
+      date: new Date(),
+      id_user: user.id
+    });
 
-    this.data.LastLogin.push(new Date());
+    lastLogin.save();
 
     this.loadRoutesSocket();
 
     fc({
-      "response":true
+      "success": true,
+      "data": {user: user.username, id_role: user.role}
     });
   }
   else{

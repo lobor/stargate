@@ -12,3 +12,4 @@ npm-debug.log
 tmp/*
 plugins/*
 babel.json
+db
