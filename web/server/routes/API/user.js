@@ -26,6 +26,21 @@ export default [
 		}
 	},
 	{
+		'name': 'user:get',
+		'require': ['db'],
+		'call': function(data, fc){
+			let user = this.db.use('Users').findById(data.id);
+
+			if(user){
+				delete user.password;
+				fc({"user": user});
+			}
+			else{
+				fc({error: "Not user with this id"});
+			}
+		}
+	},
+	{
 		'name': 'user:list',
 		'require': ['db'],
 		'call': function(data, fc){

@@ -25,10 +25,22 @@ class ListUser extends React.Component {
     this.setState({ redirect: '/config/users/' + this.state.users[index].id, query: this.state.users[index] })
   }
 
+  newUser(){
+    console.log(arguments);
+  }
+
 	render() {
     if(!this.state.redirect){
       return (
         <Loading render={this.state.render}>
+          <Ui.Toolbar>
+            <Ui.ToolbarGroup>
+              <Ui.ToolbarTitle text="Users" />
+            </Ui.ToolbarGroup>
+            <Ui.ToolbarGroup>
+            	<Ui.FontIcon className="material-icons" onClick={this.newUser}>add</Ui.FontIcon>
+            </Ui.ToolbarGroup>
+          </Ui.Toolbar>
           <Ui.Table onRowSelection={this.goToUser}>
             <Ui.TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <Ui.TableRow>

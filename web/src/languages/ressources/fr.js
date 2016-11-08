@@ -22,6 +22,7 @@ module.exports = {
   listPluginsAvailable: "Plugins disponible",
   pluginInstallSuccess: 'Le plugin "{0}" a été installé',
   pluginInstallRemove: 'Le plugin "{0}" a été supprimé',
+  pluginInstallError: "Une erreur est apparue pendant l'installation \"{0}\"",
   seeDetails: 'Voir le detail',
   errors: 'Erreurs',
   close: 'Fermer',
