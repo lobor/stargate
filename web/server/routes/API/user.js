@@ -41,6 +41,26 @@ export default [
 		}
 	},
 	{
+		'name': 'user:create',
+		'require': ['db'],
+		'call': function(data, fc){
+			let user = this.db.use('Users');
+			if(data.password === data.confirm_password){
+				user.push({
+					username: data.username,
+					password: data.password,
+					role: data.role
+				});
+
+				user.save();
+				fc({"success": true});
+			}
+			else{
+				fc({"error": "Password is not same"});
+			}
+		}
+	},
+	{
 		'name': 'user:list',
 		'require': ['db'],
 		'call': function(data, fc){

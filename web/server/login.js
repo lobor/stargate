@@ -1,5 +1,3 @@
-var ConfigAdmin = require(process.cwd() + '/config/web/admin');
-
 module.exports = function(data, fc){
   let Users = this.db.use('Users');
   let user = Users.findOne({ username: data.name, password: data.password  });

@@ -43,7 +43,7 @@ mocha.run(function(failures){
     git.on('close', (code) => {
       if(0 === code){
         console.log('Commit file');
-        let git = spawn('git', ['commit', '-a', '-m', '"Commit via publish file, after test and min js file"']);
+        let git = spawn('git', ['commit', '-a', '-m', '"' + (process.argv[2] || 'Commit via publish file, after test and min js file') + '"']);
 
         git.stdout.on('data', (data) => {
           console.log(`${data}`);

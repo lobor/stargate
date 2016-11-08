@@ -1,6 +1,7 @@
 import FormChangePassword from 'components/forms/user/changePassword.jsx';
 import EditUser from 'components/forms/user/edit.jsx';
 import ListUser from 'components/user/listUser.jsx';
+import NewUser from 'components/user/newUser.jsx';
 import { Link, Match } from 'react-router';
 
 class Config extends React.Component {
@@ -28,10 +29,18 @@ class Config extends React.Component {
 			}
 		});
 
-		match.push({
-			url: '/config/users/:id',
-			component: EditUser
-		});
+		match = match.concat([
+			{
+				url: '/config/users/edit/:id',
+				component: EditUser,
+				exactly: true
+			},
+			{
+				url: '/config/users/create',
+				component: NewUser,
+				exactly: true
+			}
+		])
 
     return (
 			<div style={ {display: 'flex'} }>

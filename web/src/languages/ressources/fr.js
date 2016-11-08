@@ -26,5 +26,10 @@ module.exports = {
   seeDetails: 'Voir le detail',
   errors: 'Erreurs',
   close: 'Fermer',
-  rememberMe: 'Se souvenir'
+  rememberMe: 'Se souvenir',
+  createUser: 'Créer un utilisateur',
+  roles: 'Rôles',
+  Administrator: 'Administrateur',
+  User: 'Utilisateur',
+  username: 'Nom d\'utilisateur'
 };

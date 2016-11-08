@@ -13,6 +13,7 @@ class ListUser extends React.Component {
     };
 
     this.goToUser = this.goToUser.bind(this);
+    this.newUser = this.newUser.bind(this);
   }
 
   componentWillMount(){
@@ -22,11 +23,11 @@ class ListUser extends React.Component {
   }
 
   goToUser(index){
-    this.setState({ redirect: '/config/users/' + this.state.users[index].id, query: this.state.users[index] })
+    this.setState({ redirect: '/config/users/edit/' + this.state.users[index].id, query: this.state.users[index] });
   }
 
   newUser(){
-    console.log(arguments);
+    this.setState({ redirect: '/config/users/create'})
   }
 
 	render() {
