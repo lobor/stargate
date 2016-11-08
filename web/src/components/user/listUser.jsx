@@ -8,7 +8,8 @@ class ListUser extends React.Component {
     this.state = {
       render: false,
       users: [],
-      redirect: false
+      redirect: false,
+      query: false
     };
 
     this.goToUser = this.goToUser.bind(this);
@@ -21,7 +22,7 @@ class ListUser extends React.Component {
   }
 
   goToUser(index){
-    this.setState({ redirect: '/config/users/' + this.state.users[index].id })
+    this.setState({ redirect: '/config/users/' + this.state.users[index].id, query: this.state.users[index] })
   }
 
 	render() {
@@ -50,7 +51,7 @@ class ListUser extends React.Component {
       )
     }
     else{
-      return ( <Redirect to={this.state.redirect} />)
+      return ( <Redirect to={this.state.redirect}  />)
     }
 	}
 }

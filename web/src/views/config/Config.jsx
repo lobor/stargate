@@ -1,4 +1,5 @@
 import FormChangePassword from 'components/forms/user/changePassword.jsx';
+import EditUser from 'components/forms/user/edit.jsx';
 import ListUser from 'components/user/listUser.jsx';
 import { Link, Match } from 'react-router';
 
@@ -29,7 +30,7 @@ class Config extends React.Component {
 
 		match.push({
 			url: '/config/users/:id',
-			component: FormChangePassword
+			component: EditUser
 		});
 
     return (
