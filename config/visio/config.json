@@ -4,8 +4,8 @@
   "grid_x": 8,
   "grid_y": 8,
   "threshold": 3000.0,
-  "haar_cascade": "./visio/haarcascade_frontalface_alt.xml",
+  "haar_cascade": "./plugins/face/back/haarcascade_frontalface_alt.xml",
   "modelFace": "./visio/models/face.xml",
   "modelNumberplate": "./visio/models/numberplate.xml",
-  "collection": "./visio/collections"
+  "collection": "./plugins/face/collections"
 }

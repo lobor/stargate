@@ -152,7 +152,6 @@ export default class Server{
 		if(route.dependencies){
 			dep = route.dependencies;
 		}
-
 		route.call = route.call.bind(dep);
 		return route;
 	}

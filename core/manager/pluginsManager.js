@@ -45,24 +45,39 @@ export default class PluginsManager{
     for(let plugin of plugins){
       this.add(this.config.pathProcess + path + '/' + plugin)
     }
+
+    this.loadDependencies();
+
+    for(let index in this.plugins){
+      this.plugins[index].load();
+    }
+  }
+
+  loadDependencies(){
+    for(let index in this.plugins){
+      let dependencies = {};
+      this.plugins[index].props.dependencies.forEach((dep, i)=>{
+        if(this.plugins[dep]){
+          dependencies[dep] = this.plugins[dep];
+        }
+        else{
+          // this.plugins[index].error()
+        }
+      });
+      this.plugins[index].dependencies = dependencies;
+    }
   }
 
   add(plugin){
     plugin = require(plugin);
     plugin = new plugin();
-
-    plugin.load();
+    this.plugins[plugin.props.conf.name] = plugin;
 
     if(plugin.install){
       plugin.install();
     }
-
-    this.plugins[plugin.props.conf.name] = plugin;
   }
-
-  installPlugin(){
-
-  }
+  
 
   delete(name){
     delete this.plugins[name];

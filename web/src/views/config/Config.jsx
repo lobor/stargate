@@ -1,7 +1,7 @@
 import FormChangePassword from 'components/forms/user/changePassword.jsx';
 import EditUser from 'components/forms/user/edit.jsx';
 import ListUser from 'components/user/listUser.jsx';
-import NewUser from 'components/user/newUser.jsx';
+// import NewUser from 'components/user/newUser.jsx';
 import { Link, Match } from 'react-router';
 
 class Config extends React.Component {
@@ -35,11 +35,11 @@ class Config extends React.Component {
 				component: EditUser,
 				exactly: true
 			},
-			{
-				url: '/config/users/create',
-				component: NewUser,
-				exactly: true
-			}
+			// {
+			// 	url: '/config/users/create',
+			// 	component: NewUser,
+			// 	exactly: true
+			// }
 		])
 
     return (
