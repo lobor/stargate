@@ -21,9 +21,15 @@
 	<body>
 		<div id="container"></div>
 
-		<% for(var i=0; i<assets.length; i++) {%>
+		<%
+			for(var i=0; i<assets.length; i++) {
+				if(!assets[i].match(/\.map$/i)){
+		%>
 			<script type="text/javascript" src=<%=assets[i]%>></script>
-		<% } %>
+		<%
+				}
+			}
+		%>
 
 	</body>
 </html>

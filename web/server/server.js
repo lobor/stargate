@@ -21,6 +21,7 @@ export default class Server{
 		this.routesSocket = routesSocket;
 		this.assets = [
 			'/web/assets/app.js',
+			'/web/assets/app.js.map'
 		];
 
 		this.server = express();
@@ -51,11 +52,10 @@ export default class Server{
 
 		this.server.use((req, res, next) => {
 			let sess = req.session;
-
-			if ((sess.user && '/user/login' !== req.originalUrl) || (!sess.user && '/user/login' === req.originalUrl) || -1 !== this.assets.indexOf(req.originalUrl)) {
+			if ((sess.user && '/user/login' !== req.path) || (!sess.user && '/user/login' === req.path) || -1 !== this.assets.indexOf(req.path)) {
 				next();
 			}
-			else if(sess.user && '/user/login' === req.originalUrl){
+			else if(sess.user && '/user/login' === req.path){
 				res.redirect('/');
 			}
 			else {
@@ -72,7 +72,7 @@ export default class Server{
 						});
 				}
 				else{
-					res.redirect('/user/login');
+					res.redirect('/user/login' + (('/user/login' !== req.path && req.path !== '/') ? '?redirect=' + req.path : ''));
 				}
 			}
 		});
@@ -133,7 +133,7 @@ export default class Server{
 				call: (req, res) => {
 					res.sendFile(process.cwd() + assets);
 				}
-			})
+			});
 		});
 	}
 
@@ -183,6 +183,7 @@ export default class Server{
 	 * Load socket route of app stargate
 	 */
 	loadRoutesSocket(){
+		this.emit('socketLoad');
 		for(let routesName in this.routesSocket){
 			for(let route of this.routesSocket[routesName]){
 				this.addRouteSocket(route)

@@ -20,7 +20,7 @@ pluginManager
 
 
 server = new Server();
-server.loadRoutesServer();
+// server.loadRoutesServer();
 // load plugin routes
 loadRouteOnServer(pluginManager.plugins);
 
@@ -82,7 +82,15 @@ function loadRouteOnServer(plugins){
 			server.addRoute(route);
 		}
 
-		if(-1 === server.assets.indexOf(plugin.assets))
-			server.assets.push(plugin.assets);
+		if(-1 === server.assets.indexOf(plugin.assets)){
+			if(Array.isArray(plugin.assets)){
+				plugin.assets.forEach((asset)=>{
+					server.assets.push(asset);
+				})
+			}
+			else{
+				server.assets.push(plugin.assets);
+			}
+		}
 	}
 }

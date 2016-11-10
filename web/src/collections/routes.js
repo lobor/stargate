@@ -34,6 +34,6 @@ module.exports = [
     pattern: '/user/login',
     component: Login,
     name: 'login',
-    exactly: true
+    exactly: false
   },
 ];

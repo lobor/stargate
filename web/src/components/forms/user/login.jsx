@@ -14,7 +14,8 @@ class Login extends Component{
       name: false,
       password: false,
       remember: false,
-      auth: false
+      auth: false,
+      redirect: '/'
     };
     this.submit = this.submit.bind(this);
 	}
@@ -33,14 +34,21 @@ class Login extends Component{
 			password: this.state.password,
 			remember: this.state.remember
 		}, (response) => {
+      var options = {};
 			if(response.success){
 				this.context.auth(true);
         localStorage.setItem('user', JSON.stringify(response.data));
-        this.setState({auth: true})
+
+        // Convert query url on object
+        let url = JSON.parse('{"' + decodeURI(window.location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+        options = { auth: true };
+        options.redirect = url.redirect || this.state.redirect;
 			}
 			else{
-				this.setState({msg: response.errors.message})
+				options = {msg: response.errors.message};
 			}
+      console.log(options);
+      this.setState(options)
 		});
 	}
 
@@ -60,7 +68,7 @@ class Login extends Component{
             {this.state.msg}
           </div>
           <RaisedButton type="submit" label={Lang.login} primary />
-          {this.state.auth ? (<Redirect to="/" />) : ''}
+          {this.state.auth ? (<Redirect to={this.state.redirect} />) : ''}
         </div>
       </form>
     );

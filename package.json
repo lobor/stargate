@@ -10,7 +10,7 @@
     "server-dev": "nodemon --ignore db/ --ignore web/assets/ app.js",
     "start-dev": "npm-run-all --parallel server-dev watch:js",
     "build:js": "webpack --optimize-minimize --config",
-    "watch:js": "webpack -w --config",
+    "watch:js": "webpack -w --devtool source-map --config",
     "test": "NODE_ENV=test mocha test/test -R spec --recursive",
     "publish": "NODE_ENV=test node ./publish.js"
   },

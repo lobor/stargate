@@ -28,7 +28,7 @@ class Navigation extends React.Component {
 	}
 
 	render() {
-		var rendu = null;
+		var rendu = (<div></div>);
 		if(this.context.auth()){
 			rendu = (
 				<Ui.AppBar
@@ -65,9 +65,6 @@ class Navigation extends React.Component {
 		      </Ui.Drawer>
 				</Ui.AppBar>
 			);
-		}
-		else{
-			rendu = (<Redirect to="/user/login" />);
 		}
 
     return rendu

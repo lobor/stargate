@@ -28,6 +28,7 @@ module.exports = {
 				loader: 'file?name=public/font/[name].[ext]'
 			},
 			{ test: require.resolve("react"), loader: "expose?React" },
+			{ test: require.resolve("react-router"), loader: "expose?ReactRouter" },
 			{ test: require.resolve("material-ui"), loader: "expose?Ui" },
 			{ test: require.resolve("material-ui/styles/colors"), loader: "expose?Colors" },
 			// { test: require.resolve("languages"), loader: "expose?Lang" }

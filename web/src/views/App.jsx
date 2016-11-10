@@ -66,6 +66,7 @@ class App extends React.Component {
   // Create context authentification and socket API
 	getChildContext() {
 		var auth = false;
+    
 		if('/user/login' !== window.location.pathname){
       auth = true;
 		}

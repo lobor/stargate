@@ -5,7 +5,6 @@ module.exports = function(data, fc){
     var sess = this.socket.request.session;
     sess.user = user;
     sess.save();
-
     let lastLogin = this.db.use('lastLogin');
 
     lastLogin.push({
