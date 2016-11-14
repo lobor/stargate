@@ -40,14 +40,17 @@ class Login extends Component{
         localStorage.setItem('user', JSON.stringify(response.data));
 
         // Convert query url on object
-        let url = JSON.parse('{"' + decodeURI(window.location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+        let query = decodeURI(window.location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"');
+        let url = {};
+        if(query !== ''){
+          url = JSON.parse('{"' + decodeURI(window.location.search.substring(1)).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+        }
         options = { auth: true };
         options.redirect = url.redirect || this.state.redirect;
 			}
 			else{
 				options = {msg: response.errors.message};
 			}
-      console.log(options);
       this.setState(options)
 		});
 	}

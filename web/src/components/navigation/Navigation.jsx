@@ -54,9 +54,13 @@ class Navigation extends React.Component {
 									}
 
 									return (
-										<Link to={item.href} key={key}  onClick={this.handleToggle}>
-											<Ui.ListItem key={key} primaryText={tradLabel} leftIcon={<Ui.FontIcon className="material-icons">{item.icon}</Ui.FontIcon>} />
-										</Link>
+										<ReactRouter.Link key={key} to={item.href} isActive={ (location)=>{return location.pathname === item.href;} }>
+		                  {
+		                    ({isActive, location, href, onClick, transition}) =>(
+													<Ui.ListItem key={key} primaryText={tradLabel}  onClick={(...args)=>{this.handleToggle(); onClick(...args)}} href={href} leftIcon={<Ui.FontIcon className="material-icons">{item.icon}</Ui.FontIcon>} />
+												)
+		                  }
+		                </ReactRouter.Link>
 									);
 								})
 							}
