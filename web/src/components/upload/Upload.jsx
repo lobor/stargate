@@ -1,8 +1,10 @@
+import { StyleContainer, StyleContainerPreview, StyleContainerInput } from './styles.js';
+
 class Upload extends React.Component{
   constructor(...args){
     super(...args);
     this.state = {
-      images: [''],
+      images: [],
       preview: []
     }
 	}
@@ -36,13 +38,13 @@ class Upload extends React.Component{
 
   render(){
     return (
-      <div>
-        <div className="container-upload">
+      <div style={StyleContainer}>
+        <div className="container-upload" style={StyleContainerInput}>
           <input type="file" id="fileinput" multiple="multiple" className="upload" accept="image/*"  onChange={this.change.bind(this, 'img')} />
           <Ui.RaisedButton className="fake-button" label="Add picture" primary={true} />
         </div>
-        <br />
-        <div>
+
+        <div style={StyleContainerPreview}>
           {this.state.preview.map((el, i) => {
             return (<img src={el.data} key={i} width="100" />)
           })}
