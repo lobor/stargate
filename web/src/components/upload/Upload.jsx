@@ -1,7 +1,4 @@
-import React, { Component } from 'react';
-import { Button } from 'react-toolbox/lib/button';
-
-class Upload extends Component{
+class Upload extends React.Component{
   constructor(...args){
     super(...args);
     this.state = {
@@ -42,7 +39,7 @@ class Upload extends Component{
       <div>
         <div className="container-upload">
           <input type="file" id="fileinput" multiple="multiple" className="upload" accept="image/*"  onChange={this.change.bind(this, 'img')} />
-          <Button className="fake-button" label="Add picture" raised primary />
+          <Ui.RaisedButton className="fake-button" label="Add picture" primary={true} />
         </div>
         <br />
         <div>
