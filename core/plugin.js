@@ -52,7 +52,7 @@ class Plugin {
 	 */
 	load(){
 		let className = this.props.conf.name;
-	  let pathBack = pathPlugin + className.toLowerCase() + '/back/';
+	  let pathBack = pathPlugin + className.toLowerCase() + '/back/index.js';
 	  let pathFront = pathPlugin + className.toLowerCase() + '/front/';
 
 		// Load back route and set route of config menu

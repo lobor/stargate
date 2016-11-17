@@ -10,6 +10,7 @@ class Upload extends React.Component{
 	}
 
   change(name, value, e){
+
     this.setState({images: value.target.files, preview: []});
 
     var file;
@@ -28,12 +29,18 @@ class Upload extends React.Component{
           name: fileReady.name
         })
         this.setState({preview: preview});
+        if(i === len){
+          if(this.props.onChange){
+            this.props.onChange(this.state.preview)
+          }
+        }
       }.bind(this, index, file)
 
       if (file) {
         reader[index].readAsDataURL(file);
       }
     }
+
   }
 
   render(){
