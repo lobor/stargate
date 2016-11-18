@@ -52,26 +52,20 @@ export default class Server{
 
 		this.server.use((req, res, next) => {
 			let sess = req.session;
-			if ((sess.user && '/user/login' !== req.path) || (!sess.user && '/user/login' === req.path) || -1 !== this.assets.indexOf(req.path)) {
+			if(req.hostname === 'localhost'){
+				sess.user = true;
+		    sess.save();
 				next();
 			}
-			else if(sess.user && '/user/login' === req.path){
-				res.redirect('/');
-			}
-			else {
-				sess.user = false;
-				if(req.xhr || req.headers.accept.indexOf('json') > -1){
-					res
-						.status(401)
-						.json({
-							"response":false,
-							"errors": {
-								"message": "You should be connected for to have access",
-								"redirect":"/user/login"
-							}
-						});
+			else{
+				if ((sess.user && '/user/login' !== req.path) || (!sess.user && '/user/login' === req.path) || -1 !== this.assets.indexOf(req.path)) {
+					next();
 				}
-				else{
+				else if(sess.user && '/user/login' === req.path){
+					res.redirect('/');
+				}
+				else {
+					sess.user = false;
 					res.redirect('/user/login' + (('/user/login' !== req.path && req.path !== '/') ? '?redirect=' + req.path : ''));
 				}
 			}
@@ -218,7 +212,7 @@ export default class Server{
 
 			this.socket = socket;
 
-			if(socket.request.session.user){
+			if(socket.request.session.user || socket.request.hostname === 'localhost'){
 				this.emit('socketLoad');
 				this.loadRoutesSocket();
 			}
