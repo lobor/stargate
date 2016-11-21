@@ -9,7 +9,7 @@ class Navigation extends React.Component {
 		this.handleToggle = this.handleToggle.bind(this);
 		this.state = {
 			active: false,
-			title: 'home',
+			title: 'Stargate',
 			redirect: false
 		}
 	}
