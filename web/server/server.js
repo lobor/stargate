@@ -177,7 +177,7 @@ export default class Server{
 	 * Load socket route of app stargate
 	 */
 	loadRoutesSocket(){
-		this.emit('socketLoad');
+		// this.emit('socketLoad');
 		for(let routesName in this.routesSocket){
 			for(let route of this.routesSocket[routesName]){
 				this.addRouteSocket(route)
